@@ -20,6 +20,7 @@ import VerificationCodes from "../pages/VerificationCodes";
 import PickUpRequest from "../pages/PickUpRequest";
 import VerifyEmail from "../pages/VerifyEmail";
 import UserDetail from "../pages/UserDetail";
+import JoinUs from "../pages/JoinUs";
 
 export default function Router() {
   return (
@@ -41,6 +42,7 @@ export default function Router() {
             <Route path="/" element={<Home />} />
             <Route path="/*" element={<NotFound />} />
             <Route path="/about" element={<About />} />
+            <Route path="/join-us" element={<JoinUs />} />
             <Route path="/search" element={<Search />} />
             <Route path="/detail-post/*" element={<DetailPost />} />
             <Route path="/support" element={<Support />} />
