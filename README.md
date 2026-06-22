@@ -19,7 +19,7 @@ This is designed as a **real-world engineering system**, not a CRUD application.
 
 ## ❗ Problem Statement
 
-The current system at Discovery High School suffers from:
+The current system at schools suffers from:
 
 - Low recovery rate of lost items
 - No centralized tracking database
