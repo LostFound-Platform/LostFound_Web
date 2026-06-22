@@ -242,7 +242,7 @@ git commit -m "feat: add new feature"
 git push origin feature/new-feature
 ```
 
-8. **Open a Pull Request**
+8. **Open a Pull Request to the dev branch**
 
 ---
 
