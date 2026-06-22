@@ -1,36 +1,24 @@
 export default function Footer() {
   return (
     <>
-      <footer>
-        {/* <div className="left">
-          <a href="/">Back2Me</a>
-        </div> */}
-        <div className="middle">
-          {/* <div className="top">
-            <a href="/how-it-works">How it works</a>
-            <a href="">Contact</a>
-          </div> */}
-          <div className="bottom">
-            <a href="/">Back2Me</a>
-            <p style={{ color: "#9CA3AF", marginTop: "10px" }}>
-              Copyright © 2026 Back2Me. All rights reserved
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-brand">
+            <h3 style={{ fontFamily: "Mochiy Pop One, sans-serif" }}>
+              Back2Me
+            </h3>
+            <p>
+              © {new Date().getFullYear()} Campus Lost & Found. A Student-Led
+              Technical Initiative.
             </p>
           </div>
+
+          <div className="footer-links">
+            <a href="#policyModal2">Terms & Guide</a>
+            <a href="/about">About Us</a>
+            <a href="/join-us">Join Us</a>
+          </div>
         </div>
-        {/* <div className="right">
-          <label htmlFor="">Sign up for Newsletter</label>
-          <br />
-          <form>
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="Enter email"
-              required
-            />
-            <button>Submit</button>
-          </form>
-        </div> */}
       </footer>
     </>
   );

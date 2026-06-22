@@ -240,285 +240,290 @@ export default function Search() {
         <title>Search | Back2Me </title>
       </Helmet>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
+      <main>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
 
-          handleSearch(status, categoryId, nameItem);
-        }}
-        className="search-form"
-      >
-        <div className="filter">
-          <div className="top-filter">
-            <div className="status-filter">
-              <p
-                style={{
-                  backgroundColor: "#072138",
-                  width: "max-content",
-                  color: "white",
-                  padding: "1px 30px",
-                  borderRadius: "20px",
-                  position: "absolute",
-                  top: "-50%",
-                  left: "0",
-                  marginTop: "20px",
-                }}
-              >
-                Status
-              </p>
-              <input
-                type="radio"
-                name="status"
-                onChange={() => {
-                  setStatus("");
-                }}
-                id="search-all"
-                defaultChecked
-              />{" "}
-              <label htmlFor="search-all" id="search-all-label">
-                <strong>All</strong>
-              </label>
-              <input
-                type="radio"
-                name="status"
-                id="lost"
-                onChange={() => {
-                  setStatus("Lost");
-                }}
-                style={{ marginLeft: "20px", marginTop: "25px" }}
-              />{" "}
-              <label htmlFor="lost" style={{ marginRight: "25px" }}>
-                <strong>Lost</strong>
-              </label>
-              <input
-                type="radio"
-                name="status"
-                onChange={() => {
-                  setStatus("Found");
-                }}
-                id="found"
-              />{" "}
-              <label htmlFor="found">
-                <strong>Found</strong>
-              </label>
-            </div>
-
-            <div className="detail-filter">
-              <p>
-                <label htmlFor="type">Type of Item</label>
-              </p>
-              <select
-                name=""
-                id="type"
-                onClick={() => {
-                  setIsDropdownOpenType(!isDropdownOpenType);
-                }}
-                onChange={(e) => {
-                  setCategoryId(e.target.value);
-                }}
-                className="form-control"
-              >
-                <option value="">Select type</option>
-                {categoryPosts.map((item) => (
-                  <option key={item.categoryPostId} value={item.categoryPostId}>
-                    {item.categoryPostName}
-                  </option>
-                ))}
-              </select>
-              {isDropdownOpenType ? (
-                <i className="fa-solid fa-caret-up caret-type"></i>
-              ) : (
-                <i className="fa-solid fa-caret-down caret-type"></i>
-              )}
-            </div>
-            <div className="detail-filter name-item">
-              <p>
-                <label htmlFor="name">Item name</label>
-              </p>
-              <input
-                id="name"
-                type="text"
-                className="form-control"
-                placeholder="Enter name"
-                onChange={(e) => {
-                  setNameItem(e.target.value);
-                }}
-              />
-            </div>
-            <button
-              className="btn-yellow btn-use-filter"
-              style={{ marginLeft: "auto" }}
-              disabled={isInProcessing}
-              aria-label="Use Filter button"
-            >
-              {isInProcessing ? (
-                <i className="fas fa-spinner fa-spin"></i>
-              ) : (
-                <>
-                  <i className="fa-solid fa-sliders"></i> Use Filter
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      </form>
-
-      {/* Cards section */}
-      <div className={posts.length > 0 ? `card-row` : ""}>
-        {isGettingPosts ? (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "auto auto auto auto",
-              gap: "16px",
-            }}
-            className="skeleton-loading"
-          >
-            {Array.from({ length: 8 }).map((_, index) => (
-              <div className="" key={index} style={{ marginBottom: "60px" }}>
-                <Skeleton
-                  height={
-                    isInProcessing &&
-                    window.matchMedia("(max-width: 576px)").matches // check mobile size
-                      ? 193
-                      : 290
-                  }
-                  width={
-                    isInProcessing &&
-                    window.matchMedia("(max-width: 576px)").matches // check mobile size
-                      ? 170
-                      : 405
-                  }
-                  style={{ marginBottom: "10px", borderRadius: "20px" }}
-                />
-                <div className="">
-                  <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
-                    <Skeleton
-                      height={35}
-                      width={
-                        isInProcessing &&
-                        window.matchMedia("(max-width: 576px)").matches // check mobile size
-                          ? 170
-                          : 405
-                      }
-                    />
-                  </h3>
-                  <p>
-                    <Skeleton
-                      count={3}
-                      width={
-                        isInProcessing &&
-                        window.matchMedia("(max-width: 576px)").matches // check mobile size
-                          ? 170
-                          : 405
-                      }
-                    />
-                  </p>
-                </div>
+            handleSearch(status, categoryId, nameItem);
+          }}
+          className="search-form"
+        >
+          <div className="filter">
+            <div className="top-filter">
+              <div className="status-filter">
+                <p
+                  style={{
+                    backgroundColor: "#072138",
+                    width: "max-content",
+                    color: "white",
+                    padding: "1px 30px",
+                    borderRadius: "20px",
+                    position: "absolute",
+                    top: "-50%",
+                    left: "0",
+                    marginTop: "20px",
+                  }}
+                >
+                  Status
+                </p>
+                <input
+                  type="radio"
+                  name="status"
+                  onChange={() => {
+                    setStatus("");
+                  }}
+                  id="search-all"
+                  defaultChecked
+                />{" "}
+                <label htmlFor="search-all" id="search-all-label">
+                  <strong>All</strong>
+                </label>
+                <input
+                  type="radio"
+                  name="status"
+                  id="lost"
+                  onChange={() => {
+                    setStatus("Lost");
+                  }}
+                  style={{ marginLeft: "20px", marginTop: "25px" }}
+                />{" "}
+                <label htmlFor="lost" style={{ marginRight: "25px" }}>
+                  <strong>Lost</strong>
+                </label>
+                <input
+                  type="radio"
+                  name="status"
+                  onChange={() => {
+                    setStatus("Found");
+                  }}
+                  id="found"
+                />{" "}
+                <label htmlFor="found">
+                  <strong>Found</strong>
+                </label>
               </div>
-            ))}
-          </div>
-        ) : (
-          !isGettingPosts &&
-          (posts.length > 0 ? (
-            posts.map((item) => (
-              <div
-                className="card card-search"
-                style={{ cursor: "pointer" }}
-                key={item.postId}
-                onClick={() => {
-                  window.location.href = `/detail-post/${item.postId}`;
-                }}
-              >
-                {item.image ? (
-                  <img
-                    src={item.urlImage}
-                    alt="picture of item"
-                    style={{
-                      width: "100%",
-                      height: "300px",
-                      objectFit: "cover",
-                      backgroundColor: "white",
-                    }}
-                    loading="lazy"
-                  />
+
+              <div className="detail-filter">
+                <p>
+                  <label htmlFor="type">Type of Item</label>
+                </p>
+                <select
+                  name=""
+                  id="type"
+                  onClick={() => {
+                    setIsDropdownOpenType(!isDropdownOpenType);
+                  }}
+                  onChange={(e) => {
+                    setCategoryId(e.target.value);
+                  }}
+                  className="form-control"
+                >
+                  <option value="">Select type</option>
+                  {categoryPosts.map((item) => (
+                    <option
+                      key={item.categoryPostId}
+                      value={item.categoryPostId}
+                    >
+                      {item.categoryPostName}
+                    </option>
+                  ))}
+                </select>
+                {isDropdownOpenType ? (
+                  <i className="fa-solid fa-caret-up caret-type"></i>
                 ) : (
-                  <div className="image-placeholder">
-                    <i className="icon-image"></i>
-                    <span>No image</span>
-                  </div>
+                  <i className="fa-solid fa-caret-down caret-type"></i>
                 )}
-                <div
-                  className="card-text suggestion-card-text"
-                  style={{ marginBottom: "40px" }}
-                >
-                  <div className="info-user-suggestion">
-                    {item.user.avatar ? (
-                      <img
-                        src={item.user.urlAvatar}
-                        alt="avatar"
-                        width={50}
-                        height={50}
-                        style={{ borderRadius: "50%" }}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <img
-                        src="/Image/user_icon.png"
-                        alt="avatar"
-                        width={50}
-                        height={50}
-                        style={{ borderRadius: "50%" }}
-                        loading="lazy"
-                      />
-                    )}
-                    <span>{`${item.user.firstName} ${item.user.lastName}`}</span>
-                  </div>
-                  <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
-                    <a href={`/detail-post/${item.postId}`}>{item.title}</a>
-                  </h3>
-                  <ReactMarkdown
-                    children={item.description}
-                    rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                  ></ReactMarkdown>
-                </div>
-
-                {/* Status */}
-                <div
-                  className={
-                    item.typePost === "Found"
-                      ? "status-post-found"
-                      : "status-post-lost"
-                  }
-                >
-                  {item.typePost}
-                </div>
               </div>
-            ))
-          ) : (
+              <div className="detail-filter name-item">
+                <p>
+                  <label htmlFor="name">Item name</label>
+                </p>
+                <input
+                  id="name"
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter name"
+                  onChange={(e) => {
+                    setNameItem(e.target.value);
+                  }}
+                />
+              </div>
+              <button
+                className="btn-yellow btn-use-filter"
+                style={{ marginLeft: "auto" }}
+                disabled={isInProcessing}
+                aria-label="Use Filter button"
+              >
+                {isInProcessing ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  <>
+                    <i className="fa-solid fa-sliders"></i> Use Filter
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </form>
+
+        {/* Cards section */}
+        <div className={posts.length > 0 ? `card-row` : ""}>
+          {isGettingPosts ? (
             <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                textAlign: "center",
+                display: "grid",
+                gridTemplateColumns: "auto auto auto auto",
+                gap: "16px",
               }}
+              className="skeleton-loading"
             >
-              <Suspense fallback={<p>Loading animation...</p>}>
-                <DotLottieReact
-                  src="../assets/animations/NotFoundPost.json"
-                  className="m-auto no-data"
-                  style={{ width: "15%" }}
-                  autoplay
-                  loop
-                />
-              </Suspense>
-              <h1 className="no-posts">No posts yet</h1>
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div className="" key={index} style={{ marginBottom: "60px" }}>
+                  <Skeleton
+                    height={
+                      isInProcessing &&
+                      window.matchMedia("(max-width: 576px)").matches // check mobile size
+                        ? 193
+                        : 290
+                    }
+                    width={
+                      isInProcessing &&
+                      window.matchMedia("(max-width: 576px)").matches // check mobile size
+                        ? 170
+                        : 405
+                    }
+                    style={{ marginBottom: "10px", borderRadius: "20px" }}
+                  />
+                  <div className="">
+                    <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
+                      <Skeleton
+                        height={35}
+                        width={
+                          isInProcessing &&
+                          window.matchMedia("(max-width: 576px)").matches // check mobile size
+                            ? 170
+                            : 405
+                        }
+                      />
+                    </h3>
+                    <p>
+                      <Skeleton
+                        count={3}
+                        width={
+                          isInProcessing &&
+                          window.matchMedia("(max-width: 576px)").matches // check mobile size
+                            ? 170
+                            : 405
+                        }
+                      />
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            !isGettingPosts &&
+            (posts.length > 0 ? (
+              posts.map((item) => (
+                <div
+                  className="card card-search"
+                  style={{ cursor: "pointer" }}
+                  key={item.postId}
+                  onClick={() => {
+                    window.location.href = `/detail-post/${item.postId}`;
+                  }}
+                >
+                  {item.image ? (
+                    <img
+                      src={item.urlImage}
+                      alt="picture of item"
+                      style={{
+                        width: "100%",
+                        height: "300px",
+                        objectFit: "cover",
+                        backgroundColor: "white",
+                      }}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="image-placeholder">
+                      <i className="icon-image"></i>
+                      <span>No image</span>
+                    </div>
+                  )}
+                  <div
+                    className="card-text suggestion-card-text"
+                    style={{ marginBottom: "40px" }}
+                  >
+                    <div className="info-user-suggestion">
+                      {item.user.avatar ? (
+                        <img
+                          src={item.user.urlAvatar}
+                          alt="avatar"
+                          width={50}
+                          height={50}
+                          style={{ borderRadius: "50%" }}
+                          loading="lazy"
+                        />
+                      ) : (
+                        <img
+                          src="/Image/user_icon.png"
+                          alt="avatar"
+                          width={50}
+                          height={50}
+                          style={{ borderRadius: "50%" }}
+                          loading="lazy"
+                        />
+                      )}
+                      <span>{`${item.user.firstName} ${item.user.lastName}`}</span>
+                    </div>
+                    <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
+                      <a href={`/detail-post/${item.postId}`}>{item.title}</a>
+                    </h3>
+                    <ReactMarkdown
+                      children={item.description}
+                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                    ></ReactMarkdown>
+                  </div>
+
+                  {/* Status */}
+                  <div
+                    className={
+                      item.typePost === "Found"
+                        ? "status-post-found"
+                        : "status-post-lost"
+                    }
+                  >
+                    {item.typePost}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  textAlign: "center",
+                }}
+              >
+                <Suspense fallback={<p>Loading animation...</p>}>
+                  <DotLottieReact
+                    src="../assets/animations/NotFoundPost.json"
+                    className="m-auto no-data"
+                    style={{ width: "15%" }}
+                    autoplay
+                    loop
+                  />
+                </Suspense>
+                <h1 className="no-posts">No posts yet</h1>
+              </div>
+            ))
+          )}
+        </div>
+      </main>
     </>
   );
 }

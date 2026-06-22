@@ -318,338 +318,358 @@ export default function Profile() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 50% 15%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Name of profile */}
+      <main>
         <div
-          className="profile-info-container"
-          style={{ display: "flex", marginTop: "100px" }}
+          className="sidebar-and-content"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "15% 50% 15%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
+          }}
         >
-          <div style={{ width: "100%" }}>
-            <h1
-              className="my-profile-title"
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
+
+          {/* Name of profile */}
+          <div
+            className="profile-info-container"
+            style={{ display: "flex", marginTop: "100px" }}
+          >
+            <div style={{ width: "100%" }}>
+              <h1
+                className="my-profile-title"
+                style={{
+                  fontFamily: "Mochiy Pop One, sans-serif",
+                  fontSize: "20px",
+                  fontWeight: "100",
+                  marginLeft: "10px",
+                }}
+              >
+                My profile
+              </h1>
+              <form onSubmit={updateProfile}>
+                <table
+                  border="0"
+                  style={{
+                    padding: "10px",
+                    textAlign: "left",
+                    width: "100%",
+                  }}
+                >
+                  <tbody>
+                    <tr className="table-tr">
+                      <th
+                        style={{
+                          fontWeight: "600",
+                          paddingRight: "100px",
+                          width: "200px",
+                        }}
+                      >
+                        First Name:
+                      </th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          <input
+                            placeholder="Ex: Jennie Nguyen"
+                            type="text"
+                            className="form-control-input-label-top"
+                            value={firstName}
+                            onChange={(e) => {
+                              setFirstName(e.target.value);
+
+                              setIsModify(true);
+                            }}
+                          />
+                        ) : (
+                          <Skeleton
+                            className="skeleton-input"
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    <tr className="table-tr">
+                      <th
+                        style={{
+                          fontWeight: "600",
+                          paddingRight: "100px",
+                          width: "200px",
+                        }}
+                      >
+                        Last Name:
+                      </th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          <input
+                            placeholder="Ex: Jennie Nguyen"
+                            type="text"
+                            className="form-control-input-label-top"
+                            value={lastName}
+                            onChange={(e) => {
+                              setLastName(e.target.value);
+
+                              setIsModify(true);
+                            }}
+                          />
+                        ) : (
+                          <Skeleton
+                            className="skeleton-input"
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    <tr className="table-tr">
+                      <th
+                        style={{
+                          fontWeight: "600",
+                          paddingRight: "100px",
+                          width: "200px",
+                        }}
+                      >
+                        DOB:
+                      </th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          <InputMask
+                            mask={"99/99/9999"}
+                            placeholder="mm/dd/yyyy"
+                            value={
+                              isChangeDateOfBirth
+                                ? dateOfBirth
+                                : dayjs(dateOfBirth).format("MM/DD/YYYY") || ""
+                            }
+                            className="form-control-input-label-top"
+                            onChange={(e) => {
+                              setDateOfBirth(e.target.value);
+                              setIsChangeDateOfBirth(true);
+                              setIsModify(true);
+                            }}
+                          ></InputMask>
+                        ) : (
+                          <Skeleton
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    <tr className="table-tr">
+                      <th style={{ fontWeight: "600" }}>Role: </th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          <input
+                            placeholder="Ex: 123 456 789"
+                            type="text"
+                            className="form-control-input-label-top"
+                            value={user.role}
+                            style={{ cursor: "not-allowed" }}
+                            disabled
+                          />
+                        ) : (
+                          <Skeleton
+                            className="skeleton-input"
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    <tr className="table-tr">
+                      <th style={{ fontWeight: "600" }}>
+                        <label>Email: </label>
+                      </th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          <input
+                            placeholder="Ex: demo@ex.io"
+                            type="email"
+                            className="form-control-input-label-top"
+                            value={`${user.email}`}
+                            style={{ cursor: "not-allowed" }}
+                            disabled
+                          />
+                        ) : (
+                          <Skeleton
+                            className="skeleton-input"
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                    <tr className="table-tr">
+                      <th></th>
+                      <td style={{ verticalAlign: "top" }} className="table-td">
+                        {!isInProcessing ? (
+                          !user.isVerifiedEmail ? (
+                            <>
+                              <span className="badge-not-verified">
+                                <i className="fa-solid fa-triangle-exclamation"></i>{" "}
+                                Not Verified
+                              </span>
+
+                              <button
+                                className="btn btn-verify"
+                                onClick={() => {
+                                  handleResendVerify();
+                                }}
+                                type="button"
+                                disabled={isSending}
+                                aria-label="Send verification email button"
+                              >
+                                {isSending ? (
+                                  <i className="fas fa-spinner fa-spin"></i>
+                                ) : (
+                                  "Verify Now"
+                                )}
+                              </button>
+                            </>
+                          ) : (
+                            <span className="badge-verified">
+                              <i className="fa-solid fa-circle-check"></i>{" "}
+                              Verified
+                            </span>
+                          )
+                        ) : (
+                          <Skeleton
+                            className="skeleton-input"
+                            height={45}
+                            width={530}
+                            style={{
+                              marginBottom: "5px",
+                              borderRadius: "20px",
+                            }}
+                          />
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <button
+                  aria-label="Save changes button"
+                  className="btn-yellow"
+                  style={{
+                    width: "100%",
+                    backgroundColor:
+                      isModify && !isInProcessing ? "#ec7207" : "#d3d3d3",
+                    color: isModify && !isInProcessing ? "#fff" : "#8c8c8c",
+                    cursor:
+                      isModify && !isInProcessing ? "pointer" : "not-allowed",
+                    opacity: isModify && !isInProcessing ? 1 : 0.6,
+                  }}
+                  disabled={!isModify || isInProcessing}
+                >
+                  {isInProcessing ? (
+                    <i className="fas fa-spinner fa-spin"></i>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-floppy-disk me-2"></i> Save
+                      changes
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+
+          {/* Avatar */}
+          <div
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDropAvatar}
+            className="change-delete-avatar"
+            style={{ marginLeft: "100px" }}
+          >
+            {isInProcessing ? (
+              <Skeleton
+                height={420}
+                width={420}
+                style={{
+                  borderRadius: "12px",
+                  marginTop: "150px",
+                }}
+              />
+            ) : (
+              <img
+                src={
+                  avatarPreview
+                    ? avatarPreview
+                    : user?.avatar
+                      ? user.urlAvatar
+                      : "/Image/user_icon.png"
+                }
+                alt="avatar"
+                loading="lazy"
+              />
+            )}
+            <div
               style={{
-                fontFamily: "Mochiy Pop One, sans-serif",
-                fontSize: "20px",
-                fontWeight: "100",
-                marginLeft: "10px",
+                display: "flex",
+                gap: "20px",
               }}
             >
-              My profile
-            </h1>
-            <form onSubmit={updateProfile}>
-              <table
-                border="0"
-                style={{
-                  padding: "10px",
-                  textAlign: "left",
-                  width: "100%",
-                }}
-              >
-                <tbody>
-                  <tr className="table-tr">
-                    <th
-                      style={{
-                        fontWeight: "600",
-                        paddingRight: "100px",
-                        width: "200px",
-                      }}
-                    >
-                      First Name:
-                    </th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        <input
-                          placeholder="Ex: Jennie Nguyen"
-                          type="text"
-                          className="form-control-input-label-top"
-                          value={firstName}
-                          onChange={(e) => {
-                            setFirstName(e.target.value);
-
-                            setIsModify(true);
-                          }}
-                        />
-                      ) : (
-                        <Skeleton
-                          className="skeleton-input"
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                  <tr className="table-tr">
-                    <th
-                      style={{
-                        fontWeight: "600",
-                        paddingRight: "100px",
-                        width: "200px",
-                      }}
-                    >
-                      Last Name:
-                    </th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        <input
-                          placeholder="Ex: Jennie Nguyen"
-                          type="text"
-                          className="form-control-input-label-top"
-                          value={lastName}
-                          onChange={(e) => {
-                            setLastName(e.target.value);
-
-                            setIsModify(true);
-                          }}
-                        />
-                      ) : (
-                        <Skeleton
-                          className="skeleton-input"
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                  <tr className="table-tr">
-                    <th
-                      style={{
-                        fontWeight: "600",
-                        paddingRight: "100px",
-                        width: "200px",
-                      }}
-                    >
-                      DOB:
-                    </th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        <InputMask
-                          mask={"99/99/9999"}
-                          placeholder="mm/dd/yyyy"
-                          value={
-                            isChangeDateOfBirth
-                              ? dateOfBirth
-                              : dayjs(dateOfBirth).format("MM/DD/YYYY") || ""
-                          }
-                          className="form-control-input-label-top"
-                          onChange={(e) => {
-                            setDateOfBirth(e.target.value);
-                            setIsChangeDateOfBirth(true);
-                            setIsModify(true);
-                          }}
-                        ></InputMask>
-                      ) : (
-                        <Skeleton
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                  <tr className="table-tr">
-                    <th style={{ fontWeight: "600" }}>Role: </th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        <input
-                          placeholder="Ex: 123 456 789"
-                          type="text"
-                          className="form-control-input-label-top"
-                          value={user.role}
-                          style={{ cursor: "not-allowed" }}
-                          disabled
-                        />
-                      ) : (
-                        <Skeleton
-                          className="skeleton-input"
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                  <tr className="table-tr">
-                    <th style={{ fontWeight: "600" }}>
-                      <label>Email: </label>
-                    </th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        <input
-                          placeholder="Ex: demo@ex.io"
-                          type="email"
-                          className="form-control-input-label-top"
-                          value={`${user.email}`}
-                          style={{ cursor: "not-allowed" }}
-                          disabled
-                        />
-                      ) : (
-                        <Skeleton
-                          className="skeleton-input"
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                  <tr className="table-tr">
-                    <th></th>
-                    <td style={{ verticalAlign: "top" }} className="table-td">
-                      {!isInProcessing ? (
-                        !user.isVerifiedEmail ? (
-                          <>
-                            <span className="badge-not-verified">
-                              <i className="fa-solid fa-triangle-exclamation"></i>{" "}
-                              Not Verified
-                            </span>
-
-                            <button
-                              className="btn btn-verify"
-                              onClick={() => {
-                                handleResendVerify();
-                              }}
-                              type="button"
-                              disabled={isSending}
-                              aria-label="Send verification email button"
-                            >
-                              {isSending ? (
-                                <i className="fas fa-spinner fa-spin"></i>
-                              ) : (
-                                "Verify Now"
-                              )}
-                            </button>
-                          </>
-                        ) : (
-                          <span className="badge-verified">
-                            <i className="fa-solid fa-circle-check"></i>{" "}
-                            Verified
-                          </span>
-                        )
-                      ) : (
-                        <Skeleton
-                          className="skeleton-input"
-                          height={45}
-                          width={530}
-                          style={{ marginBottom: "5px", borderRadius: "20px" }}
-                        />
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <button
-                aria-label="Save changes button"
-                className="btn-yellow"
-                style={{
-                  width: "100%",
-                  backgroundColor:
-                    isModify && !isInProcessing ? "#ec7207" : "#d3d3d3",
-                  color: isModify && !isInProcessing ? "#fff" : "#8c8c8c",
-                  cursor:
-                    isModify && !isInProcessing ? "pointer" : "not-allowed",
-                  opacity: isModify && !isInProcessing ? 1 : 0.6,
-                }}
-                disabled={!isModify || isInProcessing}
-              >
-                {isInProcessing ? (
-                  <i className="fas fa-spinner fa-spin"></i>
-                ) : (
-                  <>
-                    <i className="fa-solid fa-floppy-disk me-2"></i> Save
-                    changes
-                  </>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Avatar */}
-        <div
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDropAvatar}
-          className="change-delete-avatar"
-          style={{ marginLeft: "100px" }}
-        >
-          {isInProcessing ? (
-            <Skeleton
-              height={420}
-              width={420}
-              style={{
-                borderRadius: "12px",
-                marginTop: "150px",
-              }}
-            />
-          ) : (
-            <img
-              src={
-                avatarPreview
-                  ? avatarPreview
-                  : user?.avatar
-                    ? user.urlAvatar
-                    : "/Image/user_icon.png"
-              }
-              alt="avatar"
-              loading="lazy"
-            />
-          )}
-          <div
-            style={{
-              display: "flex",
-              gap: "20px",
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              <label
-                className="btn"
-                style={{
-                  borderColor: "#ec7207",
-                }}
-                htmlFor="update-avatar"
-              >
-                <i className="fa-solid fa-repeat"></i> Change
-              </label>
-              <input
-                type="file"
-                id="update-avatar"
-                style={{ display: "none" }}
-                onChange={handleUploadAvatar}
-              />
-            </div>
-            <div>
-              <button
-                aria-label="Delete avatar button"
-                className="btn-with-border"
-                style={{
-                  borderColor: "#ec7207",
-                }}
-                type="button"
-                onClick={() => {
-                  setAvatarPreview(null);
-                  setIsModify(false);
-                }}
-              >
-                <i className="fa-solid fa-trash"></i> Delete
-              </button>
+              <div style={{ display: "flex" }}>
+                <label
+                  className="btn"
+                  style={{
+                    borderColor: "#ec7207",
+                  }}
+                  htmlFor="update-avatar"
+                >
+                  <i className="fa-solid fa-repeat"></i> Change
+                </label>
+                <input
+                  type="file"
+                  id="update-avatar"
+                  style={{ display: "none" }}
+                  onChange={handleUploadAvatar}
+                />
+              </div>
+              <div>
+                <button
+                  aria-label="Delete avatar button"
+                  className="btn-with-border"
+                  style={{
+                    borderColor: "#ec7207",
+                  }}
+                  type="button"
+                  onClick={() => {
+                    setAvatarPreview(null);
+                    setIsModify(false);
+                  }}
+                >
+                  <i className="fa-solid fa-trash"></i> Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

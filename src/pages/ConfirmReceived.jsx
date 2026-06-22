@@ -355,136 +355,239 @@ export default function ConfirmReceived() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="search-codes-container">
-            <input
-              type="text"
-              placeholder="Search code..."
-              className="form-control-input search-codes"
-              onChange={(e) => {
-                setQuery(e.target.value);
-              }}
-            />
-            <i className="fa-solid fa-search"></i>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* List codes */}
-          <div className="table-wrapper">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Code</th>
-                  <th>Item</th>
-                  <th>Type</th>
-                  <th>User</th>
-                  <th>Date Posted</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
+          {/* Post similar to you */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="search-codes-container">
+              <input
+                type="text"
+                placeholder="Search code..."
+                className="form-control-input search-codes"
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <i className="fa-solid fa-search"></i>
+            </div>
+
+            {/* List codes */}
+            <div className="table-wrapper">
+              <table className="custom-table">
+                <thead>
                   <tr>
-                    <td colSpan={7}>
-                      <i className="fas fa-spinner fa-spin"></i>
-                    </td>
+                    <th>#</th>
+                    <th>Code</th>
+                    <th>Item</th>
+                    <th>Type</th>
+                    <th>User</th>
+                    <th>Date Posted</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ) : codes.length > 0 ? (
-                  codes.map((item, index) => (
-                    <tr key={item.postId}>
-                      <td>{index + 1}</td>
-                      <td>{item.code}</td>
-                      <td>
-                        <a
-                          href={`/detail-post/${item.postId}`}
-                          style={{ textDecoration: "underline" }}
-                          aria-label={`Detail link for ${item.title}`}
-                        >
-                          {item.title}
-                        </a>
-                      </td>
-                      <td>{item.typePost}</td>
-                      <td>
-                        {item.user.firstName} {item.user.lastName}
-                      </td>
-                      <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
-                      <td>
-                        <span
-                          className={`status ${item.isReceived ? "active" : "inactive"
-                            }`}
-                        >
-                          {item.isReceived ? "Received" : "Not Receive"}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          className="btn"
-                          type="button"
-                          onClick={() => {
-                            // handleMarkReceived(item.postId);
-                            setObjectToPrint({
-                              fullName: `${item.user.firstName} ${item.user.lastName}`,
-                              code: `${item.code}`,
-                              studentId: `${item.studentId}`,
-                              description: item.description,
-                              itemName: item.title,
-                              categoryName: item.categoryName,
-                              email: item.user?.email,
-                              postId: item.postId,
-                              typePost: item.typePost,
-                            });
-                          }}
-                          disabled={isInProcessing || item.isReceived}
-                        >
-                          {isInProcessing ? (
-                            <i className="fas fa-spinner fa-spin"></i>
-                          ) : item.isReceived ? (
-                            <>
-                              <i className="fa-solid fa-circle-check"></i>{" "}
-                              Received
-                            </>
-                          ) : (
-                            <>
-                              <i className="fa-solid fa-print"></i> Print
-                              Receipt
-                            </>
-                          )}
-                        </button>
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={7}>
+                        <i className="fas fa-spinner fa-spin"></i>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>No results</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  ) : codes.length > 0 ? (
+                    codes.map((item, index) => (
+                      <tr key={item.postId}>
+                        <td>{index + 1}</td>
+                        <td>{item.code}</td>
+                        <td>
+                          <a
+                            href={`/detail-post/${item.postId}`}
+                            style={{ textDecoration: "underline" }}
+                            aria-label={`Detail link for ${item.title}`}
+                          >
+                            {item.title}
+                          </a>
+                        </td>
+                        <td>{item.typePost}</td>
+                        <td>
+                          {item.user.firstName} {item.user.lastName}
+                        </td>
+                        <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              item.isReceived ? "active" : "inactive"
+                            }`}
+                          >
+                            {item.isReceived ? "Received" : "Not Receive"}
+                          </span>
+                        </td>
+                        <td>
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={() => {
+                              // handleMarkReceived(item.postId);
+                              setObjectToPrint({
+                                fullName: `${item.user.firstName} ${item.user.lastName}`,
+                                code: `${item.code}`,
+                                studentId: `${item.studentId}`,
+                                description: item.description,
+                                itemName: item.title,
+                                categoryName: item.categoryName,
+                                email: item.user?.email,
+                                postId: item.postId,
+                                typePost: item.typePost,
+                              });
+                            }}
+                            disabled={isInProcessing || item.isReceived}
+                          >
+                            {isInProcessing ? (
+                              <i className="fas fa-spinner fa-spin"></i>
+                            ) : item.isReceived ? (
+                              <>
+                                <i className="fa-solid fa-circle-check"></i>{" "}
+                                Received
+                              </>
+                            ) : (
+                              <>
+                                <i className="fa-solid fa-print"></i> Print
+                                Receipt
+                              </>
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7}>No results</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Form to print */}
+        <div className="form-container-print">
+          <h1>RECEIPT CONFIRMATION</h1>
+          <p className="subtitle">Confirmation of Lost Item Pick-up</p>
+
+          <div className="section">
+            <h2>User Information</h2>
+
+            <div className="row">
+              <div className="field">
+                <span>Full Name:</span>
+                <div className="box">{objectToPrint?.fullName}</div>
+              </div>
+              <div className="field">
+                <span>Student ID:</span>
+                <div className="box">{objectToPrint?.studentId}</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field">
+                <span>Email:</span>
+                <div className="box">{objectToPrint?.email}</div>
+              </div>
+              <div className="field">
+                <span>Code to Get Item:</span>
+                <div className="box">{objectToPrint?.code}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section">
+            <h2>Item Information</h2>
+
+            <div className="row">
+              <div className="field">
+                <span>Item Name:</span>
+                <div className="box">{objectToPrint?.itemName}</div>
+              </div>
+              <div className="field">
+                <span>Category:</span>
+                <div className="box">{objectToPrint?.categoryName}</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field">
+                <span>Post ID:</span>
+                <div className="box">{objectToPrint?.postId}</div>
+              </div>
+              <div className="field">
+                <span>Status:</span>
+                <div className="box">{objectToPrint?.typePost}</div>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="field full">
+                <span>Description:</span>
+                <div className="box large">
+                  {objectToPrint?.description ? (
+                    stripHtml(objectToPrint?.description)
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: "unset",
+                        fontWeight: "unset",
+                        fontStyle: "italic",
+                        padding: "5px 0",
+                      }}
+                    >
+                      (The user did not provide this information)
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="section">
+            <h2>Confirmation</h2>
+            <p className="confirm-text">
+              I confirm that I have received the lost item described above.
+            </p>
+
+            <div className="row">
+              <div className="field">
+                <span>Signature:</span>
+                <div className="box signature"></div>
+              </div>
+              <div className="field">
+                <span>Date:</span>
+                <div className="box">
+                  {dayjs(new Date()).format("MM/DD/YYYY")}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
 
       {/* Popup change pick up time */}
       <div className="modal" id="popup-confirm-signed-in">
@@ -533,106 +636,6 @@ export default function ConfirmReceived() {
             >
               Cancel
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Form to print */}
-      <div className="form-container-print">
-        <h1>RECEIPT CONFIRMATION</h1>
-        <p className="subtitle">Confirmation of Lost Item Pick-up</p>
-
-        <div className="section">
-          <h2>User Information</h2>
-
-          <div className="row">
-            <div className="field">
-              <span>Full Name:</span>
-              <div className="box">{objectToPrint?.fullName}</div>
-            </div>
-            <div className="field">
-              <span>Student ID:</span>
-              <div className="box">{objectToPrint?.studentId}</div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="field">
-              <span>Email:</span>
-              <div className="box">{objectToPrint?.email}</div>
-            </div>
-            <div className="field">
-              <span>Code to Get Item:</span>
-              <div className="box">{objectToPrint?.code}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="section">
-          <h2>Item Information</h2>
-
-          <div className="row">
-            <div className="field">
-              <span>Item Name:</span>
-              <div className="box">{objectToPrint?.itemName}</div>
-            </div>
-            <div className="field">
-              <span>Category:</span>
-              <div className="box">{objectToPrint?.categoryName}</div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="field">
-              <span>Post ID:</span>
-              <div className="box">{objectToPrint?.postId}</div>
-            </div>
-            <div className="field">
-              <span>Status:</span>
-              <div className="box">{objectToPrint?.typePost}</div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="field full">
-              <span>Description:</span>
-              <div className="box large">
-                {objectToPrint?.description ? (
-                  stripHtml(objectToPrint?.description)
-                ) : (
-                  <span
-                    style={{
-                      fontSize: "unset",
-                      fontWeight: "unset",
-                      fontStyle: "italic",
-                      padding: "5px 0",
-                    }}
-                  >
-                    (The user did not provide this information)
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="section">
-          <h2>Confirmation</h2>
-          <p className="confirm-text">
-            I confirm that I have received the lost item described above.
-          </p>
-
-          <div className="row">
-            <div className="field">
-              <span>Signature:</span>
-              <div className="box signature"></div>
-            </div>
-            <div className="field">
-              <span>Date:</span>
-              <div className="box">
-                {dayjs(new Date()).format("MM/DD/YYYY")}
-              </div>
-            </div>
           </div>
         </div>
       </div>

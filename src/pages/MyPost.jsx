@@ -954,444 +954,452 @@ export default function MyPost() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
-          className="my-post-content"
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="status-filter">
-            <p
-              style={{
-                backgroundColor: "#072138",
-                width: "max-content",
-                color: "white",
-                padding: "1px 30px",
-                borderRadius: "20px",
-                position: "absolute",
-                top: "-50%",
-                left: "0",
-                marginTop: "20px",
-              }}
-            >
-              Status
-            </p>
-            <input
-              type="radio"
-              name="status"
-              onChange={() => {
-                handleSortByStatus("All");
-              }}
-              id="search-all"
-              defaultChecked
-            />{" "}
-            <label htmlFor="search-all" id="search-all-label">
-              <strong>All</strong>
-            </label>
-            <input
-              type="radio"
-              name="status"
-              id="lost"
-              onChange={() => {
-                handleSortByStatus("Lost");
-              }}
-              style={{ marginLeft: "20px", marginTop: "25px" }}
-            />{" "}
-            <label htmlFor="lost" style={{ marginRight: "25px" }}>
-              <strong>Lost</strong>
-            </label>
-            <input
-              type="radio"
-              name="status"
-              onChange={() => {
-                handleSortByStatus("Found");
-              }}
-              id="found"
-            />{" "}
-            <label htmlFor="found">
-              <strong>Found</strong>
-            </label>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* Cards */}
-          <div className="newest-post-container my-post-container">
-            {isInProcessing ? (
-              <div
-                style={{ display: "flex", gap: "20px" }}
-                className="skeleton-my-post"
+          {/* Post similar to you */}
+          <div
+            className="my-post-content"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="status-filter">
+              <p
+                style={{
+                  backgroundColor: "#072138",
+                  width: "max-content",
+                  color: "white",
+                  padding: "1px 30px",
+                  borderRadius: "20px",
+                  position: "absolute",
+                  top: "-50%",
+                  left: "0",
+                  marginTop: "20px",
+                }}
               >
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div className="" key={index}>
-                    <Skeleton
-                      height={290}
-                      style={{ marginBottom: "10px", borderRadius: "20px" }}
-                    />
-                    <div className="">
-                      <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
-                        <Skeleton height={35} width={345} />
-                      </h3>
-                      <p>
-                        <Skeleton count={3} />
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : posts.length > 0 ? (
-              posts.map((post) => (
+                Status
+              </p>
+              <input
+                type="radio"
+                name="status"
+                onChange={() => {
+                  handleSortByStatus("All");
+                }}
+                id="search-all"
+                defaultChecked
+              />{" "}
+              <label htmlFor="search-all" id="search-all-label">
+                <strong>All</strong>
+              </label>
+              <input
+                type="radio"
+                name="status"
+                id="lost"
+                onChange={() => {
+                  handleSortByStatus("Lost");
+                }}
+                style={{ marginLeft: "20px", marginTop: "25px" }}
+              />{" "}
+              <label htmlFor="lost" style={{ marginRight: "25px" }}>
+                <strong>Lost</strong>
+              </label>
+              <input
+                type="radio"
+                name="status"
+                onChange={() => {
+                  handleSortByStatus("Found");
+                }}
+                id="found"
+              />{" "}
+              <label htmlFor="found">
+                <strong>Found</strong>
+              </label>
+            </div>
+
+            {/* Cards */}
+            <div className="newest-post-container my-post-container">
+              {isInProcessing ? (
                 <div
-                  className="card card-my-post"
-                  key={post.postId}
-                  style={{ cursor: "pointer" }}
+                  style={{ display: "flex", gap: "20px" }}
+                  className="skeleton-my-post"
                 >
-                  <div>
-                    <div
-                      onClick={() => {
-                        window.location.href = `/detail-post/${post.postId}`;
-                      }}
-                    >
-                      {/* Image */}
-                      {post.image ? (
-                        <img
-                          src={post.image ? post.urlImage : ""}
-                          alt="picture of item"
-                          loading="lazy"
-                          style={{
-                            width: "100%",
-                            height: "300px",
-                            objectFit: "cover",
-                            backgroundColor: "white",
-                          }}
-                        />
-                      ) : (
-                        <div className="image-placeholder">
-                          <i className="icon-image"></i>
-                          <span>No image</span>
-                        </div>
-                      )}
-
-                      {/* Content */}
-                      <div
-                        className="card-text"
-                        style={{ marginBottom: "20px" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <h3
-                            style={{ fontWeight: "700", marginBottom: "10px" }}
-                          >
-                            <a
-                              href={`/detail-post/${post.postId}`}
-                              aria-label={`Detail link for ${post.title}`}
-                            >
-                              {post.title}
-                            </a>
-                          </h3>
-                          {post.isReceived && (
-                            <label
-                              style={{
-                                // fontSize: "13px",
-                                fontWeight: 500,
-                                color: "green",
-                              }}
-                            >
-                              (<i className="fa-solid fa-circle-check"></i>{" "}
-                              Received)
-                            </label>
-                          )}
-                          {post.oldUserId && (
-                            <label
-                              style={{
-                                // fontSize: "13px",
-                                fontWeight: 500,
-                                color: "#6b7280",
-                              }}
-                            >
-                              (Transferred)
-                            </label>
-                          )}
-                        </div>
-                        <a
-                          href={`/detail-post/${post.postId}`}
-                          aria-label={`Detail link for ${post.title}`}
-                        >
-                          <ReactMarkdown
-                            children={post.description}
-                            rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                          ></ReactMarkdown>
-                        </a>
-                      </div>
-
-                      {/* Status */}
-                      <div
-                        className={
-                          post.typePost === "Lost"
-                            ? "status-post-lost"
-                            : "status-post-found"
-                        }
-                      >
-                        {post.typePost}
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div className="" key={index}>
+                      <Skeleton
+                        height={290}
+                        style={{ marginBottom: "10px", borderRadius: "20px" }}
+                      />
+                      <div className="">
+                        <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
+                          <Skeleton height={35} width={345} />
+                        </h3>
+                        <p>
+                          <Skeleton count={3} />
+                        </p>
                       </div>
                     </div>
+                  ))}
+                </div>
+              ) : posts.length > 0 ? (
+                posts.map((post) => (
+                  <div
+                    className="card card-my-post"
+                    key={post.postId}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div>
+                      <div
+                        onClick={() => {
+                          window.location.href = `/detail-post/${post.postId}`;
+                        }}
+                      >
+                        {/* Image */}
+                        {post.image ? (
+                          <img
+                            src={post.image ? post.urlImage : ""}
+                            alt="picture of item"
+                            loading="lazy"
+                            style={{
+                              width: "100%",
+                              height: "300px",
+                              objectFit: "cover",
+                              backgroundColor: "white",
+                            }}
+                          />
+                        ) : (
+                          <div className="image-placeholder">
+                            <i className="icon-image"></i>
+                            <span>No image</span>
+                          </div>
+                        )}
 
-                    {/* Buttons */}
-                    {(post.typePost === "Lost" || user.role === "Admin") && (
-                      <>
+                        {/* Content */}
+                        <div
+                          className="card-text"
+                          style={{ marginBottom: "20px" }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <h3
+                              style={{
+                                fontWeight: "700",
+                                marginBottom: "10px",
+                              }}
+                            >
+                              <a
+                                href={`/detail-post/${post.postId}`}
+                                aria-label={`Detail link for ${post.title}`}
+                              >
+                                {post.title}
+                              </a>
+                            </h3>
+                            {post.isReceived && (
+                              <label
+                                style={{
+                                  // fontSize: "13px",
+                                  fontWeight: 500,
+                                  color: "green",
+                                }}
+                              >
+                                (<i className="fa-solid fa-circle-check"></i>{" "}
+                                Received)
+                              </label>
+                            )}
+                            {post.oldUserId && (
+                              <label
+                                style={{
+                                  // fontSize: "13px",
+                                  fontWeight: 500,
+                                  color: "#6b7280",
+                                }}
+                              >
+                                (Transferred)
+                              </label>
+                            )}
+                          </div>
+                          <a
+                            href={`/detail-post/${post.postId}`}
+                            aria-label={`Detail link for ${post.title}`}
+                          >
+                            <ReactMarkdown
+                              children={post.description}
+                              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                            ></ReactMarkdown>
+                          </a>
+                        </div>
+
+                        {/* Status */}
                         <div
                           className={
-                            matchedPosts[post.postId] && !post.isReceived
-                              ? "btn-my-post-container"
-                              : "btn-my-post-container-no-matched"
+                            post.typePost === "Lost"
+                              ? "status-post-lost"
+                              : "status-post-found"
                           }
                         >
-                          {matchedPosts[post.postId] &&
-                            !post.isReceived &&
-                            pickUpStatus[post.postId]?.status !==
-                              "Reschedule" && (
+                          {post.typePost}
+                        </div>
+                      </div>
+
+                      {/* Buttons */}
+                      {(post.typePost === "Lost" || user.role === "Admin") && (
+                        <>
+                          <div
+                            className={
+                              matchedPosts[post.postId] && !post.isReceived
+                                ? "btn-my-post-container"
+                                : "btn-my-post-container-no-matched"
+                            }
+                          >
+                            {matchedPosts[post.postId] &&
+                              !post.isReceived &&
+                              pickUpStatus[post.postId]?.status !==
+                                "Reschedule" && (
+                                <button
+                                  className="btn-yellow btn-pick-up"
+                                  style={{
+                                    width: "100%",
+                                  }}
+                                  onClick={() => {
+                                    document.getElementById(
+                                      "popup-pick-up",
+                                    ).style.display = "flex";
+                                    document.body.style.overflow = "hidden";
+
+                                    setObjectToShowPopup({
+                                      name: post.title,
+                                      code: post.code,
+                                      postId: post.postId,
+                                    });
+                                  }}
+                                  disabled={
+                                    pickUpStatus[post.postId]?.status ===
+                                      "Pending" ||
+                                    pickUpStatus[post.postId]?.status ===
+                                      "Confirmed"
+                                  }
+                                >
+                                  {pickUpStatus[post.postId]?.status ===
+                                  "Pending" ? (
+                                    <>
+                                      <i className="fa-solid fa-user-clock"></i>{" "}
+                                      Awaiting admin
+                                    </>
+                                  ) : pickUpStatus[post.postId]?.status ===
+                                    "Confirmed" ? (
+                                    <>
+                                      <i className="fa-solid fa-circle-check"></i>{" "}
+                                      You're good to go!
+                                    </>
+                                  ) : (
+                                    <>
+                                      <i className="fa-solid fa-person-walking"></i>{" "}
+                                      I'm picking up
+                                    </>
+                                  )}
+                                </button>
+                              )}
+
+                            {post.typePost === "Lost" && !post.isReceived && (
                               <button
-                                className="btn-yellow btn-pick-up"
+                                className="btn"
                                 style={{
                                   width: "100%",
                                 }}
                                 onClick={() => {
-                                  document.getElementById(
-                                    "popup-pick-up",
-                                  ).style.display = "flex";
-                                  document.body.style.overflow = "hidden";
-
-                                  setObjectToShowPopup({
-                                    name: post.title,
-                                    code: post.code,
-                                    postId: post.postId,
-                                  });
+                                  handleMarkReceived(post.postId);
                                 }}
                                 disabled={
                                   pickUpStatus[post.postId]?.status ===
                                     "Pending" ||
                                   pickUpStatus[post.postId]?.status ===
-                                    "Confirmed"
+                                    "Confirmed" ||
+                                  isRequesting
                                 }
                               >
-                                {pickUpStatus[post.postId]?.status ===
-                                "Pending" ? (
-                                  <>
-                                    <i className="fa-solid fa-user-clock"></i>{" "}
-                                    Awaiting admin
-                                  </>
-                                ) : pickUpStatus[post.postId]?.status ===
-                                  "Confirmed" ? (
-                                  <>
-                                    <i className="fa-solid fa-circle-check"></i>{" "}
-                                    You're good to go!
-                                  </>
+                                {isRequesting ? (
+                                  <i className="fas fa-spinner fa-spin"></i>
                                 ) : (
                                   <>
-                                    <i className="fa-solid fa-person-walking"></i>{" "}
-                                    I'm picking up
+                                    <i className="fa-solid fa-check"></i>{" "}
+                                    Received
                                   </>
                                 )}
                               </button>
                             )}
-
-                          {post.typePost === "Lost" && !post.isReceived && (
-                            <button
-                              className="btn"
+                          </div>
+                          {pickUpStatus[post.postId]?.status ===
+                          "Reschedule" ? (
+                            <div
+                              className="btn-yellow"
                               style={{
                                 width: "100%",
+                                marginTop: "30px",
+                                cursor: "auto",
                               }}
-                              onClick={() => {
-                                handleMarkReceived(post.postId);
-                              }}
-                              disabled={
-                                pickUpStatus[post.postId]?.status ===
-                                  "Pending" ||
-                                pickUpStatus[post.postId]?.status ===
-                                  "Confirmed" ||
-                                isRequesting
-                              }
                             >
-                              {isRequesting ? (
-                                <i className="fas fa-spinner fa-spin"></i>
-                              ) : (
-                                <>
-                                  <i className="fa-solid fa-check"></i> Received
-                                </>
-                              )}
-                            </button>
+                              <div>
+                                <i className="fa-solid fa-calendar"></i>{" "}
+                                Rescheduled to{" "}
+                                {dayjs(
+                                  pickUpStatus[post.postId].pickUpDate,
+                                ).format("MM/DD/YYYY h:mm:ss A")}
+                              </div>
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {isRequesting ? (
+                                  <div
+                                    style={{
+                                      marginTop: "20px",
+                                      marginBottom: "10px",
+                                    }}
+                                  >
+                                    <i className="fas fa-spinner fa-spin"></i>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <button
+                                      className="btn"
+                                      onClick={() => {
+                                        handleAcceptTimeRescheduled(
+                                          pickUpStatus[post.postId].requestId,
+                                        );
+                                      }}
+                                      disabled={isRequesting}
+                                    >
+                                      Accept
+                                    </button>
+                                    <button
+                                      className="btn-with-border"
+                                      onClick={() => {
+                                        handlePickLater(post.postId);
+                                      }}
+                                      disabled={isRequesting}
+                                    >
+                                      I'll pick it later!
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          ) : (
+                            ""
                           )}
-                        </div>
-                        {pickUpStatus[post.postId]?.status === "Reschedule" ? (
-                          <div
-                            className="btn-yellow"
-                            style={{
-                              width: "100%",
-                              marginTop: "30px",
-                              cursor: "auto",
+                        </>
+                      )}
+
+                      {post.typePost === "Found" &&
+                        user.role !== "Admin" &&
+                        !post.isReceived && (
+                          <button
+                            className="btn"
+                            style={{ width: "100%" }}
+                            onClick={() => {
+                              document.getElementById(
+                                "popup-confirm-handover",
+                              ).style.display = "flex";
+                              document.body.style.overflow = "hidden";
+
+                              setObjectToShowPopup({
+                                name: post.title,
+                                code: post.code,
+                                postId: post.postId,
+                              });
                             }}
+                            disabled={
+                              handoverStatus[post.postId]?.status === "Pending"
+                            }
                           >
-                            <div>
-                              <i className="fa-solid fa-calendar"></i>{" "}
-                              Rescheduled to{" "}
-                              {dayjs(
-                                pickUpStatus[post.postId].pickUpDate,
-                              ).format("MM/DD/YYYY h:mm:ss A")}
-                            </div>
-
-                            <div
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                              }}
-                            >
-                              {isRequesting ? (
-                                <div
-                                  style={{
-                                    marginTop: "20px",
-                                    marginBottom: "10px",
-                                  }}
-                                >
-                                  <i className="fas fa-spinner fa-spin"></i>
-                                </div>
-                              ) : (
-                                <>
-                                  <button
-                                    className="btn"
-                                    onClick={() => {
-                                      handleAcceptTimeRescheduled(
-                                        pickUpStatus[post.postId].requestId,
-                                      );
-                                    }}
-                                    disabled={isRequesting}
-                                  >
-                                    Accept
-                                  </button>
-                                  <button
-                                    className="btn-with-border"
-                                    onClick={() => {
-                                      handlePickLater(post.postId);
-                                    }}
-                                    disabled={isRequesting}
-                                  >
-                                    I'll pick it later!
-                                  </button>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        ) : (
-                          ""
+                            {handoverStatus[post.postId]?.status ===
+                            "Pending" ? (
+                              <>
+                                <i className="fa-solid fa-user-clock"></i>{" "}
+                                Awaiting admin
+                              </>
+                            ) : (
+                              <>
+                                <i className="fa-solid fa-arrow-right-to-bracket"></i>{" "}
+                                Handed over to admin
+                              </>
+                            )}
+                          </button>
                         )}
-                      </>
-                    )}
+                    </div>
 
-                    {post.typePost === "Found" &&
-                      user.role !== "Admin" &&
+                    {user.role === "Admin" &&
+                      post.typePost === "Found" &&
                       !post.isReceived && (
                         <button
                           className="btn"
                           style={{ width: "100%" }}
                           onClick={() => {
-                            document.getElementById(
-                              "popup-confirm-handover",
-                            ).style.display = "flex";
-                            document.body.style.overflow = "hidden";
+                            const code = `Code: ${post.code}`;
 
-                            setObjectToShowPopup({
-                              name: post.title,
-                              code: post.code,
-                              postId: post.postId,
-                            });
+                            window.dispatchEvent(
+                              new CustomEvent("codeToPrint", {
+                                detail: code,
+                              }),
+                            );
                           }}
-                          disabled={
-                            handoverStatus[post.postId]?.status === "Pending"
-                          }
                         >
-                          {handoverStatus[post.postId]?.status === "Pending" ? (
-                            <>
-                              <i className="fa-solid fa-user-clock"></i>{" "}
-                              Awaiting admin
-                            </>
-                          ) : (
-                            <>
-                              <i className="fa-solid fa-arrow-right-to-bracket"></i>{" "}
-                              Handed over to admin
-                            </>
-                          )}
+                          <i className="fa-solid fa-print"></i> Print Code
                         </button>
                       )}
                   </div>
-
-                  {user.role === "Admin" &&
-                    post.typePost === "Found" &&
-                    !post.isReceived && (
-                      <button
-                        className="btn"
-                        style={{ width: "100%" }}
-                        onClick={() => {
-                          const code = `Code: ${post.code}`;
-
-                          window.dispatchEvent(
-                            new CustomEvent("codeToPrint", {
-                              detail: code,
-                            }),
-                          );
-                        }}
-                      >
-                        <i className="fa-solid fa-print"></i> Print Code
-                      </button>
-                    )}
-                </div>
-              ))
-            ) : (
-              <>
-                <div
-                  className="no-post-my-post"
-                  style={{
-                    marginLeft: "100%",
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "50px",
-                  }}
-                >
-                  <Suspense fallback={<p>Loading animation...</p>}>
-                    <DotLottieReact
-                      src="../assets/animations/NotFoundPost.json"
-                      autoplay
-                      loop
-                      style={{ width: "60%", margin: "auto" }}
-                    />
-                  </Suspense>
-                  <h1>No posts yet</h1>
-                </div>
-              </>
-            )}
+                ))
+              ) : (
+                <>
+                  <div
+                    className="no-post-my-post"
+                    style={{
+                      marginLeft: "100%",
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "50px",
+                    }}
+                  >
+                    <Suspense fallback={<p>Loading animation...</p>}>
+                      <DotLottieReact
+                        src="../assets/animations/NotFoundPost.json"
+                        autoplay
+                        loop
+                        style={{ width: "60%", margin: "auto" }}
+                      />
+                    </Suspense>
+                    <h1>No posts yet</h1>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="print-code" id="print-code"></div>
+        <div className="print-code" id="print-code"></div>
+      </main>
 
       {/* Popup confirm handover to admin */}
       <div className="modal" id="popup-confirm-handover">

@@ -558,7 +558,7 @@ export default function Header() {
             style={{ marginRight: "40px" }}
             aria-label="About us link"
           >
-            About us
+            About Us
           </a>
           <a
             href="/lost-and-found"

@@ -460,144 +460,148 @@ export default function TransferRequests() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="search-codes-container">
-            <input
-              type="text"
-              placeholder="Search by first name..."
-              className="form-control-input search-codes"
-              onChange={(e) => {
-                setQuery(e.target.value);
-              }}
-            />
-            <i className="fa-solid fa-search"></i>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* List codes */}
-          <div className="table-wrapper">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Item</th>
-                  <th>User</th>
-                  <th>Role</th>
-                  <th>Date Created</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
+          {/* Post similar to you */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="search-codes-container">
+              <input
+                type="text"
+                placeholder="Search by first name..."
+                className="form-control-input search-codes"
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <i className="fa-solid fa-search"></i>
+            </div>
+
+            {/* List codes */}
+            <div className="table-wrapper">
+              <table className="custom-table">
+                <thead>
                   <tr>
-                    <td colSpan={7}>
-                      <i className="fas fa-spinner fa-spin"></i>
-                    </td>
+                    <th>#</th>
+                    <th>Item</th>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Date Created</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ) : requests.length > 0 ? (
-                  requests.map((item, index) => (
-                    <tr key={item.requestId}>
-                      <td>{index + 1}</td>
-                      <td>{item.nameItem}</td>
-                      <td>
-                        {item.firstName} {item.lastName}
-                      </td>
-                      <td>{item.role}</td>
-                      <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
-                      <td>
-                        <span
-                          className={`status ${
-                            item.status === "Pending"
-                              ? "warning"
-                              : item.status === "Cancelled"
-                                ? "inactive"
-                                : "active"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </td>
-                      <td
-                        style={{
-                          display: "flex",
-                          gap: "10px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <button
-                          aria-label="Mark as received button"
-                          className="btn"
-                          style={{
-                            backgroundColor: item.isActive ? "red" : "",
-                          }}
-                          type="button"
-                          onClick={() => {
-                            handleMarkReceived(item.requestId, item.postId);
-                          }}
-                          disabled={item.status !== "Pending" || isInProcessing}
-                        >
-                          {item.status === "Pending" ? (
-                            isInProcessing ? (
-                              <i className="fas fa-spinner fa-spin"></i>
-                            ) : (
-                              "Mark as received"
-                            )
-                          ) : (
-                            item.status
-                          )}
-                        </button>
-                        {item.status === "Pending" && (
-                          <button
-                            aria-label="Cancel hand over button"
-                            className="btn-yellow"
-                            type="button"
-                            onClick={() => {
-                              handleCancelHandOver(item.requestId);
-                            }}
-                            disabled={isInProcessing}
-                          >
-                            {isInProcessing ? (
-                              <i className="fas fa-spinner fa-spin"></i>
-                            ) : (
-                              "Cancel handover"
-                            )}
-                          </button>
-                        )}
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={7}>
+                        <i className="fas fa-spinner fa-spin"></i>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>No results</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  ) : requests.length > 0 ? (
+                    requests.map((item, index) => (
+                      <tr key={item.requestId}>
+                        <td>{index + 1}</td>
+                        <td>{item.nameItem}</td>
+                        <td>
+                          {item.firstName} {item.lastName}
+                        </td>
+                        <td>{item.role}</td>
+                        <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              item.status === "Pending"
+                                ? "warning"
+                                : item.status === "Cancelled"
+                                  ? "inactive"
+                                  : "active"
+                            }`}
+                          >
+                            {item.status}
+                          </span>
+                        </td>
+                        <td
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <button
+                            aria-label="Mark as received button"
+                            className="btn"
+                            style={{
+                              backgroundColor: item.isActive ? "red" : "",
+                            }}
+                            type="button"
+                            onClick={() => {
+                              handleMarkReceived(item.requestId, item.postId);
+                            }}
+                            disabled={
+                              item.status !== "Pending" || isInProcessing
+                            }
+                          >
+                            {item.status === "Pending" ? (
+                              isInProcessing ? (
+                                <i className="fas fa-spinner fa-spin"></i>
+                              ) : (
+                                "Mark as received"
+                              )
+                            ) : (
+                              item.status
+                            )}
+                          </button>
+                          {item.status === "Pending" && (
+                            <button
+                              aria-label="Cancel hand over button"
+                              className="btn-yellow"
+                              type="button"
+                              onClick={() => {
+                                handleCancelHandOver(item.requestId);
+                              }}
+                              disabled={isInProcessing}
+                            >
+                              {isInProcessing ? (
+                                <i className="fas fa-spinner fa-spin"></i>
+                              ) : (
+                                "Cancel handover"
+                              )}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7}>No results</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

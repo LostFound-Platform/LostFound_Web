@@ -1027,773 +1027,104 @@ export default function Authentication() {
         <title>Authentication | Back2Me </title>
       </Helmet>
 
-      <div className="authentication-container">
-        <div className="form-box">
-          {sessionStorage.getItem("requiredSignIn") && (
-            <h1
-              style={{
-                backgroundColor: "red",
-                color: "#fff", // chữ tối
-                border: "1px solid #f5c6cb",
-                padding: "10px 20px",
-                borderRadius: "10px",
-                fontSize: "18px",
-                fontWeight: "bold",
-                maxWidth: "400px",
-                margin: "20px auto",
-              }}
+      <main>
+        <div className="authentication-container">
+          <div className="form-box">
+            {sessionStorage.getItem("requiredSignIn") && (
+              <h1
+                style={{
+                  backgroundColor: "red",
+                  color: "#fff", // chữ tối
+                  border: "1px solid #f5c6cb",
+                  padding: "10px 20px",
+                  borderRadius: "10px",
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  maxWidth: "400px",
+                  margin: "20px auto",
+                }}
+              >
+                {sessionStorage.getItem("requiredSignIn")}
+              </h1>
+            )}
+            <div
+              className="form-sign-up-in-container"
+              id="form-sign-up-in-container"
             >
-              {sessionStorage.getItem("requiredSignIn")}
-            </h1>
-          )}
-          <div
-            className="form-sign-up-in-container"
-            id="form-sign-up-in-container"
-          >
-            {/* Sign Up */}
-            <form
-              onSubmit={handleChangeToSelectImage}
-              style={{ width: "100%" }}
-            >
-              <div className="sign-up">
-                <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
-                  Sign Up
-                </h1>
-                <p
-                  style={{
-                    marginBottom: "20px",
-                    color: msgSignIn.status === 200 ? "green" : "red",
-                  }}
-                >
-                  {msgSignIn.msg}
-                </p>
-                <div
-                  style={{ display: "flex", gap: "20px" }}
-                  className="form-sign-up-last-first"
-                >
-                  <div className="form-control-authentication">
-                    <input
-                      type="text"
-                      name=""
-                      id="first-name"
-                      placeholder="Ex: Jason"
-                      className="form-control-input"
-                      autoFocus
-                      required
-                      onChange={(e) => {
-                        setFirstName(e.target.value);
-                      }}
-                    />
-                    <label htmlFor="first-name">First Name*</label>
-                  </div>
-                  <div className="form-control-authentication">
-                    <input
-                      type="text"
-                      name=""
-                      id="last-name"
-                      placeholder="Ex: PG"
-                      className="form-control-input"
-                      required
-                      onChange={(e) => {
-                        setLastName(e.target.value);
-                      }}
-                    />
-                    <label htmlFor="last-name">Last Name*</label>
-                  </div>
-                </div>
-                <div className="form-control-authentication">
-                  <input
-                    type="text"
-                    name=""
-                    id="student-id-sign-up"
-                    placeholder="Ex: 202434567"
-                    className="form-control-input"
-                    required
-                    onChange={(e) => {
-                      setStudentId(e.target.value);
-                      setIsTypeStudentId(true);
-                    }}
-                    onInput={(e) => {
-                      e.target.value = e.target.value
-                        .replace(/[^0-9]/g, "") // Remove non-numeric characters
-                        .slice(0, 9); // Allow only numbers, max length 9
-                    }}
-                  />
-                  <label htmlFor="student-id-sign-up">Student ID*</label>
-                </div>
-                {studentId.trim() !== "" &&
-                  isTypeStudentId &&
-                  studentId.length < 9 && (
-                    <div
-                      className="form-control-authentication"
-                      style={{
-                        marginTop: "-15px",
-                        justifyContent: "left",
-                        color: "red",
-                        fontSize: "14px",
-                      }}
-                    >
-                      <p>Student ID must be 9 digits long</p>
-                    </div>
-                  )}
-                <div className="form-control-authentication">
-                  <input
-                    type="email"
-                    name=""
-                    id="email"
-                    placeholder="Ex: demo@ex.io"
-                    className="form-control-input"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                  <label htmlFor="email">Email*</label>
-                </div>
-                <div className="form-control-authentication">
-                  <input
-                    type={isClickShowPasswordSignUp ? "text" : "password"}
-                    name=""
-                    id="password"
-                    className="form-control-input"
-                    placeholder="Ex: Here is password"
-                    required
-                    onChange={(e) => {
-                      setPasswordSignUp(e.target.value);
-                    }}
-                  />
-                  {isClickShowPasswordSignUp ? (
-                    <i
-                      className="fa-solid fa-eye-slash"
-                      onClick={() => {
-                        setIsClickShowPasswordSignUp(
-                          !isClickShowPasswordSignUp,
-                        );
-                      }}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-solid fa-eye"
-                      onClick={() => {
-                        setIsClickShowPasswordSignUp(
-                          !isClickShowPasswordSignUp,
-                        );
-                      }}
-                    ></i>
-                  )}
-                  <label htmlFor="password">Password*</label>
-                </div>
-
-                {/* Password Requirement */}
-                {!isExistSpecialChar && (
-                  <div
-                    className="form-control-authentication label-required-password"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: isExistSpecialChar ? "green" : "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-x"></i> Has special characters
-                      (@$!%*?&)
-                    </p>
-                  </div>
-                )}
-
-                {!isExistNumber && (
-                  <div
-                    className="form-control-authentication label-required-password"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: isExistNumber ? "green" : "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-x"></i> Has number
-                    </p>
-                  </div>
-                )}
-
-                {!isExistUppercase && (
-                  <div
-                    className="form-control-authentication label-required-password"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: isExistUppercase ? "green" : "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-x"></i> Has uppercase characters
-                    </p>
-                  </div>
-                )}
-
-                {!isExistLowercase && (
-                  <div
-                    className="form-control-authentication label-required-password"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: isExistLowercase ? "green" : "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-x"></i> Has lowercase characters
-                    </p>
-                  </div>
-                )}
-
-                {!isValidLength && (
-                  <div
-                    className="form-control-authentication label-required-password"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: isValidLength ? "green" : "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>
-                      <i className="fa-solid fa-x"></i> Minimum length of 12
-                      characters
-                    </p>
-                  </div>
-                )}
-
-                <div className="form-control-authentication">
-                  <input
-                    type={isClickShowConfirmPassword ? "text" : "password"}
-                    name=""
-                    id="confirm-password"
-                    className="form-control-input"
-                    placeholder="Ex: Here is password"
-                    required
-                    onChange={(e) => {
-                      setConfirmPasswordSignUp(e.target.value); // Used to set real password value
-                      checkPasswordMatch(passwordSignUp, e.target.value);
-                    }}
-                  />
-                  {isClickShowConfirmPassword ? (
-                    <i
-                      className="fa-solid fa-eye-slash"
-                      onClick={() => {
-                        setIsClickShowConfirmPassword(
-                          !isClickShowConfirmPassword,
-                        );
-                      }}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-solid fa-eye"
-                      onClick={() => {
-                        setIsClickShowConfirmPassword(
-                          !isClickShowConfirmPassword,
-                        );
-                      }}
-                    ></i>
-                  )}
-                  <label htmlFor="confirm-password">Confirm Password*</label>
-                </div>
-                {confirmPasswordSignUp.trim() !== "" && !isMatchPassword && (
-                  <div
-                    className="form-control-authentication"
-                    style={{
-                      marginTop: "-15px",
-                      justifyContent: "left",
-                      color: "red",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <p>Confirm password doesn't match</p>
-                  </div>
-                )}
-
-                {/* Agree Term */}
-                <div className="agree-container">
-                  <label className="agree-box">
-                    <span className="text">
-                      Click
-                      <a
-                        href="#policyModal"
-                        onClick={(e) => {
-                          e.preventDefault();
-
-                          document.getElementById("policyModal").style.display =
-                            "flex";
-                          document.body.style.overflow = "hidden";
-                        }}
-                        aria-label="Terms and Recovery Guide link"
-                      >
-                        {" "}
-                        "Terms & Recovery Guide"
-                      </a>{" "}
-                      to read and agree
-                    </span>
-                  </label>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  aria-label="Sign up button"
-                  className="btn-authentication"
-                  disabled={!validateSignUp()}
-                  onClick={() => {
-                    setIsClickSignIn(false);
-                  }}
-                >
-                  <i className="fa-solid fa-user-plus"></i> Sign Up
-                </button>
-                <p style={{ color: "#5d6d7c", fontSize: "14px" }}>
-                  Already have an account?{" "}
-                  <span
-                    onClick={() => {
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.add("move-sign-up");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-in");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-forgot-password");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-cancel-forgot");
-                    }}
-                    style={{
-                      color: "#072138",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Sign In
-                  </span>
-                </p>
-              </div>
-            </form>
-
-            {/* Sign In */}
-            <form
-              onSubmit={handleSubmitSignIn}
-              style={{ width: "100%", paddingLeft: "10px" }}
-            >
-              <div className="sign-in">
-                <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
-                  Sign In
-                </h1>
-                <p
-                  style={{
-                    marginBottom: "20px",
-                    color: msgSignIn.status === 200 ? "green" : "red",
-                  }}
-                >
-                  {msgSignIn.msg}
-                </p>
-                <div className="form-control-authentication">
-                  <input
-                    type={
-                      /\D/.test(studentIdOrEmailForSignIn) ? "email" : "text"
-                    }
-                    name=""
-                    id="student-id"
-                    placeholder="Ex: 202434567"
-                    className="form-control-input"
-                    required
-                    onChange={(e) => {
-                      setStudentIdOrEmailForSignIn(e.target.value);
-                    }}
-                    onInput={(e) => {
-                      const value = e.target.value;
-
-                      if (/^\d*$/.test(value)) {
-                        e.target.value = value.slice(0, 9);
-                      } else {
-                        e.target.value = value;
-                      }
-                    }}
-                  />
-                  <label htmlFor="student-id">Student ID or Email*</label>
-                </div>
-                <div className="form-control-authentication">
-                  <input
-                    type={isClickShowPasswordSignIn ? "text" : "password"}
-                    name=""
-                    id="password-sign-in"
-                    className="form-control-input"
-                    placeholder="Ex: Here is password"
-                    required
-                    onChange={(e) => {
-                      setPasswordSignIn(e.target.value);
-                    }}
-                  />
-                  {isClickShowPasswordSignIn ? (
-                    <i
-                      className="fa-solid fa-eye-slash"
-                      onClick={() => {
-                        setIsClickShowPasswordSignIn(
-                          !isClickShowPasswordSignIn,
-                        );
-                      }}
-                    ></i>
-                  ) : (
-                    <i
-                      className="fa-solid fa-eye"
-                      onClick={() => {
-                        setIsClickShowPasswordSignIn(
-                          !isClickShowPasswordSignIn,
-                        );
-                      }}
-                    ></i>
-                  )}
-                  <label htmlFor="password-sign-in">Password*</label>
-                </div>
-                <div className="form-control-authentication">
-                  <span
-                    onClick={() => {
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-up");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-in");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.add("move-forgot-password");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-cancel-forgot");
-                    }}
-                    style={{
-                      color: "#5d6d7c",
-                      fontSize: "14px",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Forgot password?
-                  </span>
-                </div>
-                <button
-                  aria-label="Sign in button"
-                  className="btn-authentication"
-                  disabled={!validateSignIn() || isInProcessing}
-                  onClick={() => {
-                    setIsClickSignIn(true);
-                  }}
-                >
-                  {isInProcessing ? (
-                    <i className="fas fa-spinner fa-spin"></i>
-                  ) : (
-                    <>
-                      <i className="fa-solid fa-arrow-right-to-bracket"></i>{" "}
-                      Sign In
-                    </>
-                  )}
-                </button>
-                <br />
-                <p
-                  style={{
-                    color: "#5d6d7c",
-                    fontSize: "14px",
-                  }}
-                >
-                  No account?{" "}
-                  <span
-                    onClick={() => {
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-up");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.add("move-sign-in");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-forgot-password");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-cancel-forgot");
-                    }}
-                    style={{
-                      color: "#072138",
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                    }}
-                  >
+              {/* Sign Up */}
+              <form
+                onSubmit={handleChangeToSelectImage}
+                style={{ width: "100%" }}
+              >
+                <div className="sign-up">
+                  <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
                     Sign Up
-                  </span>
-                </p>
-              </div>
-            </form>
-
-            {/* Forgot password */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-              style={{ width: "100%", paddingLeft: "23px" }}
-            >
-              <div className="sign-in">
-                <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
-                  Forgot Password
-                </h1>
-                <p
-                  style={{
-                    marginBottom: "20px",
-                    color: msgSignIn.status === 200 ? "green" : "red",
-                  }}
-                >
-                  {msgSignIn.msg}
-                </p>
-                <div className="form-control-authentication">
-                  <input
-                    type="email"
-                    name=""
-                    id="email-forgot-password"
-                    placeholder="Ex: demo@ex.io"
-                    className="form-control-input"
-                    required
-                    disabled={isEmailVerified}
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
+                  </h1>
+                  <p
+                    style={{
+                      marginBottom: "20px",
+                      color: msgSignIn.status === 200 ? "green" : "red",
                     }}
-                  />
-                  <label htmlFor="email-forgot-password">Email*</label>
-                </div>
-                {isEmailVerified && (
-                  <>
+                  >
+                    {msgSignIn.msg}
+                  </p>
+                  <div
+                    style={{ display: "flex", gap: "20px" }}
+                    className="form-sign-up-last-first"
+                  >
                     <div className="form-control-authentication">
                       <input
-                        type={isClickShowNewPassword ? "text" : "password"}
+                        type="text"
                         name=""
-                        style={{
-                          backgroundColor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "#f0f0f0"
-                              : "#fff",
-                          opacity:
-                            isRequestingResetPassword || isChangedPassword
-                              ? 0.6
-                              : 1,
-                          cursor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "not-allowed"
-                              : "auto",
-                        }}
-                        id="password-forgot-password"
+                        id="first-name"
+                        placeholder="Ex: Jason"
                         className="form-control-input"
-                        placeholder="Ex: Password"
-                        disabled={
-                          isRequestingResetPassword || isChangedPassword
-                        }
+                        autoFocus
                         required
                         onChange={(e) => {
-                          setNewPassword(e.target.value);
+                          setFirstName(e.target.value);
                         }}
                       />
-                      {isClickShowNewPassword ? (
-                        <i
-                          className="fa-solid fa-eye-slash"
-                          style={{
-                            pointerEvents: isChangedPassword ? "none" : "auto",
-                          }}
-                          onClick={() => {
-                            setIsClickShowNewPassword(!isClickShowNewPassword);
-                          }}
-                        ></i>
-                      ) : (
-                        <i
-                          className="fa-solid fa-eye"
-                          style={{
-                            pointerEvents: isChangedPassword ? "none" : "auto",
-                          }}
-                          onClick={() => {
-                            setIsClickShowNewPassword(!isClickShowNewPassword);
-                          }}
-                        ></i>
-                      )}
-                      <label
-                        htmlFor="password-forgot-password"
-                        style={{
-                          backgroundColor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "#F6F6F6"
-                              : "#fff",
-                          opacity:
-                            isRequestingResetPassword || isChangedPassword
-                              ? 1
-                              : 0.9,
-                        }}
-                      >
-                        New Password*
-                      </label>
+                      <label htmlFor="first-name">First Name*</label>
                     </div>
-
-                    {/* Password Requirement */}
-                    {!isExistSpecialChar && (
-                      <div
-                        className="form-control-authentication label-required-password"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: isExistSpecialChar ? "green" : "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>
-                          <i className="fa-solid fa-x"></i> Has special
-                          characters (@$!%*?&)
-                        </p>
-                      </div>
-                    )}
-
-                    {!isExistNumber && (
-                      <div
-                        className="form-control-authentication label-required-password"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: isExistNumber ? "green" : "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>
-                          <i className="fa-solid fa-x"></i> Has number
-                        </p>
-                      </div>
-                    )}
-
-                    {!isExistUppercase && (
-                      <div
-                        className="form-control-authentication label-required-password"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: isExistUppercase ? "green" : "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>
-                          <i className="fa-solid fa-x"></i> Has uppercase
-                          characters
-                        </p>
-                      </div>
-                    )}
-
-                    {!isExistLowercase && (
-                      <div
-                        className="form-control-authentication label-required-password"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: isExistLowercase ? "green" : "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>
-                          <i className="fa-solid fa-x"></i> Has lowercase
-                          characters
-                        </p>
-                      </div>
-                    )}
-
-                    {!isValidLength && (
-                      <div
-                        className="form-control-authentication label-required-password"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: isValidLength ? "green" : "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>
-                          <i className="fa-solid fa-x"></i> Minimum length of 12
-                          characters
-                        </p>
-                      </div>
-                    )}
                     <div className="form-control-authentication">
                       <input
-                        type={
-                          isClickShowConfirmNewPassword ? "text" : "password"
-                        }
-                        style={{
-                          backgroundColor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "#f0f0f0"
-                              : "#fff",
-                          opacity:
-                            isRequestingResetPassword || isChangedPassword
-                              ? 0.6
-                              : 1,
-                          cursor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "not-allowed"
-                              : "auto",
-                        }}
+                        type="text"
                         name=""
-                        id="confirm-password-forgot-password"
+                        id="last-name"
+                        placeholder="Ex: PG"
                         className="form-control-input"
-                        placeholder="Ex: New password"
                         required
-                        disabled={
-                          isRequestingResetPassword || isChangedPassword
-                        }
                         onChange={(e) => {
-                          setConfirmNewPassword(e.target.value);
-                          checkPasswordMatch(newPassword, e.target.value);
+                          setLastName(e.target.value);
                         }}
                       />
-                      {isClickShowConfirmNewPassword ? (
-                        <i
-                          className="fa-solid fa-eye-slash"
-                          style={{
-                            pointerEvents: isChangedPassword ? "none" : "auto",
-                          }}
-                          onClick={() => {
-                            setIsClickShowConfirmNewPassword(
-                              !isClickShowConfirmNewPassword,
-                            );
-                          }}
-                        ></i>
-                      ) : (
-                        <i
-                          className="fa-solid fa-eye"
-                          style={{
-                            pointerEvents: isChangedPassword ? "none" : "auto",
-                          }}
-                          onClick={() => {
-                            setIsClickShowConfirmNewPassword(
-                              !isClickShowConfirmNewPassword,
-                            );
-                          }}
-                        ></i>
-                      )}
-                      <label
-                        htmlFor="confirm-password-forgot-password"
-                        style={{
-                          backgroundColor:
-                            isRequestingResetPassword || isChangedPassword
-                              ? "#f6f6f6"
-                              : "#fff",
-                          opacity:
-                            isRequestingResetPassword || isChangedPassword
-                              ? 0.9
-                              : 1,
-                        }}
-                      >
-                        Confirm New Password*
-                      </label>
+                      <label htmlFor="last-name">Last Name*</label>
                     </div>
-                    {confirmNewPassword.trim() !== "" && !isMatchPassword && (
+                  </div>
+                  <div className="form-control-authentication">
+                    <input
+                      type="text"
+                      name=""
+                      id="student-id-sign-up"
+                      placeholder="Ex: 202434567"
+                      className="form-control-input"
+                      required
+                      onChange={(e) => {
+                        setStudentId(e.target.value);
+                        setIsTypeStudentId(true);
+                      }}
+                      onInput={(e) => {
+                        e.target.value = e.target.value
+                          .replace(/[^0-9]/g, "") // Remove non-numeric characters
+                          .slice(0, 9); // Allow only numbers, max length 9
+                      }}
+                    />
+                    <label htmlFor="student-id-sign-up">Student ID*</label>
+                  </div>
+                  {studentId.trim() !== "" &&
+                    isTypeStudentId &&
+                    studentId.length < 9 && (
                       <div
                         className="form-control-authentication"
                         style={{
@@ -1803,99 +1134,786 @@ export default function Authentication() {
                           fontSize: "14px",
                         }}
                       >
-                        <p>Confirm password doesn't match</p>
+                        <p>Student ID must be 9 digits long</p>
                       </div>
                     )}
-                  </>
-                )}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    justifyContent: "center",
-                  }}
-                >
-                  {!isEmailVerified && (
-                    <button
-                      className="btn-authentication"
-                      disabled={isCheckingEmail || email.trim() === ""}
-                      onClick={() => {
-                        handleSubmitCheckEmailResetPassword(email);
+                  <div className="form-control-authentication">
+                    <input
+                      type="email"
+                      name=""
+                      id="email"
+                      placeholder="Ex: demo@ex.io"
+                      className="form-control-input"
+                      required
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                    <label htmlFor="email">Email*</label>
+                  </div>
+                  <div className="form-control-authentication">
+                    <input
+                      type={isClickShowPasswordSignUp ? "text" : "password"}
+                      name=""
+                      id="password"
+                      className="form-control-input"
+                      placeholder="Ex: Here is password"
+                      required
+                      onChange={(e) => {
+                        setPasswordSignUp(e.target.value);
+                      }}
+                    />
+                    {isClickShowPasswordSignUp ? (
+                      <i
+                        className="fa-solid fa-eye-slash"
+                        onClick={() => {
+                          setIsClickShowPasswordSignUp(
+                            !isClickShowPasswordSignUp,
+                          );
+                        }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fa-solid fa-eye"
+                        onClick={() => {
+                          setIsClickShowPasswordSignUp(
+                            !isClickShowPasswordSignUp,
+                          );
+                        }}
+                      ></i>
+                    )}
+                    <label htmlFor="password">Password*</label>
+                  </div>
+
+                  {/* Password Requirement */}
+                  {!isExistSpecialChar && (
+                    <div
+                      className="form-control-authentication label-required-password"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: isExistSpecialChar ? "green" : "red",
+                        fontSize: "14px",
                       }}
                     >
-                      {isCheckingEmail ? (
-                        <i className="fas fa-spinner fa-spin"></i>
-                      ) : (
-                        <>
-                          Continue <i className="fa-solid fa-arrow-right"></i>
-                        </>
-                      )}
-                    </button>
+                      <p>
+                        <i className="fa-solid fa-x"></i> Has special characters
+                        (@$!%*?&)
+                      </p>
+                    </div>
                   )}
-                  {isEmailVerified && (
-                    <button
-                      className="btn-yellow"
-                      disabled={
-                        newPassword.trim() === "" ||
-                        confirmNewPassword.trim() === "" ||
-                        !isMatchPassword ||
-                        !isValidPassword ||
-                        isRequestingResetPassword ||
-                        isChangedPassword
-                      }
-                      onClick={() => {
-                        handleSubmitConfirmResetPassword(email);
+
+                  {!isExistNumber && (
+                    <div
+                      className="form-control-authentication label-required-password"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: isExistNumber ? "green" : "red",
+                        fontSize: "14px",
                       }}
                     >
-                      {isRequestingResetPassword ? (
-                        <i className="fas fa-spinner fa-spin"></i>
-                      ) : (
-                        <>
-                          <i className="fa-solid fa-rotate"></i> Change Password
-                        </>
-                      )}
-                    </button>
+                      <p>
+                        <i className="fa-solid fa-x"></i> Has number
+                      </p>
+                    </div>
                   )}
-                </div>
-                <br />
-                <p
-                  style={{
-                    color: "#5d6d7c",
-                    fontSize: "14px",
-                  }}
-                >
-                  <span
+
+                  {!isExistUppercase && (
+                    <div
+                      className="form-control-authentication label-required-password"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: isExistUppercase ? "green" : "red",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <p>
+                        <i className="fa-solid fa-x"></i> Has uppercase
+                        characters
+                      </p>
+                    </div>
+                  )}
+
+                  {!isExistLowercase && (
+                    <div
+                      className="form-control-authentication label-required-password"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: isExistLowercase ? "green" : "red",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <p>
+                        <i className="fa-solid fa-x"></i> Has lowercase
+                        characters
+                      </p>
+                    </div>
+                  )}
+
+                  {!isValidLength && (
+                    <div
+                      className="form-control-authentication label-required-password"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: isValidLength ? "green" : "red",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <p>
+                        <i className="fa-solid fa-x"></i> Minimum length of 12
+                        characters
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="form-control-authentication">
+                    <input
+                      type={isClickShowConfirmPassword ? "text" : "password"}
+                      name=""
+                      id="confirm-password"
+                      className="form-control-input"
+                      placeholder="Ex: Here is password"
+                      required
+                      onChange={(e) => {
+                        setConfirmPasswordSignUp(e.target.value); // Used to set real password value
+                        checkPasswordMatch(passwordSignUp, e.target.value);
+                      }}
+                    />
+                    {isClickShowConfirmPassword ? (
+                      <i
+                        className="fa-solid fa-eye-slash"
+                        onClick={() => {
+                          setIsClickShowConfirmPassword(
+                            !isClickShowConfirmPassword,
+                          );
+                        }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fa-solid fa-eye"
+                        onClick={() => {
+                          setIsClickShowConfirmPassword(
+                            !isClickShowConfirmPassword,
+                          );
+                        }}
+                      ></i>
+                    )}
+                    <label htmlFor="confirm-password">Confirm Password*</label>
+                  </div>
+                  {confirmPasswordSignUp.trim() !== "" && !isMatchPassword && (
+                    <div
+                      className="form-control-authentication"
+                      style={{
+                        marginTop: "-15px",
+                        justifyContent: "left",
+                        color: "red",
+                        fontSize: "14px",
+                      }}
+                    >
+                      <p>Confirm password doesn't match</p>
+                    </div>
+                  )}
+
+                  {/* Agree Term */}
+                  <div className="agree-container">
+                    <label className="agree-box">
+                      <span className="text">
+                        Click
+                        <a
+                          href="#policyModal"
+                          onClick={(e) => {
+                            e.preventDefault();
+
+                            document.getElementById(
+                              "policyModal",
+                            ).style.display = "flex";
+                            document.body.style.overflow = "hidden";
+                          }}
+                          aria-label="Terms and Recovery Guide link"
+                        >
+                          {" "}
+                          "Terms & Recovery Guide"
+                        </a>{" "}
+                        to read and agree
+                      </span>
+                    </label>
+                  </div>
+
+                  {/* Submit Button */}
+                  <button
+                    aria-label="Sign up button"
+                    className="btn-authentication"
+                    disabled={!validateSignUp()}
                     onClick={() => {
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-up");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-sign-in");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.remove("move-forgot-password");
-                      document
-                        .getElementById("form-sign-up-in-container")
-                        .classList.add("move-cancel-forgot");
-                    }}
-                    style={{
-                      color: "#072138",
-                      textDecoration: "underline",
-                      cursor: "pointer",
+                      setIsClickSignIn(false);
                     }}
                   >
-                    <i className="fa-solid fa-arrow-left"></i> Cancel
-                  </span>
-                </p>
-              </div>
-            </form>
+                    <i className="fa-solid fa-user-plus"></i> Sign Up
+                  </button>
+                  <p style={{ color: "#5d6d7c", fontSize: "14px" }}>
+                    Already have an account?{" "}
+                    <span
+                      onClick={() => {
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.add("move-sign-up");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-in");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-forgot-password");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-cancel-forgot");
+                      }}
+                      style={{
+                        color: "#072138",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Sign In
+                    </span>
+                  </p>
+                </div>
+              </form>
+
+              {/* Sign In */}
+              <form
+                onSubmit={handleSubmitSignIn}
+                style={{ width: "100%", paddingLeft: "10px" }}
+              >
+                <div className="sign-in">
+                  <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
+                    Sign In
+                  </h1>
+                  <p
+                    style={{
+                      marginBottom: "20px",
+                      color: msgSignIn.status === 200 ? "green" : "red",
+                    }}
+                  >
+                    {msgSignIn.msg}
+                  </p>
+                  <div className="form-control-authentication">
+                    <input
+                      type={
+                        /\D/.test(studentIdOrEmailForSignIn) ? "email" : "text"
+                      }
+                      name=""
+                      id="student-id"
+                      placeholder="Ex: 202434567"
+                      className="form-control-input"
+                      required
+                      onChange={(e) => {
+                        setStudentIdOrEmailForSignIn(e.target.value);
+                      }}
+                      onInput={(e) => {
+                        const value = e.target.value;
+
+                        if (/^\d*$/.test(value)) {
+                          e.target.value = value.slice(0, 9);
+                        } else {
+                          e.target.value = value;
+                        }
+                      }}
+                    />
+                    <label htmlFor="student-id">Student ID or Email*</label>
+                  </div>
+                  <div className="form-control-authentication">
+                    <input
+                      type={isClickShowPasswordSignIn ? "text" : "password"}
+                      name=""
+                      id="password-sign-in"
+                      className="form-control-input"
+                      placeholder="Ex: Here is password"
+                      required
+                      onChange={(e) => {
+                        setPasswordSignIn(e.target.value);
+                      }}
+                    />
+                    {isClickShowPasswordSignIn ? (
+                      <i
+                        className="fa-solid fa-eye-slash"
+                        onClick={() => {
+                          setIsClickShowPasswordSignIn(
+                            !isClickShowPasswordSignIn,
+                          );
+                        }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fa-solid fa-eye"
+                        onClick={() => {
+                          setIsClickShowPasswordSignIn(
+                            !isClickShowPasswordSignIn,
+                          );
+                        }}
+                      ></i>
+                    )}
+                    <label htmlFor="password-sign-in">Password*</label>
+                  </div>
+                  <div className="form-control-authentication">
+                    <span
+                      onClick={() => {
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-up");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-in");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.add("move-forgot-password");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-cancel-forgot");
+                      }}
+                      style={{
+                        color: "#5d6d7c",
+                        fontSize: "14px",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Forgot password?
+                    </span>
+                  </div>
+                  <button
+                    aria-label="Sign in button"
+                    className="btn-authentication"
+                    disabled={!validateSignIn() || isInProcessing}
+                    onClick={() => {
+                      setIsClickSignIn(true);
+                    }}
+                  >
+                    {isInProcessing ? (
+                      <i className="fas fa-spinner fa-spin"></i>
+                    ) : (
+                      <>
+                        <i className="fa-solid fa-arrow-right-to-bracket"></i>{" "}
+                        Sign In
+                      </>
+                    )}
+                  </button>
+                  <br />
+                  <p
+                    style={{
+                      color: "#5d6d7c",
+                      fontSize: "14px",
+                    }}
+                  >
+                    No account?{" "}
+                    <span
+                      onClick={() => {
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-up");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.add("move-sign-in");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-forgot-password");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-cancel-forgot");
+                      }}
+                      style={{
+                        color: "#072138",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Sign Up
+                    </span>
+                  </p>
+                </div>
+              </form>
+
+              {/* Forgot password */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+                style={{ width: "100%", paddingLeft: "23px" }}
+              >
+                <div className="sign-in">
+                  <h1 style={{ marginBottom: "20px", fontSize: "40px" }}>
+                    Forgot Password
+                  </h1>
+                  <p
+                    style={{
+                      marginBottom: "20px",
+                      color: msgSignIn.status === 200 ? "green" : "red",
+                    }}
+                  >
+                    {msgSignIn.msg}
+                  </p>
+                  <div className="form-control-authentication">
+                    <input
+                      type="email"
+                      name=""
+                      id="email-forgot-password"
+                      placeholder="Ex: demo@ex.io"
+                      className="form-control-input"
+                      required
+                      disabled={isEmailVerified}
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                    <label htmlFor="email-forgot-password">Email*</label>
+                  </div>
+                  {isEmailVerified && (
+                    <>
+                      <div className="form-control-authentication">
+                        <input
+                          type={isClickShowNewPassword ? "text" : "password"}
+                          name=""
+                          style={{
+                            backgroundColor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "#f0f0f0"
+                                : "#fff",
+                            opacity:
+                              isRequestingResetPassword || isChangedPassword
+                                ? 0.6
+                                : 1,
+                            cursor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "not-allowed"
+                                : "auto",
+                          }}
+                          id="password-forgot-password"
+                          className="form-control-input"
+                          placeholder="Ex: Password"
+                          disabled={
+                            isRequestingResetPassword || isChangedPassword
+                          }
+                          required
+                          onChange={(e) => {
+                            setNewPassword(e.target.value);
+                          }}
+                        />
+                        {isClickShowNewPassword ? (
+                          <i
+                            className="fa-solid fa-eye-slash"
+                            style={{
+                              pointerEvents: isChangedPassword
+                                ? "none"
+                                : "auto",
+                            }}
+                            onClick={() => {
+                              setIsClickShowNewPassword(
+                                !isClickShowNewPassword,
+                              );
+                            }}
+                          ></i>
+                        ) : (
+                          <i
+                            className="fa-solid fa-eye"
+                            style={{
+                              pointerEvents: isChangedPassword
+                                ? "none"
+                                : "auto",
+                            }}
+                            onClick={() => {
+                              setIsClickShowNewPassword(
+                                !isClickShowNewPassword,
+                              );
+                            }}
+                          ></i>
+                        )}
+                        <label
+                          htmlFor="password-forgot-password"
+                          style={{
+                            backgroundColor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "#F6F6F6"
+                                : "#fff",
+                            opacity:
+                              isRequestingResetPassword || isChangedPassword
+                                ? 1
+                                : 0.9,
+                          }}
+                        >
+                          New Password*
+                        </label>
+                      </div>
+
+                      {/* Password Requirement */}
+                      {!isExistSpecialChar && (
+                        <div
+                          className="form-control-authentication label-required-password"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: isExistSpecialChar ? "green" : "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <i className="fa-solid fa-x"></i> Has special
+                            characters (@$!%*?&)
+                          </p>
+                        </div>
+                      )}
+
+                      {!isExistNumber && (
+                        <div
+                          className="form-control-authentication label-required-password"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: isExistNumber ? "green" : "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <i className="fa-solid fa-x"></i> Has number
+                          </p>
+                        </div>
+                      )}
+
+                      {!isExistUppercase && (
+                        <div
+                          className="form-control-authentication label-required-password"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: isExistUppercase ? "green" : "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <i className="fa-solid fa-x"></i> Has uppercase
+                            characters
+                          </p>
+                        </div>
+                      )}
+
+                      {!isExistLowercase && (
+                        <div
+                          className="form-control-authentication label-required-password"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: isExistLowercase ? "green" : "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <i className="fa-solid fa-x"></i> Has lowercase
+                            characters
+                          </p>
+                        </div>
+                      )}
+
+                      {!isValidLength && (
+                        <div
+                          className="form-control-authentication label-required-password"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: isValidLength ? "green" : "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>
+                            <i className="fa-solid fa-x"></i> Minimum length of
+                            12 characters
+                          </p>
+                        </div>
+                      )}
+                      <div className="form-control-authentication">
+                        <input
+                          type={
+                            isClickShowConfirmNewPassword ? "text" : "password"
+                          }
+                          style={{
+                            backgroundColor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "#f0f0f0"
+                                : "#fff",
+                            opacity:
+                              isRequestingResetPassword || isChangedPassword
+                                ? 0.6
+                                : 1,
+                            cursor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "not-allowed"
+                                : "auto",
+                          }}
+                          name=""
+                          id="confirm-password-forgot-password"
+                          className="form-control-input"
+                          placeholder="Ex: New password"
+                          required
+                          disabled={
+                            isRequestingResetPassword || isChangedPassword
+                          }
+                          onChange={(e) => {
+                            setConfirmNewPassword(e.target.value);
+                            checkPasswordMatch(newPassword, e.target.value);
+                          }}
+                        />
+                        {isClickShowConfirmNewPassword ? (
+                          <i
+                            className="fa-solid fa-eye-slash"
+                            style={{
+                              pointerEvents: isChangedPassword
+                                ? "none"
+                                : "auto",
+                            }}
+                            onClick={() => {
+                              setIsClickShowConfirmNewPassword(
+                                !isClickShowConfirmNewPassword,
+                              );
+                            }}
+                          ></i>
+                        ) : (
+                          <i
+                            className="fa-solid fa-eye"
+                            style={{
+                              pointerEvents: isChangedPassword
+                                ? "none"
+                                : "auto",
+                            }}
+                            onClick={() => {
+                              setIsClickShowConfirmNewPassword(
+                                !isClickShowConfirmNewPassword,
+                              );
+                            }}
+                          ></i>
+                        )}
+                        <label
+                          htmlFor="confirm-password-forgot-password"
+                          style={{
+                            backgroundColor:
+                              isRequestingResetPassword || isChangedPassword
+                                ? "#f6f6f6"
+                                : "#fff",
+                            opacity:
+                              isRequestingResetPassword || isChangedPassword
+                                ? 0.9
+                                : 1,
+                          }}
+                        >
+                          Confirm New Password*
+                        </label>
+                      </div>
+                      {confirmNewPassword.trim() !== "" && !isMatchPassword && (
+                        <div
+                          className="form-control-authentication"
+                          style={{
+                            marginTop: "-15px",
+                            justifyContent: "left",
+                            color: "red",
+                            fontSize: "14px",
+                          }}
+                        >
+                          <p>Confirm password doesn't match</p>
+                        </div>
+                      )}
+                    </>
+                  )}
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {!isEmailVerified && (
+                      <button
+                        className="btn-authentication"
+                        disabled={isCheckingEmail || email.trim() === ""}
+                        onClick={() => {
+                          handleSubmitCheckEmailResetPassword(email);
+                        }}
+                      >
+                        {isCheckingEmail ? (
+                          <i className="fas fa-spinner fa-spin"></i>
+                        ) : (
+                          <>
+                            Continue <i className="fa-solid fa-arrow-right"></i>
+                          </>
+                        )}
+                      </button>
+                    )}
+                    {isEmailVerified && (
+                      <button
+                        className="btn-yellow"
+                        disabled={
+                          newPassword.trim() === "" ||
+                          confirmNewPassword.trim() === "" ||
+                          !isMatchPassword ||
+                          !isValidPassword ||
+                          isRequestingResetPassword ||
+                          isChangedPassword
+                        }
+                        onClick={() => {
+                          handleSubmitConfirmResetPassword(email);
+                        }}
+                      >
+                        {isRequestingResetPassword ? (
+                          <i className="fas fa-spinner fa-spin"></i>
+                        ) : (
+                          <>
+                            <i className="fa-solid fa-rotate"></i> Change
+                            Password
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                  <br />
+                  <p
+                    style={{
+                      color: "#5d6d7c",
+                      fontSize: "14px",
+                    }}
+                  >
+                    <span
+                      onClick={() => {
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-up");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-sign-in");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.remove("move-forgot-password");
+                        document
+                          .getElementById("form-sign-up-in-container")
+                          .classList.add("move-cancel-forgot");
+                      }}
+                      style={{
+                        color: "#072138",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <i className="fa-solid fa-arrow-left"></i> Cancel
+                    </span>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="img-right">
+            <img src="../Image/logo-2.png" alt="picture" loading="lazy" />
           </div>
         </div>
-        <div className="img-right">
-          <img src="../Image/logo-2.png" alt="picture" loading="lazy" />
-        </div>
-      </div>
+      </main>
 
       {/* Modal Policy */}
       <div id="policyModal" className="modal">

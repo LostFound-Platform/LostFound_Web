@@ -648,87 +648,29 @@ export default function Dashboard() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
+      <main>
         <div
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div>
-            <div className="status-filter">
-              <p
-                style={{
-                  backgroundColor: "#072138",
-                  width: "max-content",
-                  color: "white",
-                  padding: "1px 30px",
-                  borderRadius: "8px",
-                  position: "absolute",
-                  top: "-50%",
-                  left: "0",
-                  marginTop: "20px",
-                }}
-              >
-                Posts Overview
-              </p>
-            </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-            {/* Chart bar */}
-            <div className="" style={{ marginTop: "40px" }}>
-              {isInProcessing ? (
-                <Skeleton
-                  height={370}
-                  style={{ marginBottom: "10px", borderRadius: "20px" }}
-                />
-              ) : (
-                <Suspense
-                  fallback={
-                    <p style={{ position: "absolute", backgroundColor: "red" }}>
-                      Loading animation...
-                    </p>
-                  }
-                >
-                  <div
-                    style={{
-                      boxShadow: "0 10px 15px rgba(0, 0, 0, 0.2)",
-                      borderRadius: "20px",
-                      padding: "20px",
-                    }}
-                  >
-                    <canvas
-                      ref={chartRef}
-                      style={{ width: "100%", height: "400px" }}
-                    ></canvas>
-                  </div>
-                </Suspense>
-              )}
-            </div>
-          </div>
           <div
-            className="chart-pending-found-percent"
             style={{
               display: "flex",
-              gap: "5%",
-              width: "100%",
-              marginTop: "5%",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
             }}
           >
-            <div style={{ width: "100%" }}>
+            <div>
               <div className="status-filter">
                 <p
                   style={{
@@ -743,11 +685,11 @@ export default function Dashboard() {
                     marginTop: "20px",
                   }}
                 >
-                  Post Status Distribution
+                  Posts Overview
                 </p>
               </div>
 
-              {/* Chart pipe */}
+              {/* Chart bar */}
               <div className="" style={{ marginTop: "40px" }}>
                 {isInProcessing ? (
                   <Skeleton
@@ -766,13 +708,13 @@ export default function Dashboard() {
                   >
                     <div
                       style={{
-                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.8)",
+                        boxShadow: "0 10px 15px rgba(0, 0, 0, 0.2)",
                         borderRadius: "20px",
                         padding: "20px",
                       }}
                     >
                       <canvas
-                        ref={chartRef2}
+                        ref={chartRef}
                         style={{ width: "100%", height: "400px" }}
                       ></canvas>
                     </div>
@@ -780,61 +722,129 @@ export default function Dashboard() {
                 )}
               </div>
             </div>
-            <div style={{ width: "100%" }}>
-              <div className="status-filter">
-                <p
-                  style={{
-                    backgroundColor: "#072138",
-                    width: "max-content",
-                    color: "white",
-                    padding: "1px 30px",
-                    borderRadius: "8px",
-                    position: "absolute",
-                    top: "-50%",
-                    left: "0",
-                    marginTop: "20px",
-                  }}
-                >
-                  Pending Found Items
-                </p>
-              </div>
-
-              {/* Chart line */}
-              <div className="" style={{ marginTop: "40px" }}>
-                {isInProcessing ? (
-                  <Skeleton
-                    height={370}
-                    style={{ marginBottom: "10px", borderRadius: "20px" }}
-                  />
-                ) : (
-                  <Suspense
-                    fallback={
-                      <p
-                        style={{ position: "absolute", backgroundColor: "red" }}
-                      >
-                        Loading animation...
-                      </p>
-                    }
+            <div
+              className="chart-pending-found-percent"
+              style={{
+                display: "flex",
+                gap: "5%",
+                width: "100%",
+                marginTop: "5%",
+              }}
+            >
+              <div style={{ width: "100%" }}>
+                <div className="status-filter">
+                  <p
+                    style={{
+                      backgroundColor: "#072138",
+                      width: "max-content",
+                      color: "white",
+                      padding: "1px 30px",
+                      borderRadius: "8px",
+                      position: "absolute",
+                      top: "-50%",
+                      left: "0",
+                      marginTop: "20px",
+                    }}
                   >
-                    <div
-                      style={{
-                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.8)",
-                        borderRadius: "20px",
-                        padding: "20px",
-                      }}
+                    Post Status Distribution
+                  </p>
+                </div>
+
+                {/* Chart pipe */}
+                <div className="" style={{ marginTop: "40px" }}>
+                  {isInProcessing ? (
+                    <Skeleton
+                      height={370}
+                      style={{ marginBottom: "10px", borderRadius: "20px" }}
+                    />
+                  ) : (
+                    <Suspense
+                      fallback={
+                        <p
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "red",
+                          }}
+                        >
+                          Loading animation...
+                        </p>
+                      }
                     >
-                      <canvas
-                        ref={chartRef3}
-                        style={{ width: "100%", height: "400px" }}
-                      ></canvas>
-                    </div>
-                  </Suspense>
-                )}
+                      <div
+                        style={{
+                          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.8)",
+                          borderRadius: "20px",
+                          padding: "20px",
+                        }}
+                      >
+                        <canvas
+                          ref={chartRef2}
+                          style={{ width: "100%", height: "400px" }}
+                        ></canvas>
+                      </div>
+                    </Suspense>
+                  )}
+                </div>
+              </div>
+              <div style={{ width: "100%" }}>
+                <div className="status-filter">
+                  <p
+                    style={{
+                      backgroundColor: "#072138",
+                      width: "max-content",
+                      color: "white",
+                      padding: "1px 30px",
+                      borderRadius: "8px",
+                      position: "absolute",
+                      top: "-50%",
+                      left: "0",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Pending Found Items
+                  </p>
+                </div>
+
+                {/* Chart line */}
+                <div className="" style={{ marginTop: "40px" }}>
+                  {isInProcessing ? (
+                    <Skeleton
+                      height={370}
+                      style={{ marginBottom: "10px", borderRadius: "20px" }}
+                    />
+                  ) : (
+                    <Suspense
+                      fallback={
+                        <p
+                          style={{
+                            position: "absolute",
+                            backgroundColor: "red",
+                          }}
+                        >
+                          Loading animation...
+                        </p>
+                      }
+                    >
+                      <div
+                        style={{
+                          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.8)",
+                          borderRadius: "20px",
+                          padding: "20px",
+                        }}
+                      >
+                        <canvas
+                          ref={chartRef3}
+                          style={{ width: "100%", height: "400px" }}
+                        ></canvas>
+                      </div>
+                    </Suspense>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

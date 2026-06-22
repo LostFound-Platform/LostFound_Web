@@ -490,149 +490,151 @@ export default function Users() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="search-codes-container">
-            <input
-              type="text"
-              placeholder="Search email..."
-              className="form-control-input search-codes"
-              onChange={(e) => {
-                setQuery(e.target.value);
-              }}
-            />
-            <i className="fa-solid fa-search"></i>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* List codes */}
-          <div className="table-wrapper">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Avatar</th>
-                  <th>User</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Student ID</th>
-                  <th>Date Created</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isInProcessing ? (
+          {/* Post similar to you */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="search-codes-container">
+              <input
+                type="text"
+                placeholder="Search email..."
+                className="form-control-input search-codes"
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <i className="fa-solid fa-search"></i>
+            </div>
+
+            {/* List codes */}
+            <div className="table-wrapper">
+              <table className="custom-table">
+                <thead>
                   <tr>
-                    <td colSpan={7}>
-                      <i className="fas fa-spinner fa-spin"></i>
-                    </td>
+                    <th>#</th>
+                    <th>Avatar</th>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Student ID</th>
+                    <th>Date Created</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ) : users.length > 0 ? (
-                  users.map((item, index) => (
-                    <tr key={item.userId}>
-                      <td>{index + 1}</td>
-                      <td>
-                        <a href={`/dashboard/user/${item.userId}`}>
-                          {item.avatar ? (
-                            <img
-                              src={item.urlAvatar}
-                              alt="user avatar"
-                              style={{
-                                borderRadius: "50%",
-                                objectFit: "cover",
-                              }}
-                              width={50}
-                              height={50}
-                            />
-                          ) : (
-                            <img
-                              src="/Image/user_icon.png"
-                              alt="user avatar"
-                              style={{
-                                borderRadius: "50%",
-                                objectFit: "cover",
-                              }}
-                              width={50}
-                              height={50}
-                            />
-                          )}
-                        </a>
-                      </td>
-                      <td>
-                        {item.firstName} {item.lastName}
-                      </td>
-                      <td>{item.email}</td>
-                      <td>{item.role}</td>
-                      <td>{item.studentId}</td>
-                      <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
-                      <td>
-                        <span
-                          className={`status ${
-                            item.isActive ? "active" : "inactive"
-                          }`}
-                        >
-                          {item.isActive ? "Active" : "Suspended"}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          aria-label={
-                            item.isActive
-                              ? "Suspend account button"
-                              : "Unsuspend account button"
-                          }
-                          className="btn"
-                          style={{
-                            backgroundColor: item.isActive ? "red" : "green",
-                          }}
-                          type="button"
-                          onClick={() => {
-                            item.isActive
-                              ? suspendUser(item.userId)
-                              : unsuspendUser(item.userId);
-                          }}
-                        >
-                          {isRequesting ? (
-                            <i className="fas fa-spinner fa-spin"></i>
-                          ) : item.isActive ? (
-                            "Suspend account"
-                          ) : (
-                            "Unsuspend account"
-                          )}
-                        </button>
+                </thead>
+                <tbody>
+                  {isInProcessing ? (
+                    <tr>
+                      <td colSpan={7}>
+                        <i className="fas fa-spinner fa-spin"></i>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>No results</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  ) : users.length > 0 ? (
+                    users.map((item, index) => (
+                      <tr key={item.userId}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <a href={`/dashboard/user/${item.userId}`}>
+                            {item.avatar ? (
+                              <img
+                                src={item.urlAvatar}
+                                alt="user avatar"
+                                style={{
+                                  borderRadius: "50%",
+                                  objectFit: "cover",
+                                }}
+                                width={50}
+                                height={50}
+                              />
+                            ) : (
+                              <img
+                                src="/Image/user_icon.png"
+                                alt="user avatar"
+                                style={{
+                                  borderRadius: "50%",
+                                  objectFit: "cover",
+                                }}
+                                width={50}
+                                height={50}
+                              />
+                            )}
+                          </a>
+                        </td>
+                        <td>
+                          {item.firstName} {item.lastName}
+                        </td>
+                        <td>{item.email}</td>
+                        <td>{item.role}</td>
+                        <td>{item.studentId}</td>
+                        <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              item.isActive ? "active" : "inactive"
+                            }`}
+                          >
+                            {item.isActive ? "Active" : "Suspended"}
+                          </span>
+                        </td>
+                        <td>
+                          <button
+                            aria-label={
+                              item.isActive
+                                ? "Suspend account button"
+                                : "Unsuspend account button"
+                            }
+                            className="btn"
+                            style={{
+                              backgroundColor: item.isActive ? "red" : "green",
+                            }}
+                            type="button"
+                            onClick={() => {
+                              item.isActive
+                                ? suspendUser(item.userId)
+                                : unsuspendUser(item.userId);
+                            }}
+                          >
+                            {isRequesting ? (
+                              <i className="fas fa-spinner fa-spin"></i>
+                            ) : item.isActive ? (
+                              "Suspend account"
+                            ) : (
+                              "Unsuspend account"
+                            )}
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7}>No results</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

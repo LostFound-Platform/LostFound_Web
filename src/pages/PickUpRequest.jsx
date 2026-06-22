@@ -452,154 +452,158 @@ export default function PickUpRequest() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="search-codes-container">
-            <input
-              type="text"
-              placeholder="Search by description..."
-              className="form-control-input search-codes"
-              onChange={(e) => {
-                setQuery(e.target.value);
-              }}
-            />
-            <i className="fa-solid fa-search"></i>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* List codes */}
-          <div className="table-wrapper">
-            <table className="custom-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Description</th>
-                  <th>Pick-Up Time</th>
-                  <th>Date Created</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
+          {/* Post similar to you */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="search-codes-container">
+              <input
+                type="text"
+                placeholder="Search by description..."
+                className="form-control-input search-codes"
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+              />
+              <i className="fa-solid fa-search"></i>
+            </div>
+
+            {/* List codes */}
+            <div className="table-wrapper">
+              <table className="custom-table">
+                <thead>
                   <tr>
-                    <td colSpan={7}>
-                      <i className="fas fa-spinner fa-spin"></i>
-                    </td>
+                    <th>#</th>
+                    <th>Description</th>
+                    <th>Pick-Up Time</th>
+                    <th>Date Created</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                ) : requests.length > 0 ? (
-                  requests.map((item, index) => (
-                    <tr key={item.requestId}>
-                      <td>{index + 1}</td>
-                      <td>
-                        <ReactMarkdown
-                          children={item.description}
-                          rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                        ></ReactMarkdown>
-                      </td>
-                      <td>{dayjs(item.pickUpDate).format("h:mm:ss A")}</td>
-                      <td>{dayjs(item.createdDate).format("MM/DD/YYYY")}</td>
-                      <td>
-                        <span
-                          className={`status ${
-                            item.status === "Pending"
-                              ? "warning"
-                              : item.status === "Cancelled"
-                                ? "inactive"
-                                : "active"
-                          }`}
-                        >
-                          {item.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button
-                          aria-label="Accept button"
-                          className="btn"
-                          style={{
-                            backgroundColor: item.isActive ? "red" : "",
-                            marginRight: "10px",
-                          }}
-                          type="button"
-                          onClick={() => {
-                            handleAcceptTime(item.requestId);
-                          }}
-                          disabled={item.status !== "Pending" || isInProcessing}
-                        >
-                          {item.status === "Pending" ? (
-                            isInProcessing ? (
-                              <i className="fas fa-spinner fa-spin"></i>
-                            ) : (
-                              "Accept"
-                            )
-                          ) : item.status === "Reschedule" ? (
-                            <>
-                              <i className="fa-solid fa-user-clock"></i>{" "}
-                              Awaiting user
-                            </>
-                          ) : (
-                            item.status
-                          )}
-                        </button>
-                        {item.status === "Pending" && (
-                          <button
-                            aria-label="Change time button"
-                            className="btn-yellow"
-                            type="button"
-                            onClick={() => {
-                              document.getElementById(
-                                "popup-change-pick-up-time",
-                              ).style.display = "flex";
-                              document.body.style.overflow = "hidden";
-
-                              setObjectToShowPopup({
-                                requestId: item.requestId,
-                                pickUpDate: dayjs(item.pickUpDate).format(
-                                  "MM/DD/YYYY h:mm:ss A",
-                                ),
-                              });
-                            }}
-                            disabled={isInProcessing}
-                          >
-                            {isInProcessing ? (
-                              <i className="fas fa-spinner fa-spin"></i>
-                            ) : (
-                              "Change Time"
-                            )}
-                          </button>
-                        )}
+                </thead>
+                <tbody>
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={7}>
+                        <i className="fas fa-spinner fa-spin"></i>
                       </td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={7}>No results</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  ) : requests.length > 0 ? (
+                    requests.map((item, index) => (
+                      <tr key={item.requestId}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <ReactMarkdown
+                            children={item.description}
+                            rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                          ></ReactMarkdown>
+                        </td>
+                        <td>{dayjs(item.pickUpDate).format("h:mm:ss A")}</td>
+                        <td>{dayjs(item.createdDate).format("MM/DD/YYYY")}</td>
+                        <td>
+                          <span
+                            className={`status ${
+                              item.status === "Pending"
+                                ? "warning"
+                                : item.status === "Cancelled"
+                                  ? "inactive"
+                                  : "active"
+                            }`}
+                          >
+                            {item.status}
+                          </span>
+                        </td>
+                        <td>
+                          <button
+                            aria-label="Accept button"
+                            className="btn"
+                            style={{
+                              backgroundColor: item.isActive ? "red" : "",
+                              marginRight: "10px",
+                            }}
+                            type="button"
+                            onClick={() => {
+                              handleAcceptTime(item.requestId);
+                            }}
+                            disabled={
+                              item.status !== "Pending" || isInProcessing
+                            }
+                          >
+                            {item.status === "Pending" ? (
+                              isInProcessing ? (
+                                <i className="fas fa-spinner fa-spin"></i>
+                              ) : (
+                                "Accept"
+                              )
+                            ) : item.status === "Reschedule" ? (
+                              <>
+                                <i className="fa-solid fa-user-clock"></i>{" "}
+                                Awaiting user
+                              </>
+                            ) : (
+                              item.status
+                            )}
+                          </button>
+                          {item.status === "Pending" && (
+                            <button
+                              aria-label="Change time button"
+                              className="btn-yellow"
+                              type="button"
+                              onClick={() => {
+                                document.getElementById(
+                                  "popup-change-pick-up-time",
+                                ).style.display = "flex";
+                                document.body.style.overflow = "hidden";
+
+                                setObjectToShowPopup({
+                                  requestId: item.requestId,
+                                  pickUpDate: dayjs(item.pickUpDate).format(
+                                    "MM/DD/YYYY h:mm:ss A",
+                                  ),
+                                });
+                              }}
+                              disabled={isInProcessing}
+                            >
+                              {isInProcessing ? (
+                                <i className="fas fa-spinner fa-spin"></i>
+                              ) : (
+                                "Change Time"
+                              )}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={7}>No results</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Popup change pick up time */}
       <div className="modal" id="popup-change-pick-up-time">

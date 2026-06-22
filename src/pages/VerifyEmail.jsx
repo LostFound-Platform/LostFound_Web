@@ -106,36 +106,38 @@ export default function VerifyEmail() {
         <title>Verify Email | Back2Me </title>
       </Helmet>
 
-      <h1 style={{ textAlign: "center", marginTop: "70px" }}>
-        {isVerifying ? (
-          "Verifying email..."
-        ) : (
-          <div className="not-found">
-            {statusVerify.status === 200 && (
-              <Suspense fallback={<p>Loading animation...</p>}>
-                <DotLottieReact
-                  src="../assets/animations/Sucesso.json"
-                  style={{ width: "300px", margin: "auto" }}
-                  autoplay
-                  loop
-                />
-              </Suspense>
-            )}
-            <h1 style={{ fontSize: "40px" }}>
-              {statusVerify.status !== 200 ? "Failed" : statusVerify.message}
-            </h1>
-            <button
-              aria-label="Go back button"
-              className="btn"
-              onClick={() => {
-                window.location.href = "/me";
-              }}
-            >
-              Go to Profile <i className="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
-        )}
-      </h1>
+      <main>
+        <h1 style={{ textAlign: "center", marginTop: "70px" }}>
+          {isVerifying ? (
+            "Verifying email..."
+          ) : (
+            <div className="not-found">
+              {statusVerify.status === 200 && (
+                <Suspense fallback={<p>Loading animation...</p>}>
+                  <DotLottieReact
+                    src="../assets/animations/Sucesso.json"
+                    style={{ width: "300px", margin: "auto" }}
+                    autoplay
+                    loop
+                  />
+                </Suspense>
+              )}
+              <h1 style={{ fontSize: "40px" }}>
+                {statusVerify.status !== 200 ? "Failed" : statusVerify.message}
+              </h1>
+              <button
+                aria-label="Go back button"
+                className="btn"
+                onClick={() => {
+                  window.location.href = "/me";
+                }}
+              >
+                Go to Profile <i className="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          )}
+        </h1>
+      </main>
     </>
   );
 }

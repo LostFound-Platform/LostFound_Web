@@ -398,61 +398,55 @@ a {
 
 /* FOOTER */
 footer {
-  text-align: center;
   background-color: #072138;
   color: #fff;
   padding: 31px 0;
   margin-top: 4%;
 }
 
-footer .left {
-  font-family: "Mochiy Pop One", sans-serif;
-  font-weight: 400;
-  font-size: 30px;
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
 }
 
-footer .middle {
-  margin: auto;
+.footer-brand h3 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
 }
 
-footer .middle .top a {
-  margin-right: 10%;
+.footer-brand p {
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: 14px;
 }
 
-footer .middle .bottom a {
-  margin-right: 10%;
-  font-size: 18px;
-  font-family: "Mochiy Pop One", sans-serif;
-  font-weight: 400;
-  font-size: 30px;
-  margin: auto;
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
 }
 
-footer .right form {
-  margin-top: 100px;
-  margin: auto;
-  width: max-content;
-  background-color: #fff;
-  border-radius: 20px;
-  margin-top: 10px;
+.footer-brand h3 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
-footer .right input {
-  padding: 20px;
-  height: 40px;
-  border: none;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
+.footer-links a {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease-in-out;
 }
 
-footer .right button {
-  font-family: "Poppins", sans-serif;
-  background-color: #fdcc4b;
-  border-radius: 20px;
-  padding: 0 25px;
-  cursor: pointer;
-  border: none;
-  height: 40px;
+.footer-links a:hover {
+  color: #ec7207;
 }
 
 /* Animation */
@@ -2581,4 +2575,340 @@ th {
 
 .card-notification {
   height: 500px;
+}
+
+/* Join Us Page */
+.join-page {
+  width: 100%;
+  background: #fff;
+}
+
+.join-page .section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 90px 56px;
+}
+
+.join-page .hero {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: #fff6df;
+  padding: 155px 24px 165px;
+}
+
+.join-page .corner {
+  position: absolute;
+  background: #ffedd1;
+  opacity: 0.75;
+}
+
+.join-page .corner-top {
+  width: 120px;
+  height: 120px;
+  right: 0;
+  top: 0;
+  border-bottom-left-radius: 24px;
+}
+
+.join-page .corner-left {
+  width: 185px;
+  height: 185px;
+  left: 0;
+  bottom: 0;
+  border-top-right-radius: 24px;
+}
+
+.join-page .pill {
+  display: inline-block;
+  background: #ffe5d1;
+  color: #f97316;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.join-page .hero h1 {
+  font-size: 44px;
+  margin: 28px 0 22px;
+  line-height: 1;
+}
+
+.join-page .hero p {
+  max-width: 620px;
+  margin: 0 auto 42px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+.join-page .primary-btn {
+  background: #f97300;
+  color: white;
+  border: none;
+  border-radius: 13px;
+  padding: 17px 38px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.join-page .about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 70px;
+}
+
+.join-page .about h2,
+.join-page .why h2,
+.join-page .roles h2,
+.join-page .path h2,
+.join-page .faq h2 {
+  font-size: 31px;
+  margin: 0 0 34px;
+}
+
+.join-page .about p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+.join-page .about img {
+  width: 100%;
+  border-radius: 14px;
+}
+
+.join-page .why,
+.join-page .path {
+  background: #fff1ea;
+}
+
+.join-page .why h2,
+.join-page .roles h2,
+.join-page .path h2,
+.join-page .faq h2 {
+  text-align: center;
+}
+
+.join-page .benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
+.join-page .benefit-card,
+.join-page .role-card {
+  background: white;
+  border-radius: 12px;
+  padding: 34px;
+  transition: all 0.2s ease-in-out;
+}
+
+.join-page .benefit-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #ec7207;
+  color: white;
+}
+
+.join-page .benefit-card:hover .icon {
+  color: white;
+}
+
+.join-page .benefit-card:hover p {
+  color: white;
+}
+
+.join-page .benefit-card {
+  min-height: 295px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.join-page .icon {
+  color: #f97300;
+  font-size: 26px;
+  margin-bottom: 28px;
+  font-weight: 900;
+}
+
+.join-page .benefit-card h3,
+.join-page .role-card h3 {
+  font-size: 22px;
+  line-height: 1.25;
+  margin: 0 0 18px;
+  font-weight: 500;
+}
+
+.join-page .benefit-card p,
+.join-page .role-card p,
+.join-page .intro {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #334155;
+}
+
+.join-page .roles .intro {
+  max-width: 650px;
+  margin: -18px auto 62px;
+  text-align: center;
+}
+
+.join-page .role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.join-page .role-card {
+  background: #fff1ea;
+  min-height: 220px;
+}
+
+.join-page .role-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.join-page .role-top span {
+  background: #ffe0c7;
+  color: #f97300;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.join-page .role-top b {
+  color: #f97300;
+}
+
+.join-page .role-card a {
+  display: inline-block;
+  margin-top: 18px;
+  color: #f97300;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.1s ease-in-out;
+}
+
+.join-page .role-card a:hover {
+  font-weight: 800;
+}
+
+.join-page .contact-card {
+  background: #f97300;
+  color: white;
+  border-radius: 12px;
+  padding: 42px 34px;
+  text-align: center;
+  box-shadow: 0 18px 28px rgba(249, 115, 0, 0.28);
+}
+
+.join-page .contact-card h3 {
+  font-weight: 500;
+  font-size: 24px;
+  margin: 0 0 18px;
+}
+
+.join-page .contact-card p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.join-page .contact-card button {
+  width: 100%;
+  margin-top: 22px;
+  background: white;
+  color: #f97300;
+  font-weight: 800;
+}
+
+.join-page .contact-card button:hover {
+  color: white;
+}
+
+.join-page .timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 30px;
+  margin-top: 70px;
+  z-index: 0;
+}
+
+.join-page .timeline::before {
+  content: "";
+  position: absolute;
+  top: 23px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #f6d8c8;
+}
+
+.join-page .step {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.join-page .step div {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 22px;
+  background: white;
+  color: #f97300;
+  border: 1px solid #ffd1b4;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+}
+
+.join-page .step.active div {
+  background: #f97300;
+  color: white;
+}
+
+.join-page .step p {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.join-page .faq {
+  max-width: 860px;
+}
+
+.join-page .faq h2 {
+  margin-bottom: 60px;
+}
+
+.join-page details {
+  background: #fff1ea;
+}
+
+.join-page details p {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.join-page .interested-cta {
+  background: #fff1ea;
+  text-align: center;
+  padding: 95px 24px;
+  margin-bottom: -70px;
+}
+
+.join-page .interested-cta h2 {
+  font-size: 30px;
+  margin: 0 0 34px;
 }

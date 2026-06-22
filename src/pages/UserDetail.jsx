@@ -272,214 +272,219 @@ export default function UserDetail() {
 
   return (
     <>
-      <div
-        className="sidebar-and-content"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "15% 85%",
-          gap: "50px",
-          // backgroundColor: "pink",
-          position: "relative",
-        }}
-      >
-        {/* Menu for profile */}
-        <SidebarProfile></SidebarProfile>
-
-        {/* Post similar to you */}
+      <main>
         <div
-          className="my-post-content"
+          className="sidebar-and-content"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            marginTop: "100px",
-            gap: "30px",
+            display: "grid",
+            gridTemplateColumns: "15% 85%",
+            gap: "50px",
+            // backgroundColor: "pink",
+            position: "relative",
           }}
         >
-          <div className="status-filter">
-            <button
-              className="btn-yellow"
-              onClick={() => {
-                window.history.back();
-              }}
-            >
-              <i className="fa-solid fa-arrow-left"></i> Go Back
-            </button>
-          </div>
+          {/* Menu for profile */}
+          <SidebarProfile></SidebarProfile>
 
-          {/* Cards */}
-          <div className="newest-post-container my-post-container">
-            {isInProcessing ? (
-              <div
-                style={{ display: "flex", gap: "20px" }}
-                className="skeleton-my-post"
+          {/* Post similar to you */}
+          <div
+            className="my-post-content"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: "100px",
+              gap: "30px",
+            }}
+          >
+            <div className="status-filter">
+              <button
+                className="btn-yellow"
+                onClick={() => {
+                  window.history.back();
+                }}
               >
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div className="" key={index}>
-                    <Skeleton
-                      height={290}
-                      style={{ marginBottom: "10px", borderRadius: "20px" }}
-                    />
-                    <div className="">
-                      <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
-                        <Skeleton height={35} width={345} />
-                      </h3>
-                      <p>
-                        <Skeleton count={3} />
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : posts.length > 0 ? (
-              posts.map((post) => (
-                <div
-                  className="card card-my-post"
-                  key={post.postId}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div>
-                    <div
-                      onClick={() => {
-                        window.location.href = `/detail-post/${post.postId}`;
-                      }}
-                    >
-                      {/* Image */}
-                      {post.image ? (
-                        <img
-                          src={post.image ? post.urlImage : ""}
-                          alt="picture of item"
-                          loading="lazy"
-                          style={{
-                            width: "100%",
-                            height: "300px",
-                            objectFit: "cover",
-                            backgroundColor: "white",
-                          }}
-                        />
-                      ) : (
-                        <div className="image-placeholder">
-                          <i className="icon-image"></i>
-                          <span>No image</span>
-                        </div>
-                      )}
+                <i className="fa-solid fa-arrow-left"></i> Go Back
+              </button>
+            </div>
 
-                      {/* Content */}
+            {/* Cards */}
+            <div className="newest-post-container my-post-container">
+              {isInProcessing ? (
+                <div
+                  style={{ display: "flex", gap: "20px" }}
+                  className="skeleton-my-post"
+                >
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <div className="" key={index}>
+                      <Skeleton
+                        height={290}
+                        style={{ marginBottom: "10px", borderRadius: "20px" }}
+                      />
+                      <div className="">
+                        <h3 style={{ fontWeight: "700", marginBottom: "10px" }}>
+                          <Skeleton height={35} width={345} />
+                        </h3>
+                        <p>
+                          <Skeleton count={3} />
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : posts.length > 0 ? (
+                posts.map((post) => (
+                  <div
+                    className="card card-my-post"
+                    key={post.postId}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div>
                       <div
-                        className="card-text"
-                        style={{ marginBottom: "20px" }}
+                        onClick={() => {
+                          window.location.href = `/detail-post/${post.postId}`;
+                        }}
                       >
+                        {/* Image */}
+                        {post.image ? (
+                          <img
+                            src={post.image ? post.urlImage : ""}
+                            alt="picture of item"
+                            loading="lazy"
+                            style={{
+                              width: "100%",
+                              height: "300px",
+                              objectFit: "cover",
+                              backgroundColor: "white",
+                            }}
+                          />
+                        ) : (
+                          <div className="image-placeholder">
+                            <i className="icon-image"></i>
+                            <span>No image</span>
+                          </div>
+                        )}
+
+                        {/* Content */}
                         <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
+                          className="card-text"
+                          style={{ marginBottom: "20px" }}
                         >
-                          <h3
-                            style={{ fontWeight: "700", marginBottom: "10px" }}
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            <a
-                              href={`/detail-post/${post.postId}`}
-                              aria-label={`Detail link for ${post.title}`}
-                            >
-                              {post.title}
-                            </a>
-                          </h3>
-                          {post.isReceived && (
-                            <label
+                            <h3
                               style={{
-                                // fontSize: "13px",
-                                fontWeight: 500,
-                                color: "green",
+                                fontWeight: "700",
+                                marginBottom: "10px",
                               }}
                             >
-                              (<i className="fa-solid fa-circle-check"></i>{" "}
-                              Received)
-                            </label>
-                          )}
-                          {post.oldUserId && (
-                            <label
-                              style={{
-                                // fontSize: "13px",
-                                fontWeight: 500,
-                                color: "#6b7280",
-                              }}
-                            >
-                              (Transferred)
-                            </label>
-                          )}
+                              <a
+                                href={`/detail-post/${post.postId}`}
+                                aria-label={`Detail link for ${post.title}`}
+                              >
+                                {post.title}
+                              </a>
+                            </h3>
+                            {post.isReceived && (
+                              <label
+                                style={{
+                                  // fontSize: "13px",
+                                  fontWeight: 500,
+                                  color: "green",
+                                }}
+                              >
+                                (<i className="fa-solid fa-circle-check"></i>{" "}
+                                Received)
+                              </label>
+                            )}
+                            {post.oldUserId && (
+                              <label
+                                style={{
+                                  // fontSize: "13px",
+                                  fontWeight: 500,
+                                  color: "#6b7280",
+                                }}
+                              >
+                                (Transferred)
+                              </label>
+                            )}
+                          </div>
+                          <a
+                            href={`/detail-post/${post.postId}`}
+                            aria-label={`Detail link for ${post.title}`}
+                          >
+                            <ReactMarkdown
+                              children={post.description}
+                              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                            ></ReactMarkdown>
+                          </a>
                         </div>
-                        <a
-                          href={`/detail-post/${post.postId}`}
-                          aria-label={`Detail link for ${post.title}`}
+
+                        {/* Status */}
+                        <div
+                          className={
+                            post.typePost === "Lost"
+                              ? "status-post-lost"
+                              : "status-post-found"
+                          }
                         >
-                          <ReactMarkdown
-                            children={post.description}
-                            rehypePlugins={[rehypeRaw, rehypeSanitize]}
-                          ></ReactMarkdown>
-                        </a>
+                          {post.typePost}
+                        </div>
                       </div>
 
-                      {/* Status */}
-                      <div
-                        className={
-                          post.typePost === "Lost"
-                            ? "status-post-lost"
-                            : "status-post-found"
-                        }
+                      <button
+                        className="btn"
+                        style={{ width: "100%" }}
+                        onClick={() => {
+                          document.getElementById(
+                            "popup-confirm-delete",
+                          ).style.display = "flex";
+                          document.body.style.overflow = "hidden";
+
+                          setObjectToShowPopup({
+                            name: post.title,
+                            code: post.code,
+                            postId: post.postId,
+                          });
+                        }}
                       >
-                        {post.typePost}
-                      </div>
+                        <i className="fa-solid fa-trash-can"></i> Delete
+                      </button>
                     </div>
-
-                    <button
-                      className="btn"
-                      style={{ width: "100%" }}
-                      onClick={() => {
-                        document.getElementById(
-                          "popup-confirm-delete",
-                        ).style.display = "flex";
-                        document.body.style.overflow = "hidden";
-
-                        setObjectToShowPopup({
-                          name: post.title,
-                          code: post.code,
-                          postId: post.postId,
-                        });
-                      }}
-                    >
-                      <i className="fa-solid fa-trash-can"></i> Delete
-                    </button>
                   </div>
-                </div>
-              ))
-            ) : (
-              <>
-                <div
-                  className="no-post-my-post"
-                  style={{
-                    marginLeft: "100%",
-                    width: "100%",
-                    textAlign: "center",
-                    marginTop: "50px",
-                  }}
-                >
-                  <Suspense fallback={<p>Loading animation...</p>}>
-                    <DotLottieReact
-                      src="../assets/animations/NotFoundPost.json"
-                      className="m-auto"
-                      style={{ width: "60%", margin: "auto" }}
-                      autoplay
-                      loop
-                    />
-                  </Suspense>
-                  <h1>No posts yet</h1>
-                </div>
-              </>
-            )}
+                ))
+              ) : (
+                <>
+                  <div
+                    className="no-post-my-post"
+                    style={{
+                      marginLeft: "100%",
+                      width: "100%",
+                      textAlign: "center",
+                      marginTop: "50px",
+                    }}
+                  >
+                    <Suspense fallback={<p>Loading animation...</p>}>
+                      <DotLottieReact
+                        src="../assets/animations/NotFoundPost.json"
+                        className="m-auto"
+                        style={{ width: "60%", margin: "auto" }}
+                        autoplay
+                        loop
+                      />
+                    </Suspense>
+                    <h1>No posts yet</h1>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="print-code" id="print-code"></div>
+        <div className="print-code" id="print-code"></div>
+      </main>
 
       {/* Popup confirm handover to admin */}
       <div className="modal" id="popup-confirm-delete">
