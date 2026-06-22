@@ -66,6 +66,7 @@ const steps = [
 ];
 
 export default function JoinUs() {
+  // Ensure the page wrapper is full width when this page is loaded
   useEffect(() => {
     if (window.location.href.includes("join")) {
       document.getElementById("wrapper").style.width = "100%";
@@ -170,7 +171,12 @@ export default function JoinUs() {
             <div className="contact-card">
               <h3>Don't see a fit?</h3>
               <p>We're always looking for talented students. Reach out!</p>
-              <button className="btn">Contact Us</button>
+              <button
+                className="btn"
+                onClick={() => (window.location.href = "/contact")}
+              >
+                Contact Us
+              </button>
             </div>
           </div>
         </section>
