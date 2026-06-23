@@ -3178,3 +3178,135 @@ th {
   font-size: 18px;
   font-weight: 900;
 }
+
+/* Campus Popup Styles */
+.campus-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(81, 96, 112, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.campus-overlay .campus-modal {
+  position: relative;
+  width: 680px;
+  max-width: calc(100% - 40px);
+  background: white;
+  border-radius: 22px;
+  padding: 50px 48px 42px;
+  text-align: center;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.28);
+  overflow: hidden;
+}
+
+.campus-overlay .campus-modal::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 10px;
+  width: 100%;
+  background: linear-gradient(90deg, #fff4a3, #ffc58a);
+}
+
+.campus-overlay .close-btn {
+  position: absolute;
+  right: 32px;
+  top: 26px;
+  border: none;
+  background: transparent;
+  color: #8b7d75;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.campus-overlay .modal-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 28px;
+  background: #fff1e8;
+  color: #f97300;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+}
+
+.campus-overlay .campus-modal h2 {
+  margin: 0 0 14px;
+  font-size: 31px;
+}
+
+.campus-overlay .modal-subtitle {
+  max-width: 480px;
+  margin: 0 auto 38px;
+  color: #8a7b72;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.campus-overlay .campus-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  margin-bottom: 40px;
+}
+
+.campus-overlay .campus-card {
+  background: white;
+  border: 2px solid #f1ddd4;
+  border-radius: 20px;
+  padding: 36px 24px 30px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.campus-overlay .campus-card:hover,
+.campus-overlay .campus-card.active {
+  border-color: #f97300;
+  box-shadow: 0 10px 25px rgba(249, 115, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.campus-overlay .campus-circle {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 26px;
+  background: #eaf3ff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+}
+
+.campus-overlay .campus-card h3 {
+  margin: 0 0 8px;
+  color: #102b3f;
+  font-size: 24px;
+}
+
+.campus-overlay .campus-card p {
+  margin: 0;
+  color: #8a7b72;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+}
+
+.campus-overlay .btn {
+  display: block;
+  margin: 0 auto 22px;
+}
+
+.campus-overlay .maybe-btn {
+  border: none;
+  background: transparent;
+  color: #8a7b72;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

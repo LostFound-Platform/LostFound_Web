@@ -774,40 +774,6 @@ export default function DetailPost() {
       </Helmet>
 
       <main>
-        {/* Menu bar for post */}
-        <div
-          style={{
-            display: "flex",
-            // justifyContent: "flex-start",
-            alignItems: "center",
-            padding: "30px 1px",
-            fontWeight: "300",
-            color: "#072138",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "10px 1px",
-            }}
-            className="breadcrumb-menu"
-          >
-            <a href="/" aria-label="Home link">
-              <p>Home</p>
-            </a>
-            <i className="fa-solid fa-angle-right icon-light"></i>
-            <a href="/search" aria-label="Search link">
-              <p>Search</p>
-            </a>
-            <i className="fa-solid fa-angle-right icon-light"></i>
-            <a href="" aria-label="Post link">
-              <p>Post</p>
-            </a>
-          </div>
-        </div>
-
         {/* Check post if available */}
         {isGettingPost ? (
           <div className="not-found">
@@ -1856,10 +1822,10 @@ export default function DetailPost() {
           <div className="not-found">
             <Suspense fallback={<p>Loading animation...</p>}>
               <DotLottieReact
-                src="../assets/animations/Empty-Ghost.json"
+                data={EmptyGhost}
                 autoplay
                 loop
-                style={{ width: "30%", margin: "auto" }}
+                style={{ width: "35%", margin: "auto" }}
               />
             </Suspense>
             <h1 style={{ fontSize: "40px" }}>This Post Does Not Exist</h1>

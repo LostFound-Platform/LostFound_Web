@@ -16,7 +16,7 @@ export default function NotFound() {
         <div className="not-found">
           <Suspense fallback={<p>Loading animation...</p>}>
             <DotLottieReact
-              src="../assets/animations/Lonely404.json"
+              data={Lonely404}
               autoplay
               loop
               style={{ width: "50%", margin: "auto" }}
