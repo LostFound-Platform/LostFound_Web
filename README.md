@@ -34,6 +34,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ## ✨ Features
 
 ### 🔐 Authentication & Security
+
 - JWT-based authentication system
 - Email verification required for account activation
 - Role-based access control (Student / Admin)
@@ -43,6 +44,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ---
 
 ### 🔍 AI-Powered Matching System
+
 - OpenAI CLIP image embeddings
 - Cosine similarity-based image matching
 - Hybrid search (image + metadata filtering)
@@ -52,6 +54,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ---
 
 ### 📬 Notification System
+
 - Email-driven event notification pipeline
 - Triggers for:
   - New found item postings
@@ -63,6 +66,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ---
 
 ### 🤝 Pickup & Claim Workflow
+
 - Multi-step recovery process:
   - “I will pick up” request
   - Schedule negotiation between users
@@ -74,6 +78,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ---
 
 ### 📊 Admin Dashboard
+
 - Bar chart: Lost / Found / Returned items
 - Pie chart: system distribution overview
 - Line chart: inventory trend over time
@@ -85,6 +90,7 @@ This project solves these issues through **automation, AI, and structured workfl
 ---
 
 ### ♿ Accessibility Features
+
 - Voice-controlled navigation using Web Speech API
 - Hands-free interaction support
 - Accessibility-first UI design
@@ -122,22 +128,27 @@ Email Notification System (SMTP)
 ## 🧠 Tech Stack
 
 ### Frontend
+
 - React.js (Vite)
 - Web Speech API
 
 ### Backend
+
 - ASP.NET Core (.NET 8)
 - SignalR (real-time updates)
 - JWT Authentication
 
 ### AI / Matching
+
 - OpenAI CLIP embeddings
 - Cosine similarity engine
 
 ### Database
+
 - SQL Server
 
 ### Cloud
+
 - Microsoft Azure
 
 ---
@@ -170,79 +181,6 @@ Email Notification System (SMTP)
 - Location-based matching system
 - AI ranking model optimization
 - Mobile-first redesign
-
----
-
-## 🤝 Contributing
-
-We welcome passionate students, builders, and aspiring contributors who want to grow with the project.
-
-To maintain quality and ensure the right fit, contributors join through a structured pathway rather than direct public pull requests.
-
-### Contributor Pathway
-
-**Application Form → Conversation / Interview → Trial Task or Internship Stage → Contributor → Lead**
-
-### Process Overview
-
-1. **Application Form**
-   Submit the application form to express your interest and share your background, skills, and preferred role.
-
-2. **Conversation / Interview**
-   Shortlisted applicants will be invited to a conversation or interview to discuss experience, goals, communication, and team fit.
-
-3. **Trial Task / Internship Stage**
-   Applicants may complete a trial task or participate in a short internship-style evaluation period to demonstrate technical ability, collaboration, and ownership.
-
-4. **Contributor**
-   Candidates who successfully complete the evaluation stage may join the project as contributors.
-
-5. **Lead**
-   Contributors who consistently show strong performance, initiative, communication, and impact may be considered for lead roles based on their level and readiness.
-
-> **Note:** We currently do not accept direct unsolicited pull requests. If you’d like to contribute, please start with the application process.
-
-### If you are already a contributor and want to contribute to this React + Vite project:
-
-1. **Fork the repository**
-2. **Clone your fork**
-
-```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-3. **Install dependencies**
-
-```bash
-npm install
-```
-
-4. **Create a new feature branch**
-
-```bash
-git checkout -b feature/new-feature
-```
-
-5. **Start the development server and make your changes**
-
-```bash
-npm run dev
-```
-
-6. **Commit your changes**
-
-```bash
-git commit -m "feat: add new feature"
-```
-
-7. **Push your branch**
-
-```bash
-git push origin feature/new-feature
-```
-
-8. **Open a Pull Request to the dev branch**
 
 ---
 

@@ -36,5 +36,3 @@ For questions regarding the project or contributor opportunities:
 📧 mycampuslostfound@gmail.com
 
 🌐 https://lfcampus.vercel.app/join-us
-
-> Building a safer and more connected campus community, one recovered item at a time.
