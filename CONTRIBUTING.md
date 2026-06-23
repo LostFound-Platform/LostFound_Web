@@ -1,4 +1,4 @@
-## 🤝 Contributing
+# 🤝 Contributing
 
 We welcome passionate students, builders, and aspiring contributors who want to grow with the project.
 
