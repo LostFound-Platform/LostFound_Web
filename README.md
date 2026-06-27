@@ -177,7 +177,7 @@ Email Notification System (SMTP)
 ## 🧩 Future Improvements
 
 - WebSocket-based push notification system
-- Vector database integration (FAISS / Pinecone)
+- Vector database integration
 - Location-based matching system
 - AI ranking model optimization
 - Mobile-first redesign
