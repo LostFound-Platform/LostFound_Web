@@ -22,6 +22,7 @@ body {
     rgba(255, 220, 189, 0.8)
   );
   background-repeat: no-repeat;
+  overflow-x: hidden;
 }
 
 select {
@@ -84,6 +85,34 @@ a {
   height: 100vh;
   z-index: 1;
   transition: all 0.3s ease-in-out;
+}
+
+.close-overlay-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+}
+
+.close-overlay-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
 }
 
 .form-control-input-label-top {
@@ -695,11 +724,60 @@ footer {
 
 /* AUTHENTICATION CONTAINER */
 .authentication-container {
+  position: relative;
   margin: auto;
   margin-top: 4%;
-  width: 90%;
+  width: 89%;
   display: grid;
   grid-template-columns: auto auto;
+  /* background-image: url(../Image/mascot_Back2Me.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; */
+}
+
+.authentication-container-student {
+  margin: auto;
+  margin-top: 4%;
+  /* margin-left: -20px; */
+  width: 89%;
+  margin-left: 0%;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.authentication-container .img-right {
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  border-radius: 20px;
+  position: absolute;
+  width: 120%;
+  top: 0%;
+  pointer-events: none;
+  left: -8%;
+  margin: auto;
+  filter: drop-shadow(0 4px 8px rgba(249, 115, 0, 0.25));
+}
+
+.authentication-container .img-right img {
+  width: 100%;
+}
+
+.authentication-container .img-right-student {
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  border-radius: 20px;
+  position: absolute;
+  width: 110%;
+  top: 0%;
+  pointer-events: none;
+  left: 20%;
+  margin: auto;
+  filter: drop-shadow(0 4px 8px rgba(249, 115, 0, 0.25));
+}
+
+.authentication-container .img-right-student img {
+  width: 100%;
 }
 
 .form-box {
@@ -711,18 +789,6 @@ footer {
   padding: 40px;
   border-radius: 20px;
   overflow: hidden;
-}
-
-.authentication-container .img-right {
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  width: 70%;
-  margin: auto;
-}
-
-.authentication-container .img-right img {
-  width: 100%;
 }
 
 .form-control-authentication {
@@ -763,6 +829,36 @@ footer {
   top: -11px;
   color: #ec7207;
   font-size: 14px;
+}
+
+.search-universities {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+}
+
+.drop-search {
+  position: absolute;
+  background-color: #ec7207;
+  border-radius: 20px;
+  top: 50px;
+  z-index: 1;
+  color: white;
+  padding: 10px 20px;
+  width: 310px;
+  max-height: 300px;
+  overflow-y: scroll;
+  box-shadow: 0 4px 8px rgba(249, 115, 0, 0.25);
+}
+
+.drop-search li a {
+  padding: 10px 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.drop-search li:hover a {
+  color: #000;
+  font-weight: bold;
 }
 
 .btn-authentication {
@@ -821,6 +917,26 @@ footer {
   width: 100%;
 }
 
+.signup-icon-campus {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 26px;
+  border-radius: 20px;
+  background: #ec7207;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  box-shadow: 0 12px 24px rgba(249, 115, 0, 0.25);
+}
+
+.subtitle-sign-up-campus {
+  margin: 6px 0 30px 0;
+  font-size: 16px;
+  color: #6b7280;
+  font-weight: 400;
+}
+
 /* Modal Agree Policy */
 /* Container */
 .agree-container {
@@ -875,6 +991,7 @@ footer {
 .text a {
   text-decoration: underline;
   font-weight: 500;
+  color: #ec7207;
 }
 
 .text a:hover {
@@ -1071,6 +1188,18 @@ footer {
 .nav-item-custom {
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #fffde3ff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .custom-list li:hover {
@@ -2134,7 +2263,7 @@ th {
   width: 70%;
   /* max-width: 820px; */
   height: 90vh;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px 24px 20px;
   display: flex;
   flex-direction: column;
@@ -2198,7 +2327,7 @@ th {
   width: 70%;
   /* max-width: 820px; */
   height: 90vh;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px 24px 20px;
   display: flex;
   flex-direction: column;
@@ -2645,7 +2774,7 @@ th {
 }
 
 .join-page .primary-btn {
-  background: #f97300;
+  background: #ec7207;
   color: white;
   border: none;
   border-radius: 13px;
@@ -2727,7 +2856,7 @@ th {
 }
 
 .join-page .icon {
-  color: #f97300;
+  color: #ec7207;
   font-size: 26px;
   margin-bottom: 28px;
   font-weight: 900;
@@ -2775,7 +2904,7 @@ th {
 
 .join-page .role-top span {
   background: #ffe0c7;
-  color: #f97300;
+  color: #ec7207;
   padding: 7px 13px;
   border-radius: 999px;
   font-size: 11px;
@@ -2784,13 +2913,13 @@ th {
 }
 
 .join-page .role-top b {
-  color: #f97300;
+  color: #ec7207;
 }
 
 .join-page .role-card a {
   display: inline-block;
   margin-top: 18px;
-  color: #f97300;
+  color: #ec7207;
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
@@ -2802,7 +2931,7 @@ th {
 }
 
 .join-page .contact-card {
-  background: #f97300;
+  background: #ec7207;
   color: white;
   border-radius: 12px;
   padding: 42px 34px;
@@ -2825,7 +2954,7 @@ th {
   width: 100%;
   margin-top: 22px;
   background: white;
-  color: #f97300;
+  color: #ec7207;
   font-weight: 800;
 }
 
@@ -2863,7 +2992,7 @@ th {
   height: 54px;
   margin: 0 auto 22px;
   background: white;
-  color: #f97300;
+  color: #ec7207;
   border: 1px solid #ffd1b4;
   border-radius: 13px;
   display: grid;
@@ -2872,7 +3001,7 @@ th {
 }
 
 .join-page .step.active div {
-  background: #f97300;
+  background: #ec7207;
   color: white;
 }
 
@@ -3188,7 +3317,6 @@ th {
   justify-content: center;
   align-items: center;
   z-index: 999;
-  font-family: Inter, Arial, sans-serif;
 }
 
 .campus-overlay .campus-modal {
@@ -3229,8 +3357,8 @@ th {
   height: 64px;
   margin: 0 auto 28px;
   background: #fff1e8;
-  color: #f97300;
-  border-radius: 16px;
+  color: #ec7207;
+  border-radius: 20px;
   display: grid;
   place-items: center;
   font-size: 28px;
@@ -3267,7 +3395,7 @@ th {
 
 .campus-overlay .campus-card:hover,
 .campus-overlay .campus-card.active {
-  border-color: #f97300;
+  border-color: #ec7207;
   box-shadow: 0 10px 25px rgba(249, 115, 0, 0.15);
   transform: translateY(-2px);
 }

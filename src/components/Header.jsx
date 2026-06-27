@@ -459,20 +459,7 @@ export default function Header() {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "0 20px",
-          backgroundColor: "#fffde3ff",
-          position: "sticky",
-          top: "0",
-          zIndex: "1",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        }}
-        className="nav"
-      >
+      <div className="nav">
         <a href="/" aria-label="Back2Me homepage link">
           <h1
             className="homepageh1"
@@ -724,6 +711,18 @@ export default function Header() {
 
       {/* Overlay processing search by image */}
       <div className="overlay" id="overlay-search-image">
+        <button
+          className="close-overlay-btn"
+          onClick={() => {
+            const overlay = document.getElementById("overlay-search-image");
+            overlay.style.visibility = "hidden";
+            overlay.style.opacity = "0";
+            document.body.style.overflow = "auto";
+          }}
+        >
+          <i className="fa-solid fa-xmark"></i>
+        </button>
+
         <Suspense fallback={<p>Loading animation...</p>}>
           <DotLottieReact
             data={JSON.stringify(DocumentScan)}

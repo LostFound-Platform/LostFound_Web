@@ -5,8 +5,10 @@ import { useSearchParams } from "react-router-dom";
 // const Lottie = lazy(() => import("lottie-react"));
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Sucesso from "../assets/animations/Sucesso.json";
+import axios from "axios";
+import { debounce } from "lodash";
 
-export default function Authentication() {
+export default function AuthenticationInstitution() {
   // Variables
   const images = [
     "https://img.icons8.com/papercut/120/clock.png",
@@ -30,7 +32,11 @@ export default function Authentication() {
   ];
   const initialState = images.map(() => ({ isActive: false }));
 
+  const [getUniversitiesResults, setGetUniversitiesResults] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(initialState);
+  const [query, setQuery] = useState("");
+  const [isSearchInstitution, setIsSearchInstitution] = useState(false);
+  const [isSearchingInstitution, setIsSearchingInstitution] = useState(false);
   let [isAgreeTerm, setIsAgreeTerm] = useState(false);
   let [isRequestingResetPassword, setIsRequestingResetPassword] =
     useState(false);
@@ -53,16 +59,16 @@ export default function Authentication() {
   const [searchParams] = new useSearchParams();
   let [newPassword, setNewPassword] = useState("");
   let [confirmNewPassword, setConfirmNewPassword] = useState("");
-  let [firstName, setFirstName] = useState("");
-  let [lastName, setLastName] = useState("");
-  let [email, setEmail] = useState("");
+  let [name, setName] = useState("");
+  let [campusEmail, setCampusEmail] = useState("");
+  let [campusPhone, setCampusPhone] = useState("");
   let [passwordSignUp, setPasswordSignUp] = useState("");
   let [confirmPasswordSignUp, setConfirmPasswordSignUp] = useState("");
-  let [studentId, setStudentId] = useState("");
+  let [campusAddress, setCampusAddress] = useState("");
+  let [campusState, setCampusState] = useState("");
+  let [campusWebsite, setCampusWebsite] = useState("");
   let [studentIdOrEmailForSignIn, setStudentIdOrEmailForSignIn] = useState("");
   let [isInProcessing, setIsInProcessing] = useState(false);
-  let [isTypeStudentId, setIsTypeStudentId] = useState(false);
-  let [isValidStudentId, setIsValidStudentId] = useState(false);
   let [isValidPassword, setIsValidPassword] = useState(false);
   let [isExistSpecialChar, setIsExistSpecialChar] = useState(false);
   let [isExistNumber, setIsExistNumber] = useState(false);
@@ -75,6 +81,64 @@ export default function Authentication() {
     useState(false);
 
   // Functions
+  // Handle get universities information from outside API
+  const handleGetUniversities = async (query) => {
+    if (!query.trim()) {
+      setIsSearchInstitution(false);
+      setGetUniversitiesResults([]);
+      return;
+    }
+
+    try {
+      setIsSearchingInstitution(true);
+
+      const response = await axios.get(
+        `http://universities.hipolabs.com/search`,
+        {
+          params: {
+            country: "United States",
+            name: query,
+          },
+        },
+      );
+
+      setGetUniversitiesResults(response.data);
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.message || "Server error";
+
+        setMsgSignIn({
+          msg: message,
+          status: status,
+        });
+      } else if (error.request) {
+        // If offline
+        if (!navigator.onLine) {
+          setMsgSignIn({
+            msg: "Network error. Please check your internet connection",
+            status: 0,
+          });
+        } else {
+          // Server offline
+          setMsgSignIn({
+            msg: "Server is currently unavailable. Please try again later.",
+            status: 503,
+          });
+        }
+      } else {
+        // Other errors
+        setMsgSignIn({
+          msg: "Something went wrong. Please try again",
+          status: 500,
+        });
+      }
+    } finally {
+      setIsInProcessing(false);
+      setIsSearchingInstitution(false);
+    }
+  };
+
   // Handle form submission for Sign Up
   const handleSubmitSignUp = async (e) => {
     e.preventDefault();
@@ -90,10 +154,12 @@ export default function Authentication() {
 
     try {
       const payload = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        studentId: Number(studentId),
+        firstName: name,
+        campusEmail: campusEmail,
+        campusPhone: campusPhone,
+        campusAddress: campusAddress,
+        campusState: campusState,
+        campusWebsite: campusWebsite,
         password: confirmPasswordSignUp,
         pickImage1: imagePicked1.toString(),
         pickImage2: imagePicked2.toString(),
@@ -470,11 +536,11 @@ export default function Authentication() {
     const imagePicked1 = pickedIndexes[0];
     const imagePicked2 = pickedIndexes[1];
     console.log(
-      `/Users/confirm-reset-images/${email}/${imagePicked1}/${imagePicked2}`,
+      `/Users/confirm-reset-images/${campusPhone}/${imagePicked1}/${imagePicked2}`,
     );
     try {
       const responseSignInUser = await axiosInstance.put(
-        `/Users/confirm-reset-images/${email}/${imagePicked1}/${imagePicked2}`,
+        `/Users/confirm-reset-images/${campusPhone}/${imagePicked1}/${imagePicked2}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -707,15 +773,14 @@ export default function Authentication() {
   // Validate Sign Up inputs
   function validateSignUp() {
     if (
-      firstName.trim() == "" ||
-      lastName.trim() == "" ||
-      email.trim() == "" ||
-      studentId.trim() == "" ||
+      name.trim() == "" ||
+      campusEmail.trim() == "" ||
+      campusPhone.trim() == "" ||
+      campusAddress.trim() == "" ||
       passwordSignUp.trim() == "" ||
       confirmPasswordSignUp.trim() == "" ||
       !isMatchPassword ||
       !isAgreeTerm ||
-      !isValidStudentId ||
       !isValidPassword
     ) {
       return false;
@@ -752,7 +817,7 @@ export default function Authentication() {
 
       if (response.status === 200) {
         setIsEmailVerified(true);
-        setEmail(response.data.email);
+        setCampusPhone(response.data.email);
 
         // window.dispatchEvent(
         //   new CustomEvent("app-error", {
@@ -836,14 +901,14 @@ export default function Authentication() {
   useEffect(() => {
     validateSignUp();
   }, [
-    firstName,
-    lastName,
-    studentId,
-    email,
+    name,
+    campusEmail,
+    campusAddress,
+    campusPhone,
+    campusWebsite,
     passwordSignUp,
     confirmPasswordSignUp,
     isAgreeTerm,
-    isValidStudentId,
   ]);
 
   useEffect(() => {
@@ -851,15 +916,6 @@ export default function Authentication() {
       handleVerifyEmail();
     }
   }, []);
-
-  // Check student id if valid
-  useEffect(() => {
-    if (studentId.length == 9) {
-      setIsValidStudentId(true);
-    } else {
-      setIsValidStudentId(false);
-    }
-  }, [studentId]);
 
   // Handle with param in url for sign in
   useEffect(() => {
@@ -899,6 +955,14 @@ export default function Authentication() {
       }
     }
   }, []);
+
+  // Reduce spam call API
+  const debouncedFetch = debounce(handleGetUniversities, 300);
+
+  useEffect(() => {
+    debouncedFetch(query);
+    return debouncedFetch.cancel; // Cleanup
+  }, [query]);
 
   // Check password if valid
   useEffect(() => {
@@ -1024,11 +1088,11 @@ export default function Authentication() {
     <>
       {/* Helmet for setting the page title */}
       <Helmet>
-        <title>Authentication | Back2Me </title>
+        <title>Authentication - Institution | Back2Me </title>
       </Helmet>
 
       <main>
-        <div className="authentication-container authentication-container-student">
+        <div className="authentication-container">
           <div className="form-box">
             {sessionStorage.getItem("requiredSignIn") && (
               <h1
@@ -1058,20 +1122,17 @@ export default function Authentication() {
               >
                 <div className="sign-up">
                   <div style={{ marginBottom: "20px" }}>
+                    <div className="signup-icon-campus">
+                      <i className="fas fa-graduation-cap"></i>
+                    </div>
                     <h1
                       style={{ margin: 0, fontSize: "40px", fontWeight: "700" }}
                     >
                       Sign Up
                     </h1>
-                    <p
-                      style={{
-                        margin: "6px 0 0 0",
-                        fontSize: "16px",
-                        color: "#6b7280",
-                        fontWeight: "400",
-                      }}
-                    >
-                      For Student Only
+                    <p className="subtitle-sign-up-campus">
+                      Create your administrator account to register and manage
+                      your campus lost-and-found system.
                     </p>
                   </div>
                   <p
@@ -1082,6 +1143,84 @@ export default function Authentication() {
                   >
                     {msgSignIn.msg}
                   </p>
+
+                  <div
+                    style={{ display: "flex", gap: "20px" }}
+                    className="form-sign-up-last-first"
+                  >
+                    <div className="form-control-authentication search-universities">
+                      <div>
+                        <input
+                          type="text"
+                          name=""
+                          id="campus-name"
+                          placeholder="Ex: Georgia State"
+                          className="form-control-input"
+                          autoFocus
+                          required
+                          onChange={(e) => {
+                            setIsSearchInstitution(true);
+                            setQuery(e.target.value);
+                            setName(e.target.value);
+                          }}
+                        />
+                        <label htmlFor="campus-name">Name*</label>
+                      </div>
+
+                      {isSearchInstitution &&
+                        (!isSearchingInstitution ? (
+                          getUniversitiesResults.length > 0 ? (
+                            <ul className="drop-search">
+                              {getUniversitiesResults.map((item, index) => (
+                                <li
+                                  key={index}
+                                  className="p-2 cursor-pointer nav-item"
+                                >
+                                  <a
+                                    // href={`/client/${item.victimId}`}
+                                    className="list-group-item"
+                                    aria-label="victim"
+                                  >
+                                    {item.name}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <ul className="drop-search">
+                              <li>
+                                <i className="fa-solid fa-magnifying-glass"></i>{" "}
+                                No results found
+                              </li>
+                            </ul>
+                          )
+                        ) : (
+                          <ul className="drop-search">
+                            <li>
+                              <span>
+                                <i className="fas fa-spinner fa-spin"></i>{" "}
+                                Searching...
+                              </span>
+                            </li>
+                          </ul>
+                        ))}
+                    </div>
+
+                    <div className="form-control-authentication">
+                      <input
+                        type="email"
+                        name=""
+                        id="campus-email"
+                        placeholder="Ex: email@gtc.edu"
+                        className="form-control-input"
+                        onChange={(e) => {
+                          setCampusEmail(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="campus-email">Campus Email</label>
+                    </div>
+                  </div>
+
                   <div
                     style={{ display: "flex", gap: "20px" }}
                     className="form-sign-up-last-first"
@@ -1090,81 +1229,88 @@ export default function Authentication() {
                       <input
                         type="text"
                         name=""
-                        id="first-name"
-                        placeholder="Ex: Jason"
+                        id="campus-address"
+                        placeholder="Ex: 5150 Regency Dr"
                         className="form-control-input"
-                        autoFocus
                         required
                         onChange={(e) => {
-                          setFirstName(e.target.value);
+                          setCampusAddress(e.target.value);
                         }}
                       />
-                      <label htmlFor="first-name">First Name*</label>
+                      <label htmlFor="campus-address">Address*</label>
                     </div>
+
                     <div className="form-control-authentication">
                       <input
                         type="text"
                         name=""
-                        id="last-name"
-                        placeholder="Ex: PG"
+                        id="campus-phone"
+                        placeholder="Ex: 123-456-7890"
+                        className="form-control-input"
+                        onInput={(e) => {
+                          // Delete all non-numeric characters
+                          e.target.value = e.target.value.replace(/\D/g, "");
+
+                          // The limit for the number of digits entered is 10.
+                          if (e.target.value.length > 10) {
+                            e.target.value = e.target.value.slice(0, 10);
+                          }
+                          setCampusPhone(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="campus-phone">Phone number</label>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{ display: "flex", gap: "20px" }}
+                    className="form-sign-up-last-first"
+                  >
+                    <div className="form-control-authentication">
+                      <input
+                        type="text"
+                        name=""
+                        id="campus-state"
+                        placeholder="Ex: Atlanta"
                         className="form-control-input"
                         required
                         onChange={(e) => {
-                          setLastName(e.target.value);
+                          setCampusState(e.target.value);
                         }}
                       />
-                      <label htmlFor="last-name">Last Name*</label>
+                      <label htmlFor="campus-state">City*</label>
+                    </div>
+
+                    <div className="form-control-authentication">
+                      <input
+                        type="text"
+                        name=""
+                        id="campus-website"
+                        placeholder="Ex: example.com"
+                        className="form-control-input"
+                        onChange={(e) => {
+                          setCampusWebsite(e.target.value);
+                        }}
+                      />
+                      <label htmlFor="campus-website">Website</label>
                     </div>
                   </div>
+
                   <div className="form-control-authentication">
                     <input
                       type="text"
                       name=""
-                      id="student-id-sign-up"
-                      placeholder="Ex: 202434567"
+                      id="campus-state"
+                      placeholder="Ex: Georgia"
                       className="form-control-input"
                       required
                       onChange={(e) => {
-                        setStudentId(e.target.value);
-                        setIsTypeStudentId(true);
-                      }}
-                      onInput={(e) => {
-                        e.target.value = e.target.value
-                          .replace(/[^0-9]/g, "") // Remove non-numeric characters
-                          .slice(0, 9); // Allow only numbers, max length 9
+                        setCampusState(e.target.value);
                       }}
                     />
-                    <label htmlFor="student-id-sign-up">Student ID*</label>
+                    <label htmlFor="campus-state">State*</label>
                   </div>
-                  {studentId.trim() !== "" &&
-                    isTypeStudentId &&
-                    studentId.length < 9 && (
-                      <div
-                        className="form-control-authentication"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>Student ID must be 9 digits long</p>
-                      </div>
-                    )}
-                  <div className="form-control-authentication">
-                    <input
-                      type="email"
-                      name=""
-                      id="email"
-                      placeholder="Ex: demo@ex.io"
-                      className="form-control-input"
-                      required
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                    />
-                    <label htmlFor="email">Email*</label>
-                  </div>
+
                   <div className="form-control-authentication">
                     <input
                       type={isClickShowPasswordSignUp ? "text" : "password"}
@@ -1366,7 +1512,7 @@ export default function Authentication() {
                       setIsClickSignIn(false);
                     }}
                   >
-                    <i className="fa-solid fa-user-plus"></i> Sign Up
+                    <i className="fa-solid fa-building"></i> Sign Up
                   </button>
                   <p style={{ color: "#5d6d7c", fontSize: "14px" }}>
                     Already have an account?{" "}
@@ -1400,9 +1546,9 @@ export default function Authentication() {
                       fontSize: "14px",
                     }}
                   >
-                    Sign up as a campus?{" "}
+                    Sign up as an student?{" "}
                     <a
-                      href="authenticate-institution"
+                      href="authentication"
                       style={{
                         color: "#072138",
                         textDecoration: "underline",
@@ -1421,21 +1567,21 @@ export default function Authentication() {
               >
                 <div className="sign-in">
                   <div style={{ marginBottom: "20px" }}>
-                    <h1
-                      style={{ margin: 0, fontSize: "40px", fontWeight: "700" }}
-                    >
-                      Sign In
-                    </h1>
-                    <p
-                      style={{
-                        margin: "6px 0 0 0",
-                        fontSize: "16px",
-                        color: "#6b7280",
-                        fontWeight: "400",
-                      }}
-                    >
-                      For Student Only
-                    </p>
+                    <div style={{ marginBottom: "20px" }}>
+                      <div className="signup-icon-campus">
+                        <i className="fas fa-graduation-cap"></i>
+                      </div>
+                      <h1
+                        style={{
+                          margin: 0,
+                          fontSize: "40px",
+                          fontWeight: "700",
+                        }}
+                      >
+                        Sign In
+                      </h1>
+                      <p className="subtitle-sign-up-campus">For Campus Only</p>
+                    </div>
                   </div>
                   <p
                     style={{
@@ -1584,9 +1730,9 @@ export default function Authentication() {
                       fontSize: "14px",
                     }}
                   >
-                    Sign in with campus account?{" "}
+                    Sign in with student account?{" "}
                     <a
-                      href="authenticate-institution?with=sign-in"
+                      href="authentication?with=sign-in"
                       style={{
                         color: "#072138",
                         textDecoration: "underline",
@@ -1626,9 +1772,9 @@ export default function Authentication() {
                       className="form-control-input"
                       required
                       disabled={isEmailVerified}
-                      value={email}
+                      value={campusPhone}
                       onChange={(e) => {
-                        setEmail(e.target.value);
+                        setCampusPhone(e.target.value);
                       }}
                     />
                     <label htmlFor="email-forgot-password">Email*</label>
@@ -1896,9 +2042,9 @@ export default function Authentication() {
                     {!isEmailVerified && (
                       <button
                         className="btn-authentication"
-                        disabled={isCheckingEmail || email.trim() === ""}
+                        disabled={isCheckingEmail || campusPhone.trim() === ""}
                         onClick={() => {
-                          handleSubmitCheckEmailResetPassword(email);
+                          handleSubmitCheckEmailResetPassword(campusPhone);
                         }}
                       >
                         {isCheckingEmail ? (
@@ -1922,7 +2068,7 @@ export default function Authentication() {
                           isChangedPassword
                         }
                         onClick={() => {
-                          handleSubmitConfirmResetPassword(email);
+                          handleSubmitConfirmResetPassword(campusPhone);
                         }}
                       >
                         {isRequestingResetPassword ? (
@@ -1971,8 +2117,12 @@ export default function Authentication() {
               </form>
             </div>
           </div>
-          <div className="img-right img-right-student">
-            <img src="../Image/logo-2.png" alt="mascot" loading="lazy" />
+          <div className="img-right">
+            <img
+              src="../Image/mascot_Back2Me.png"
+              alt="mascot"
+              loading="lazy"
+            />
           </div>
         </div>
       </main>
@@ -2069,7 +2219,6 @@ export default function Authentication() {
               document.getElementById("policyModal").style.display = "none";
               document.body.style.overflow = "auto";
 
-              // validateSignUp();
               setIsAgreeTerm(true);
             }}
             aria-label="Close terms and recovery guide modal link"
@@ -2172,7 +2321,7 @@ export default function Authentication() {
                   ? "Sign In Account"
                   : isChangeImages
                     ? "Change images"
-                    : "Sign Up Account"}{" "}
+                    : "Sign Up Campus"}{" "}
                 <i className="fa-solid fa-arrow-right"></i>
               </>
             )}

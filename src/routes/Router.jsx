@@ -22,6 +22,7 @@ import VerifyEmail from "../pages/VerifyEmail";
 import UserDetail from "../pages/UserDetail";
 import JoinUs from "../pages/JoinUs";
 import Contact from "../pages/Contact";
+import AuthenticationInstitution from "../pages/AuthenticationInstitution";
 
 export default function Router() {
   return (
@@ -51,6 +52,10 @@ export default function Router() {
             <Route path="/me" element={<Profile />} />
             <Route path="/profile/*" element={<Profile />} />
             <Route path="/authentication/*" element={<Authentication />} />
+            <Route
+              path="/authenticate-institution/*"
+              element={<AuthenticationInstitution />}
+            />
             <Route path="/lost-and-found" element={<LostAndFound />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/my-posts" element={<MyPost />} />
