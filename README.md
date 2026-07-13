@@ -17,6 +17,14 @@ This is designed as a **real-world engineering system**, not a CRUD application.
 
 ---
 
+## 🏆 Project History
+
+- 2026: Originally built for the FBLA Website Coding & Development competition.
+- 2026: Selected as a Georgia State Finalist.
+- Present: Actively maintained and expanded as a long-term software engineering project.
+
+---
+
 ## ❗ Problem Statement
 
 The current system at schools suffers from:
@@ -181,14 +189,6 @@ Email Notification System (SMTP)
 - Location-based matching system
 - AI ranking model optimization
 - Mobile-first redesign
-
----
-
-## 🏆 Project History
-
-- 2026: Originally built for the FBLA Website Coding & Development competition.
-- 2026: Selected as a Georgia State Finalist.
-- Present: Actively maintained and expanded as a long-term software engineering project.
 
 ---
 
