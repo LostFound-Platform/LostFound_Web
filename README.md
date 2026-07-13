@@ -184,4 +184,12 @@ Email Notification System (SMTP)
 
 ---
 
+## 🏆 Project History
+
+- 2026: Originally built for the FBLA Website Coding & Development competition.
+- 2026: Selected as a Georgia State Finalist.
+- Present: Actively maintained and expanded as a long-term software engineering project.
+
+---
+
 ⭐ If you found this project useful, consider giving it a star.
