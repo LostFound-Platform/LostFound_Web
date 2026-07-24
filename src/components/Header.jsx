@@ -606,7 +606,7 @@ export default function Header() {
                   <a href="/my-posts" aria-label="My posts link">
                     <i className="fa-solid fa-file-lines"></i> My Post
                   </a>
-                  {user.role === "Admin" && (
+                  {user.role === "SystemAdmin" && (
                     <a
                       href="/dashboard/report"
                       aria-label="Admin dashboard link"
@@ -1268,7 +1268,7 @@ export default function Header() {
               >
                 Okay
               </button>
-              {user.role === "Admin" && (
+              {user.role === "SystemAdmin" && (
                 <button
                   aria-label="Print this code button"
                   className="btn-yellow"

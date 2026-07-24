@@ -194,7 +194,7 @@ export default function SidebarProfile() {
           </a>
 
           {/* Dashboard */}
-          {user.role === "Admin" && (
+          {user.role === "SystemAdmin" && (
             <>
               <a
                 href="/dashboard"
@@ -273,7 +273,20 @@ export default function SidebarProfile() {
                 >
                   Pick-Up Requests
                 </a>
+                <a
+                  href="/dashboard/institution-requests"
+                  className={
+                    isActive("/dashboard/institution-requests") ? "active" : ""
+                  }
+                  aria-label="Institution Requests link"
+                >
+                  Institution Requests
+                </a>
               </div>
+
+              <button aria-label="Add new school button" className="btn">
+                <i className="fa-solid fa-plus"></i> Add New School
+              </button>
             </>
           )}
 

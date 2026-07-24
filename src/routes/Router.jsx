@@ -23,6 +23,9 @@ import UserDetail from "../pages/UserDetail";
 import JoinUs from "../pages/JoinUs";
 import Contact from "../pages/Contact";
 import AuthenticationInstitution from "../pages/AuthenticationInstitution";
+import Partnership from "../pages/Partnership";
+import InstitutionRequests from "../pages/InstitutionRequests";
+import ReviewApplication from "../pages/ReviewApplication";
 
 export default function Router() {
   return (
@@ -45,6 +48,7 @@ export default function Router() {
             <Route path="/*" element={<NotFound />} />
             <Route path="/about" element={<About />} />
             <Route path="/join-us" element={<JoinUs />} />
+            <Route path="/partnership" element={<Partnership />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/search" element={<Search />} />
             <Route path="/detail-post/*" element={<DetailPost />} />
@@ -62,6 +66,14 @@ export default function Router() {
             <Route path="/verification-codes" element={<VerificationCodes />} />
             <Route path="/verify-email/*" element={<VerifyEmail />} />
             <Route path="/dashboard/report" element={<Dashboard />} />
+            <Route
+              path="/dashboard/institution-requests"
+              element={<InstitutionRequests />}
+            />
+            <Route
+              path="/dashboard/review-application/*"
+              element={<ReviewApplication />}
+            />
             <Route
               path="/dashboard/confirm-received"
               element={<ConfirmReceived />}

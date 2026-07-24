@@ -1426,7 +1426,7 @@ export default function ModalReportStuff() {
               >
                 Okay
               </button>
-              {/* {user.role === "Admin" && (
+              {/* {user.role === "SystemAdmin" && (
                 <button
                   className="btn-yellow"
                   onClick={() => {

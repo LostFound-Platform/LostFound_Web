@@ -103,11 +103,11 @@ export default function JoinUs() {
 
         <section className="about section">
           <div className="about-text">
-            <h2>What is Campus Lost & Found?</h2>
+            <h2>What is Back2Me?</h2>
             <p>
-              Campus Lost & Found is a student-led platform being developed to
-              improve how lost and found items are reported, discovered, and
-              recovered on campus.
+              Back2Me is a student-led platform being developed to improve how
+              lost and found items are reported, discovered, and recovered on
+              campus.
             </p>
             <p>
               The project is currently being piloted at Gwinnett Technical
@@ -118,7 +118,7 @@ export default function JoinUs() {
 
           <img
             src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900"
-            alt="Campus Lost and Found dashboard"
+            alt="Back2Me dashboard"
           />
         </section>
 

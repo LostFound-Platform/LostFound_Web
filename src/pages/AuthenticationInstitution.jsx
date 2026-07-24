@@ -59,17 +59,24 @@ export default function AuthenticationInstitution() {
   const [searchParams] = new useSearchParams();
   let [newPassword, setNewPassword] = useState("");
   let [confirmNewPassword, setConfirmNewPassword] = useState("");
-  let [name, setName] = useState("");
+  let [institutionName, setInstitutionName] = useState("");
   let [campusEmail, setCampusEmail] = useState("");
   let [campusPhone, setCampusPhone] = useState("");
   let [passwordSignUp, setPasswordSignUp] = useState("");
   let [confirmPasswordSignUp, setConfirmPasswordSignUp] = useState("");
   let [campusAddress, setCampusAddress] = useState("");
+  let [otherCampusAddress, setOtherCampusAddress] = useState("");
   let [campusState, setCampusState] = useState("");
-  let [campusWebsite, setCampusWebsite] = useState("");
+  let [otherCampusState, setOtherCampusState] = useState("");
+  let [institutionWebsite, setInstitutionWebsite] = useState("");
+  let [campusCity, setCampusCity] = useState("");
+  let [otherCampusCity, setOtherCampusCity] = useState("");
   let [studentIdOrEmailForSignIn, setStudentIdOrEmailForSignIn] = useState("");
+  let [selectedInstitution, setSelectedInstitution] = useState(false);
   let [isInProcessing, setIsInProcessing] = useState(false);
   let [isValidPassword, setIsValidPassword] = useState(false);
+  let [isOtherCampus, setIsOtherCampus] = useState(false);
+  let [isShowOtherCampus, setIsShowOtherCampus] = useState(false);
   let [isExistSpecialChar, setIsExistSpecialChar] = useState(false);
   let [isExistNumber, setIsExistNumber] = useState(false);
   let [isClickSignIn, setIsClickSignIn] = useState(false);
@@ -93,13 +100,7 @@ export default function AuthenticationInstitution() {
       setIsSearchingInstitution(true);
 
       const response = await axios.get(
-        `http://universities.hipolabs.com/search`,
-        {
-          params: {
-            country: "United States",
-            name: query,
-          },
-        },
+        `https://localhost:44317/api/Institution/search?query=${query}`,
       );
 
       setGetUniversitiesResults(response.data);
@@ -154,12 +155,14 @@ export default function AuthenticationInstitution() {
 
     try {
       const payload = {
-        firstName: name,
+        institutionName: institutionName,
         campusEmail: campusEmail,
         campusPhone: campusPhone,
-        campusAddress: campusAddress,
-        campusState: campusState,
-        campusWebsite: campusWebsite,
+        institutionAddress: campusAddress,
+        institutionCity: campusCity,
+        institutionState: campusState,
+        institutionPhone: campusPhone,
+        institutionWebsite: institutionWebsite,
         password: confirmPasswordSignUp,
         pickImage1: imagePicked1.toString(),
         pickImage2: imagePicked2.toString(),
@@ -167,13 +170,17 @@ export default function AuthenticationInstitution() {
         role: "Student",
       };
 
-      const response = await axiosInstance.post("/Users/sign-up", payload, {
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axiosInstance.post(
+        "/Institution/sign-up",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // withCredentials: true,
+          validateStatus: (status) => status === 200 || status === 401,
         },
-        // withCredentials: true,
-        validateStatus: (status) => status === 200 || status === 401,
-      });
+      );
 
       // Success
       if (response.status == 200) {
@@ -773,7 +780,7 @@ export default function AuthenticationInstitution() {
   // Validate Sign Up inputs
   function validateSignUp() {
     if (
-      name.trim() == "" ||
+      institutionName.trim() == "" ||
       campusEmail.trim() == "" ||
       campusPhone.trim() == "" ||
       campusAddress.trim() == "" ||
@@ -901,11 +908,11 @@ export default function AuthenticationInstitution() {
   useEffect(() => {
     validateSignUp();
   }, [
-    name,
+    institutionName,
     campusEmail,
     campusAddress,
     campusPhone,
-    campusWebsite,
+    institutionWebsite,
     passwordSignUp,
     confirmPasswordSignUp,
     isAgreeTerm,
@@ -1157,14 +1164,21 @@ export default function AuthenticationInstitution() {
                           placeholder="Ex: Georgia State"
                           className="form-control-input"
                           autoFocus
+                          value={institutionName}
                           required
                           onChange={(e) => {
                             setIsSearchInstitution(true);
                             setQuery(e.target.value);
-                            setName(e.target.value);
+                            setInstitutionName(e.target.value);
+                            setSelectedInstitution(false);
+                          }}
+                          onBlur={() => {
+                            if (!selectedInstitution) {
+                              setInstitutionName("");
+                            }
                           }}
                         />
-                        <label htmlFor="campus-name">Name*</label>
+                        <label htmlFor="campus-name">Institution Name*</label>
                       </div>
 
                       {isSearchInstitution &&
@@ -1175,22 +1189,26 @@ export default function AuthenticationInstitution() {
                                 <li
                                   key={index}
                                   className="p-2 cursor-pointer nav-item"
+                                  onClick={() => {
+                                    setInstitutionName(item.name);
+                                    setIsSearchInstitution(false);
+                                    setSelectedInstitution(true);
+                                    setInstitutionWebsite(item.website);
+                                    setCampusAddress(item.address);
+                                    setCampusCity(item.city);
+                                    setCampusState(item.state);
+                                    setIsShowOtherCampus(true);
+                                  }}
                                 >
-                                  <a
-                                    // href={`/client/${item.victimId}`}
-                                    className="list-group-item"
-                                    aria-label="victim"
-                                  >
-                                    {item.name}
-                                  </a>
+                                  {item.name}
                                 </li>
                               ))}
                             </ul>
                           ) : (
                             <ul className="drop-search">
                               <li>
-                                <i className="fa-solid fa-magnifying-glass"></i>{" "}
-                                No results found
+                                <i className="fa-brands fa-sistrix"></i> No
+                                results found
                               </li>
                             </ul>
                           )
@@ -1213,13 +1231,88 @@ export default function AuthenticationInstitution() {
                         id="campus-email"
                         placeholder="Ex: email@gtc.edu"
                         className="form-control-input"
+                        value={campusEmail}
+                        required
                         onChange={(e) => {
                           setCampusEmail(e.target.value);
                         }}
                       />
-                      <label htmlFor="campus-email">Campus Email</label>
+                      <label htmlFor="campus-email">Institution Email*</label>
                     </div>
                   </div>
+
+                  {isShowOtherCampus && (
+                    <div className="form-control-authentication">
+                      <div className="other-campus-container">
+                        <label className="checkbox-container">
+                          <input
+                            type="checkbox"
+                            checked={isOtherCampus}
+                            onChange={(e) => setIsOtherCampus(e.target.checked)}
+                          />
+                          Other Campus?
+                        </label>
+
+                        {isOtherCampus && (
+                          <div className="other-campus-form">
+                            <p className="other-campus-note">
+                              Your institution information below refers to the
+                              main campus. If you belong to another campus,
+                              provide its details below.
+                            </p>
+
+                            <div className="form-control-authentication">
+                              <input
+                                type="text"
+                                id="other-campus-address"
+                                className="form-control-input"
+                                placeholder="Ex: 980 South Cobb Dr"
+                                onChange={(e) => {
+                                  setOtherCampusAddress(e.target.value);
+                                }}
+                              />
+                              <label htmlFor="other-campus-address">
+                                Campus Address
+                              </label>
+                            </div>
+
+                            <div
+                              style={{ display: "flex", gap: "20px" }}
+                              className="form-sign-up-last-first"
+                            >
+                              <div className="form-control-authentication">
+                                <input
+                                  type="text"
+                                  id="other-campus-city"
+                                  className="form-control-input"
+                                  placeholder="Ex: Marietta"
+                                  onChange={(e) => {
+                                    setOtherCampusCity(e.target.value);
+                                  }}
+                                />
+                                <label htmlFor="other-campus-city">City</label>
+                              </div>
+
+                              <div className="form-control-authentication">
+                                <input
+                                  type="text"
+                                  id="other-campus-state"
+                                  className="form-control-input"
+                                  placeholder="Ex: Georgia"
+                                  onChange={(e) => {
+                                    setOtherCampusState(e.target.value);
+                                  }}
+                                />
+                                <label htmlFor="other-campus-state">
+                                  State
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   <div
                     style={{ display: "flex", gap: "20px" }}
@@ -1233,11 +1326,18 @@ export default function AuthenticationInstitution() {
                         placeholder="Ex: 5150 Regency Dr"
                         className="form-control-input"
                         required
+                        value={campusAddress}
                         onChange={(e) => {
                           setCampusAddress(e.target.value);
                         }}
+                        readOnly
                       />
-                      <label htmlFor="campus-address">Address*</label>
+                      <label
+                        htmlFor="campus-address"
+                        className="readonly-institution-field"
+                      >
+                        Address*
+                      </label>
                     </div>
 
                     <div className="form-control-authentication">
@@ -1247,6 +1347,7 @@ export default function AuthenticationInstitution() {
                         id="campus-phone"
                         placeholder="Ex: 123-456-7890"
                         className="form-control-input"
+                        value={campusPhone}
                         onInput={(e) => {
                           // Delete all non-numeric characters
                           e.target.value = e.target.value.replace(/\D/g, "");
@@ -1274,11 +1375,18 @@ export default function AuthenticationInstitution() {
                         placeholder="Ex: Atlanta"
                         className="form-control-input"
                         required
+                        value={campusCity}
                         onChange={(e) => {
-                          setCampusState(e.target.value);
+                          setCampusCity(e.target.value);
                         }}
+                        readOnly
                       />
-                      <label htmlFor="campus-state">City*</label>
+                      <label
+                        htmlFor="campus-state"
+                        className="readonly-institution-field"
+                      >
+                        City*
+                      </label>
                     </div>
 
                     <div className="form-control-authentication">
@@ -1288,11 +1396,18 @@ export default function AuthenticationInstitution() {
                         id="campus-website"
                         placeholder="Ex: example.com"
                         className="form-control-input"
+                        value={institutionWebsite}
                         onChange={(e) => {
-                          setCampusWebsite(e.target.value);
+                          setInstitutionWebsite(e.target.value);
                         }}
+                        readOnly
                       />
-                      <label htmlFor="campus-website">Website</label>
+                      <label
+                        htmlFor="campus-website"
+                        className="readonly-institution-field"
+                      >
+                        Website
+                      </label>
                     </div>
                   </div>
 
@@ -1304,11 +1419,18 @@ export default function AuthenticationInstitution() {
                       placeholder="Ex: Georgia"
                       className="form-control-input"
                       required
+                      value={campusState}
                       onChange={(e) => {
                         setCampusState(e.target.value);
                       }}
+                      readOnly
                     />
-                    <label htmlFor="campus-state">State*</label>
+                    <label
+                      htmlFor="campus-state"
+                      className="readonly-institution-field"
+                    >
+                      State*
+                    </label>
                   </div>
 
                   <div className="form-control-authentication">
