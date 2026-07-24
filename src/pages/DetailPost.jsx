@@ -1797,7 +1797,7 @@ export default function DetailPost() {
                     >
                       Okay
                     </button>
-                    {user.role === "Admin" && (
+                    {user.role === "SystemAdmin" && (
                       <button
                         aria-label="Print this code button"
                         className="btn-yellow"

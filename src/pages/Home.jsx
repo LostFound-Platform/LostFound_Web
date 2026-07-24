@@ -437,6 +437,115 @@ export default function Home() {
             style={{ objectFit: "cover", width: "692px", marginRight: "-70px" }}
           />
         </div>
+
+        {/* Newest posts */}
+        <div
+          className="title-newest-post"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "2%",
+            padding: " 70px 10px",
+          }}
+        >
+          <p style={{ fontSize: "40px" }}>
+            <span
+              style={{
+                fontFamily: "Mochiy Pop One, sans-serif",
+              }}
+            >
+              Schools
+            </span>{" "}
+            on Our Platform
+          </p>
+          <p style={{ fontSize: "18px" }}>
+            We've partnered with leading institutions to ensure students always
+            have a central place to recover their belongings.
+          </p>
+        </div>
+
+        {/* Newest images */}
+        <div className="newest-post-container">
+          {/* Cards */}
+          {[
+            "Gwinnett Technical College",
+            "North Georgia Tech",
+            "Statewide Polytechnic",
+            "Metro University",
+          ].map((s) => (
+            <div
+              className="school-card"
+              key={s}
+              onClick={() =>
+                (window.location.href = `/institution/${s.replace(/\s+/g, "-")}`)
+              }
+            >
+              <div className="school-icon">
+                <i className="fa-solid fa-building"></i>
+              </div>
+              <p>{s}</p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          style={{
+            textAlign: "center",
+            marginBottom: "100px",
+            marginTop: "-60px",
+          }}
+        >
+          <button
+            className="btn"
+            aria-label="View all posts link"
+            onClick={() => (window.location.href = "/institutions")}
+          >
+            View all <i className="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        {/* Empower campus */}
+        <section className="admin-banner">
+          <div>
+            <h2>Bring Back2Me to Your Campus.</h2>
+            <p>
+              Streamline your campus lost and found operations with a secure,
+              centralized platform. Submit a partnership request, and our team
+              will review your institution before activation.
+            </p>
+
+            <div className="banner-buttons">
+              <a className="btn" href="/partnership">
+                Request Institution Access
+              </a>
+              <button className="btn-with-border outline">
+                Schedule a Demo
+              </button>
+            </div>
+          </div>
+
+          <div className="mini-cards">
+            <div>
+              <i className="fa-solid fa-chart-column"></i>
+              <h4>Campus Management</h4>
+              <p>
+                Manage lost and found operations, staff access, and item
+                workflows from one centralized dashboard.
+              </p>
+            </div>
+
+            <div className="secure-card">
+              <i className="fa-solid fa-shield-alt"></i>
+              <h4>Secure Institution Access</h4>
+              <p>
+                Every institution request is reviewed before activation to
+                ensure trusted campus administration.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Learn how it works */}
         <p
           className="learn-how-it-works"
           style={{
@@ -455,7 +564,6 @@ export default function Home() {
           </span>
         </p>
 
-        {/* Learn how it works */}
         <div
           className="how-it-works"
           style={{
@@ -632,7 +740,7 @@ export default function Home() {
             padding: " 70px 10px",
           }}
         >
-          <p style={{ fontSize: "30px" }}>
+          <p style={{ fontSize: "40px" }}>
             <span
               style={{
                 fontFamily: "Mochiy Pop One, sans-serif",
@@ -787,13 +895,13 @@ export default function Home() {
             marginTop: "-60px",
           }}
         >
-          <a
-            href="/lost-and-found"
+          <button
+            onClick={() => (window.location.href = "/lost-and-found")}
             className="btn"
             aria-label="View all posts link"
           >
             View all <i className="fa-solid fa-arrow-right"></i>
-          </a>
+          </button>
         </div>
 
         {/* Quick Search */}

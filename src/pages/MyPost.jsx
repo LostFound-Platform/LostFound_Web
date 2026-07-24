@@ -1160,7 +1160,8 @@ export default function MyPost() {
                       </div>
 
                       {/* Buttons */}
-                      {(post.typePost === "Lost" || user.role === "Admin") && (
+                      {(post.typePost === "Lost" ||
+                        user.role === "SystemAdmin") && (
                         <>
                           <div
                             className={
@@ -1351,7 +1352,7 @@ export default function MyPost() {
                         )}
                     </div>
 
-                    {user.role === "Admin" &&
+                    {user.role === "SystemAdmin" &&
                       post.typePost === "Found" &&
                       !post.isReceived && (
                         <button

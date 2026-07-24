@@ -1,10 +1,12 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import axiosInstance from "../api/axiosInstance";
 import { useSearchParams } from "react-router-dom";
 // const Lottie = lazy(() => import("lottie-react"));
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Sucesso from "../assets/animations/Sucesso.json";
+import { debounce } from "lodash";
+import axios from "axios";
 
 export default function Authentication() {
   // Variables
@@ -30,6 +32,7 @@ export default function Authentication() {
   ];
   const initialState = images.map(() => ({ isActive: false }));
 
+  const [getUniversitiesResults, setGetUniversitiesResults] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(initialState);
   let [isAgreeTerm, setIsAgreeTerm] = useState(false);
   let [isRequestingResetPassword, setIsRequestingResetPassword] =
@@ -58,11 +61,20 @@ export default function Authentication() {
   let [email, setEmail] = useState("");
   let [passwordSignUp, setPasswordSignUp] = useState("");
   let [confirmPasswordSignUp, setConfirmPasswordSignUp] = useState("");
-  let [studentId, setStudentId] = useState("");
-  let [studentIdOrEmailForSignIn, setStudentIdOrEmailForSignIn] = useState("");
+  let [institutionName, setInstitutionName] = useState("");
+  const [query, setQuery] = useState("");
+  let [campusAddress, setCampusAddress] = useState("");
+  let [otherCampusAddress, setOtherCampusAddress] = useState("");
+  let [campusState, setCampusState] = useState("");
+  let [otherCampusState, setOtherCampusState] = useState("");
+  let [campusCity, setCampusCity] = useState("");
+  let [otherCampusCity, setOtherCampusCity] = useState("");
+  let [isOtherCampus, setIsOtherCampus] = useState(false);
+  let [isShowOtherCampus, setIsShowOtherCampus] = useState(false);
+  const [isSearchInstitution, setIsSearchInstitution] = useState(false);
+  const [isSearchingInstitution, setIsSearchingInstitution] = useState(false);
+  let [selectedInstitution, setSelectedInstitution] = useState(false);
   let [isInProcessing, setIsInProcessing] = useState(false);
-  let [isTypeStudentId, setIsTypeStudentId] = useState(false);
-  let [isValidStudentId, setIsValidStudentId] = useState(false);
   let [isValidPassword, setIsValidPassword] = useState(false);
   let [isExistSpecialChar, setIsExistSpecialChar] = useState(false);
   let [isExistNumber, setIsExistNumber] = useState(false);
@@ -75,6 +87,58 @@ export default function Authentication() {
     useState(false);
 
   // Functions
+  // Handle get universities information from outside API
+  const handleGetUniversities = async (query) => {
+    if (!query.trim()) {
+      setIsSearchInstitution(false);
+      setGetUniversitiesResults([]);
+      return;
+    }
+
+    try {
+      setIsSearchingInstitution(true);
+
+      const response = await axios.get(
+        `https://localhost:44317/api/Institution/search?query=${query}`,
+      );
+
+      setGetUniversitiesResults(response.data);
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        const message = error.response.data?.message || "Server error";
+
+        setMsgSignIn({
+          msg: message,
+          status: status,
+        });
+      } else if (error.request) {
+        // If offline
+        if (!navigator.onLine) {
+          setMsgSignIn({
+            msg: "Network error. Please check your internet connection",
+            status: 0,
+          });
+        } else {
+          // Server offline
+          setMsgSignIn({
+            msg: "Server is currently unavailable. Please try again later.",
+            status: 503,
+          });
+        }
+      } else {
+        // Other errors
+        setMsgSignIn({
+          msg: "Something went wrong. Please try again",
+          status: 500,
+        });
+      }
+    } finally {
+      setIsInProcessing(false);
+      setIsSearchingInstitution(false);
+    }
+  };
+
   // Handle form submission for Sign Up
   const handleSubmitSignUp = async (e) => {
     e.preventDefault();
@@ -90,11 +154,15 @@ export default function Authentication() {
 
     try {
       const payload = {
+        studentId: 0,
+        userId: 0,
         firstName: firstName,
         lastName: lastName,
         email: email,
-        studentId: Number(studentId),
+        institutionName: institutionName,
+        institutionAddress: campusAddress,
         password: confirmPasswordSignUp,
+        expiresIn: 0,
         pickImage1: imagePicked1.toString(),
         pickImage2: imagePicked2.toString(),
         isAgreedToTerms: isAgreeTerm,
@@ -196,11 +264,8 @@ export default function Authentication() {
       const responseSignInUser = await axiosInstance.post(
         `/Users/sign-in`,
         {
-          studentId: studentIdOrEmailForSignIn.includes("@")
-            ? 0
-            : studentIdOrEmailForSignIn,
           password: passwordSignIn,
-          email: studentIdOrEmailForSignIn,
+          email: email.trim(),
         },
         {
           headers: {
@@ -591,11 +656,8 @@ export default function Authentication() {
       const responseSignInUser = await axiosInstance.post(
         `/Users/select-images`,
         {
-          studentId: studentIdOrEmailForSignIn.includes("@")
-            ? 0
-            : studentIdOrEmailForSignIn.trim(),
           password: passwordSignIn,
-          email: studentIdOrEmailForSignIn.trim(),
+          email: email.trim(),
           pickedIndexes: pickedIndexes,
         },
         {
@@ -710,13 +772,17 @@ export default function Authentication() {
       firstName.trim() == "" ||
       lastName.trim() == "" ||
       email.trim() == "" ||
-      studentId.trim() == "" ||
+      institutionName.trim() == "" ||
       passwordSignUp.trim() == "" ||
       confirmPasswordSignUp.trim() == "" ||
       !isMatchPassword ||
       !isAgreeTerm ||
-      !isValidStudentId ||
-      !isValidPassword
+      !selectedInstitution ||
+      !isValidPassword ||
+      (isOtherCampus &&
+        (otherCampusAddress.trim() == "" ||
+          otherCampusCity.trim() == "" ||
+          otherCampusState.trim() == ""))
     ) {
       return false;
     } else {
@@ -726,7 +792,7 @@ export default function Authentication() {
 
   // Validate Sign In inputs
   function validateSignIn() {
-    if (studentIdOrEmailForSignIn.trim() == "" || passwordSignIn.trim() == "") {
+    if (email.trim() == "" || passwordSignIn.trim() == "") {
       return false;
     } else {
       return true;
@@ -832,18 +898,30 @@ export default function Authentication() {
     }
   }
 
+  // Reduce spam call API
+  const debouncedFetch = debounce(handleGetUniversities, 300);
+
+  useEffect(() => {
+    debouncedFetch(query);
+    return debouncedFetch.cancel; // Cleanup
+  }, [query]);
+
   // useEffect
   useEffect(() => {
     validateSignUp();
   }, [
     firstName,
     lastName,
-    studentId,
+    institutionName,
     email,
     passwordSignUp,
     confirmPasswordSignUp,
     isAgreeTerm,
-    isValidStudentId,
+    selectedInstitution,
+    isOtherCampus,
+    otherCampusAddress,
+    otherCampusCity,
+    otherCampusState,
   ]);
 
   useEffect(() => {
@@ -851,15 +929,6 @@ export default function Authentication() {
       handleVerifyEmail();
     }
   }, []);
-
-  // Check student id if valid
-  useEffect(() => {
-    if (studentId.length == 9) {
-      setIsValidStudentId(true);
-    } else {
-      setIsValidStudentId(false);
-    }
-  }, [studentId]);
 
   // Handle with param in url for sign in
   useEffect(() => {
@@ -1116,54 +1185,242 @@ export default function Authentication() {
                       <label htmlFor="last-name">Last Name*</label>
                     </div>
                   </div>
-                  <div className="form-control-authentication">
-                    <input
-                      type="text"
-                      name=""
-                      id="student-id-sign-up"
-                      placeholder="Ex: 202434567"
-                      className="form-control-input"
-                      required
-                      onChange={(e) => {
-                        setStudentId(e.target.value);
-                        setIsTypeStudentId(true);
-                      }}
-                      onInput={(e) => {
-                        e.target.value = e.target.value
-                          .replace(/[^0-9]/g, "") // Remove non-numeric characters
-                          .slice(0, 9); // Allow only numbers, max length 9
-                      }}
-                    />
-                    <label htmlFor="student-id-sign-up">Student ID*</label>
-                  </div>
-                  {studentId.trim() !== "" &&
-                    isTypeStudentId &&
-                    studentId.length < 9 && (
-                      <div
-                        className="form-control-authentication"
-                        style={{
-                          marginTop: "-15px",
-                          justifyContent: "left",
-                          color: "red",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <p>Student ID must be 9 digits long</p>
+
+                  <div
+                    style={{ display: "flex", gap: "20px" }}
+                    className="form-sign-up-last-first"
+                  >
+                    <div className="form-control-authentication search-universities">
+                      <div>
+                        <input
+                          type="text"
+                          name=""
+                          id="campus-name"
+                          placeholder="Ex: Georgia State"
+                          className="form-control-input"
+                          autoFocus
+                          value={institutionName}
+                          required
+                          onChange={(e) => {
+                            setIsSearchInstitution(true);
+                            setQuery(e.target.value);
+                            setInstitutionName(e.target.value);
+                            setSelectedInstitution(false);
+                          }}
+                          onBlur={() => {
+                            if (!selectedInstitution) {
+                              setInstitutionName("");
+                            }
+                          }}
+                        />
+                        <label htmlFor="campus-name">Institution Name*</label>
                       </div>
-                    )}
+
+                      {isSearchInstitution &&
+                        (!isSearchingInstitution ? (
+                          getUniversitiesResults.length > 0 ? (
+                            <ul className="drop-search">
+                              {getUniversitiesResults.map((item, index) => (
+                                <li
+                                  key={index}
+                                  className="p-2 cursor-pointer nav-item"
+                                  onClick={() => {
+                                    setInstitutionName(item.name);
+                                    setIsSearchInstitution(false);
+                                    setSelectedInstitution(true);
+                                    setCampusAddress(item.address);
+                                    setCampusCity(item.city);
+                                    setCampusState(item.state);
+                                    setIsShowOtherCampus(true);
+                                  }}
+                                >
+                                  {item.name}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <ul className="drop-search">
+                              <li>
+                                <i className="fa-brands fa-sistrix"></i> No
+                                results found
+                              </li>
+                            </ul>
+                          )
+                        ) : (
+                          <ul className="drop-search">
+                            <li>
+                              <span>
+                                <i className="fas fa-spinner fa-spin"></i>{" "}
+                                Searching...
+                              </span>
+                            </li>
+                          </ul>
+                        ))}
+                    </div>
+
+                    <div className="form-control-authentication">
+                      <input
+                        type="text"
+                        name=""
+                        id="campus-address"
+                        placeholder="Ex: 5150 Regency Dr"
+                        className="form-control-input"
+                        required
+                        value={campusAddress}
+                        onChange={(e) => {
+                          setCampusAddress(e.target.value);
+                        }}
+                        readOnly
+                      />
+                      <label
+                        htmlFor="campus-address"
+                        className="readonly-institution-field"
+                      >
+                        Address*
+                      </label>
+                    </div>
+                  </div>
+
+                  {isShowOtherCampus && (
+                    <div className="form-control-authentication">
+                      <div className="other-campus-container">
+                        <label className="checkbox-container">
+                          <input
+                            type="checkbox"
+                            checked={isOtherCampus}
+                            onChange={(e) => {
+                              setIsOtherCampus(e.target.checked);
+                              setOtherCampusAddress("");
+                              setOtherCampusCity("");
+                              setOtherCampusState("");
+                            }}
+                          />
+                          Other Campus?
+                        </label>
+
+                        {isOtherCampus && (
+                          <div className="other-campus-form">
+                            <p className="other-campus-note">
+                              Your current institution information refers to the
+                              main campus. If you belong to another campus,
+                              provide its details below.
+                            </p>
+
+                            <div className="form-control-authentication">
+                              <input
+                                type="text"
+                                id="other-campus-address"
+                                className="form-control-input"
+                                placeholder="Ex: 980 South Cobb Dr"
+                                onChange={(e) => {
+                                  setOtherCampusAddress(e.target.value);
+                                }}
+                              />
+                              <label htmlFor="other-campus-address">
+                                Campus Address
+                              </label>
+                            </div>
+
+                            <div
+                              style={{ display: "flex", gap: "20px" }}
+                              className="form-sign-up-last-first"
+                            >
+                              <div className="form-control-authentication">
+                                <input
+                                  type="text"
+                                  id="other-campus-city"
+                                  className="form-control-input"
+                                  placeholder="Ex: Marietta"
+                                  onChange={(e) => {
+                                    setOtherCampusCity(e.target.value);
+                                  }}
+                                />
+                                <label htmlFor="other-campus-city">City</label>
+                              </div>
+
+                              <div className="form-control-authentication">
+                                <input
+                                  type="text"
+                                  id="other-campus-state"
+                                  className="form-control-input"
+                                  placeholder="Ex: Georgia"
+                                  onChange={(e) => {
+                                    setOtherCampusState(e.target.value);
+                                  }}
+                                />
+                                <label htmlFor="other-campus-state">
+                                  State
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <div
+                    style={{ display: "flex", gap: "20px" }}
+                    className="form-sign-up-last-first"
+                  >
+                    <div className="form-control-authentication">
+                      <input
+                        type="text"
+                        name=""
+                        id="campus-state"
+                        placeholder="Ex: Atlanta"
+                        className="form-control-input"
+                        required
+                        value={campusCity}
+                        onChange={(e) => {
+                          setCampusCity(e.target.value);
+                        }}
+                        readOnly
+                      />
+                      <label
+                        htmlFor="campus-state"
+                        className="readonly-institution-field"
+                      >
+                        City*
+                      </label>
+                    </div>
+
+                    <div className="form-control-authentication">
+                      <input
+                        type="text"
+                        name=""
+                        id="campus-state"
+                        placeholder="Ex: Georgia"
+                        className="form-control-input"
+                        required
+                        value={campusState}
+                        onChange={(e) => {
+                          setCampusState(e.target.value);
+                        }}
+                        readOnly
+                      />
+                      <label
+                        htmlFor="campus-state"
+                        className="readonly-institution-field"
+                      >
+                        State*
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="form-control-authentication">
                     <input
                       type="email"
                       name=""
-                      id="email"
-                      placeholder="Ex: demo@ex.io"
+                      id="email-signup"
+                      placeholder="Ex: email@abc.edu"
                       className="form-control-input"
                       required
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
                     />
-                    <label htmlFor="email">Email*</label>
+                    <label htmlFor="email-signup">School Email*</label>
                   </div>
                   <div className="form-control-authentication">
                     <input
@@ -1447,28 +1704,17 @@ export default function Authentication() {
                   </p>
                   <div className="form-control-authentication">
                     <input
-                      type={
-                        /\D/.test(studentIdOrEmailForSignIn) ? "email" : "text"
-                      }
+                      type="email"
                       name=""
-                      id="student-id"
-                      placeholder="Ex: 202434567"
+                      id="email-signin"
+                      placeholder="Ex: email@abc.edu"
                       className="form-control-input"
                       required
                       onChange={(e) => {
-                        setStudentIdOrEmailForSignIn(e.target.value);
-                      }}
-                      onInput={(e) => {
-                        const value = e.target.value;
-
-                        if (/^\d*$/.test(value)) {
-                          e.target.value = value.slice(0, 9);
-                        } else {
-                          e.target.value = value;
-                        }
+                        setEmail(e.target.value);
                       }}
                     />
-                    <label htmlFor="student-id">Student ID or Email*</label>
+                    <label htmlFor="email-signin">School Email*</label>
                   </div>
                   <div className="form-control-authentication">
                     <input
@@ -1622,7 +1868,7 @@ export default function Authentication() {
                       type="email"
                       name=""
                       id="email-forgot-password"
-                      placeholder="Ex: demo@ex.io"
+                      placeholder="Ex: email@abc.edu"
                       className="form-control-input"
                       required
                       disabled={isEmailVerified}
@@ -1631,7 +1877,7 @@ export default function Authentication() {
                         setEmail(e.target.value);
                       }}
                     />
-                    <label htmlFor="email-forgot-password">Email*</label>
+                    <label htmlFor="email-forgot-password">School Email*</label>
                   </div>
                   {isEmailVerified && (
                     <>
