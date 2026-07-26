@@ -313,11 +313,25 @@ export default function Profile() {
 
   // UseEffect
   useEffect(() => {
-    getMyProfile();
+    const fetchData = async () => {
+      await getMyProfile();
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
+      {/* Helmet for setting the page title */}
+      <Helmet>
+        <title>
+          {user.firstName && user.lastName
+            ? `${user.firstName} ${user.lastName}`
+            : "Profile"}{" "}
+          | Back2Me{" "}
+        </title>
+      </Helmet>
+
       <main>
         <div
           className="sidebar-and-content"

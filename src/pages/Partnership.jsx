@@ -35,6 +35,7 @@ export default function Partnership() {
   let [phone, setPhone] = useState("");
   let [studentPopulation, setStudentPopulation] = useState("");
   let [additionalNotes, setAdditionalNotes] = useState("");
+  let [additionalInformation, setAdditionalInformation] = useState("");
 
   // Functions
   // Handle get universities information from outside API
@@ -152,8 +153,13 @@ export default function Partnership() {
         applicantName: fullName,
         workEmail: workEmail,
         jobTitle: jobTitle,
-        studentPopulation: studentPopulation,
-        additionalNotes: additionalNotes,
+        estimatedPopulation: studentPopulation,
+        applicantPhoneNumber: phone,
+        additionalNote: additionalNotes,
+        additionalInformation: additionalInformation,
+        isVerifiedEmail: false,
+        isVerifiedWebsite: false,
+        isVerifiedInstitution: false,
       };
 
       const response = await axiosInstance.post(
@@ -428,6 +434,7 @@ export default function Partnership() {
                       placeholder="Ex: 123-456-7890"
                       className="form-control-input"
                       required
+                      maxLength={10}
                       value={campusPhone}
                       onChange={(e) => {
                         setCampusPhone(e.target.value);
@@ -650,6 +657,7 @@ export default function Partnership() {
                       id="applicant-phone"
                       placeholder="Ex: 123-456-7890"
                       className="form-control-input"
+                      maxLength={10}
                       onChange={(e) => {
                         setPhone(e.target.value);
                       }}
@@ -684,6 +692,7 @@ export default function Partnership() {
                   <textarea
                     placeholder="Full mailing address of the central administration"
                     className="form-control-textarea"
+                    onChange={(e) => setAdditionalInformation(e.target.value)}
                     onInput={(e) => {
                       e.target.style.height = "auto";
                       e.target.style.height = `${e.target.scrollHeight}px`;
@@ -698,10 +707,10 @@ export default function Partnership() {
                     onChange={(e) => setStudentPopulation(e.target.value)}
                   >
                     <option>Estimated Student Population</option>
-                    <option value="under-5k">Under 5,000</option>
-                    <option value="5k-15k">5,000 - 15,000</option>
-                    <option value="15k-30k">15,000 - 30,000</option>
-                    <option value="30k-plus">30,000+</option>
+                    <option value="Under5000">Under 5,000</option>
+                    <option value="From5000To15000">5,000 - 15,000</option>
+                    <option value="From15001To30000">15,000 - 30,000</option>
+                    <option value="Over30000">30,000+</option>
                   </select>
                 </div>
 

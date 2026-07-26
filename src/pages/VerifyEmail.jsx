@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import axiosInstance from "../api/axiosInstance";
 // import Lottie from "lottie-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import Sucesso from "../assets/animations/Sucesso.json";
 
 export default function VerifyEmail() {
   // Variables
@@ -21,7 +20,7 @@ export default function VerifyEmail() {
 
     try {
       const response = await axiosInstance.get(
-        `/Users/verify-email?token=${searchParams.get("token")}&isForgotPassword=false`,
+        `/InstitutionRequest/verify-email?token=${searchParams.get("token")}&isForgotPassword=false`,
         {
           // withCredentials: true,
           validateStatus: (status) =>
@@ -96,7 +95,11 @@ export default function VerifyEmail() {
   };
 
   useEffect(() => {
-    handleVerifyEmail();
+    const fetchData = async () => {
+      await handleVerifyEmail();
+    };
+
+    fetchData();
   }, []);
 
   return (
