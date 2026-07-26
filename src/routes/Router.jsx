@@ -71,7 +71,7 @@ export default function Router() {
               element={<InstitutionRequests />}
             />
             <Route
-              path="/dashboard/review-application/*"
+              path="/dashboard/review-application/:id"
               element={<ReviewApplication />}
             />
             <Route

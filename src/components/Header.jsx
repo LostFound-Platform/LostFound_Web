@@ -453,7 +453,11 @@ export default function Header() {
 
   // UseEffect
   useEffect(() => {
-    getMyProfile();
+    const fetchData = async () => {
+      await getMyProfile();
+    };
+
+    fetchData();
     connectToSignalR();
   }, []);
 

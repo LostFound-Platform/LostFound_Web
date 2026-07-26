@@ -4349,6 +4349,7 @@ th {
   color: #345069;
   font-size: 14px;
   line-height: 1.3;
+  font-weight: 600;
 }
 
 .institution-admin-avatar {
@@ -4552,53 +4553,27 @@ th {
   }
 }
 
-/* Review Application Styles */
+/* Review Application */
 .review-app-page {
   --review-app-navy: #0a2940;
   --review-app-orange: #ff7900;
   --review-app-orange-dark: #be5b00;
   --review-app-yellow: #ffe42f;
+  --review-app-approved-bg: #28b76d;
+  --review-app-approved-text: white;
+  --review-app-rejected-bg: #fee2e2;
+  --review-app-rejected-text: #991b1b;
   --review-app-page-bg: #f6f8ff;
   --review-app-muted: #847a73;
   --review-app-border: #ebe8e4;
 
   min-height: 100vh;
   margin-top: 100px;
-  padding: 24px 22px 32px;
-  background: var(--review-app-page-bg);
-  color: var(--review-app-navy);
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-}
-
-.review-app-page *,
-.review-app-page *::before,
-.review-app-page *::after {
-  box-sizing: border-box;
-}
-
-.review-app-breadcrumb {
-  max-width: 1100px;
-  margin: 0 auto 28px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #77716c;
-  font-size: 11px;
-}
-
-.review-app-breadcrumb a {
-  color: #77716c;
-  text-decoration: none;
-}
-
-.review-app-breadcrumb strong {
-  color: #b55a0a;
-  font-weight: 700;
 }
 
 .review-app-header {
   max-width: 1100px;
-  margin: 0 auto 28px;
+  margin: 0 0 28px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -4610,7 +4585,6 @@ th {
   margin: 0 0 9px;
   font-size: 34px;
   line-height: 1.08;
-  font-weight: 800;
   letter-spacing: -0.8px;
 }
 
@@ -4628,8 +4602,18 @@ th {
   border-radius: 999px;
   background: var(--review-app-yellow);
   color: #645300;
-  font-size: 10px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.review-app-approved-badge {
+  background: var(--review-app-approved-bg);
+  color: var(--review-app-approved-text);
+}
+
+.review-app-rejected-badge {
+  background: var(--review-app-rejected-bg);
+  color: var(--review-app-rejected-text);
 }
 
 .review-app-pending-badge > span {
@@ -4644,8 +4628,8 @@ th {
   align-items: center;
   gap: 4px;
   color: #77716c;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .review-app-header-actions {
@@ -4655,30 +4639,17 @@ th {
 }
 
 .review-app-header-actions button {
-  min-width: 125px;
+  /* min-width: 125px; */
   height: 50px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 800;
   cursor: pointer;
 }
 
-.review-app-decline-button {
-  border: 2px solid var(--review-app-orange);
-  background: transparent;
-  color: var(--review-app-orange);
-}
-
 .review-app-approve-button {
-  border: 0;
-  background: var(--review-app-orange);
-  color: #fff;
   box-shadow: 0 10px 20px rgba(255, 121, 0, 0.2);
 }
 
 .review-app-layout {
   max-width: 1100px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 2.15fr) minmax(240px, 1fr);
   gap: 24px;
@@ -4712,8 +4683,6 @@ th {
 .review-app-activity-card > h2 {
   margin: 0;
   font-size: 22px;
-  line-height: 1.1;
-  font-weight: 800;
 }
 
 .review-app-title-icon {
@@ -4750,17 +4719,17 @@ th {
   display: block;
   margin-bottom: 5px;
   color: #978d86;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
 .review-app-information-item strong,
 .review-app-information-item a {
   color: #29485e;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.45;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .review-app-information-item a {
@@ -4772,7 +4741,7 @@ th {
 .review-app-text-section p {
   margin: 0;
   color: #584f49;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.62;
 }
 
@@ -4792,6 +4761,75 @@ th {
 
 .review-app-checklist-card > h2 {
   margin-bottom: 22px;
+}
+
+.review-app-check-item {
+  position: relative;
+  min-height: 73px;
+  margin-bottom: 13px;
+  padding: 14px 34px 13px 46px;
+  display: block;
+  border-radius: 13px;
+  cursor: pointer;
+}
+
+.review-app-check-item-complete {
+  background: #edf4ff;
+}
+
+.review-app-check-item-pending {
+  border: 1.5px dashed #e9c8b5;
+  background: #fffdfa;
+}
+
+.review-app-real-checkbox {
+  position: absolute;
+  top: 18px;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+
+  accent-color: #b86111;
+  cursor: pointer;
+}
+
+.review-app-real-checkbox:focus-visible {
+  outline: 3px solid rgba(249, 115, 0, 0.22);
+  outline-offset: 2px;
+}
+
+.review-app-check-copy strong,
+.review-app-check-copy span {
+  display: block;
+}
+
+.review-app-check-copy strong {
+  margin-bottom: 2px;
+  color: #29445a;
+  font-size: 12px;
+}
+
+.review-app-check-copy span {
+  color: #786e67;
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.review-app-check-success,
+.review-app-check-waiting {
+  position: absolute;
+  top: 17px;
+  right: 12px;
+  font-size: 17px;
+}
+
+.review-app-check-success {
+  color: #28b76d;
+}
+
+.review-app-check-waiting {
+  color: #d8d4d0;
 }
 
 .review-app-check-item {
@@ -4838,12 +4876,12 @@ th {
 .review-app-check-copy strong {
   margin-bottom: 2px;
   color: #29445a;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .review-app-check-copy span {
   color: #786e67;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.35;
 }
 
@@ -4905,6 +4943,7 @@ th {
   place-items: center;
   border-radius: 50%;
   color: white;
+  font-size: 14px;
 }
 
 .review-app-activity-dot-orange {
@@ -4927,28 +4966,29 @@ th {
 .review-app-activity-content strong {
   margin-bottom: 2px;
   color: #2c475d;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .review-app-activity-content > span {
   color: #8b817a;
-  font-size: 8px;
+  font-size: 12px;
 }
 
 .review-app-activity-content > p {
-  margin: 5px 0 0;
+  margin: 5px 0 7px;
   color: #615750;
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .review-app-activity-note {
   margin-top: 7px;
+  margin-bottom: 7px;
   padding: 7px 8px;
   border-left: 2px solid #65a8d2;
   background: #edf6ff;
   color: #52697b;
-  font-size: 8px;
+  font-size: 12px;
   font-style: italic;
   line-height: 1.35;
 }
@@ -4957,20 +4997,15 @@ th {
   position: relative;
   height: 205px;
   overflow: hidden;
-  border-radius: 17px;
+  border-radius: 20px;
   background: #e5e7eb;
   box-shadow: 0 4px 14px rgba(29, 44, 57, 0.08);
-}
-
-.review-app-map-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .review-app-map-card::after {
   content: "";
   position: absolute;
+  pointer-events: none;
   inset: 0;
   background: linear-gradient(
     to top,
@@ -4989,8 +5024,7 @@ th {
   align-items: center;
   gap: 4px;
   color: white;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 14px;
 }
 
 @media (max-width: 850px) {
@@ -5289,5 +5323,240 @@ th {
 
   .application-success-button {
     width: 100%;
+  }
+}
+
+/* Decline Popup */
+.decline-request-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(31, 45, 56, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.decline-request-modal {
+  position: relative;
+  width: 100%;
+  max-width: 548px;
+
+  padding: 41px 34px 30px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+  border-radius: 15px;
+
+  box-shadow:
+    0 26px 70px rgba(7, 20, 31, 0.28),
+    0 3px 10px rgba(7, 20, 31, 0.08);
+
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #0b2940;
+}
+
+.decline-request-modal *,
+.decline-request-modal *::before,
+.decline-request-modal *::after {
+  box-sizing: border-box;
+}
+
+.decline-request-red-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 7px;
+
+  background: #d51b20;
+}
+
+.decline-request-close {
+  position: absolute;
+  top: 27px;
+  right: 29px;
+
+  width: 30px;
+  height: 30px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: #67554d;
+  font-size: 20px;
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.decline-request-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding-right: 45px;
+}
+
+.decline-request-icon {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #ffe3e3;
+  color: #e5232a;
+
+  font-size: 20px;
+}
+
+.decline-request-heading h2 {
+  margin: 0;
+
+  color: #0b2940;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+}
+
+.decline-request-description {
+  margin: 26px 0 26px;
+
+  max-width: 455px;
+
+  color: #67554d;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.decline-request-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #9b8175;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.decline-request-textarea {
+  width: 100%;
+  min-height: 154px;
+
+  padding: 17px 15px;
+
+  resize: vertical;
+
+  border: 1px solid #ebc4b8;
+  border-radius: 11px;
+  outline: none;
+
+  background: #f8f9fd;
+  color: #3f454d;
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.45;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.decline-request-textarea::placeholder {
+  color: #b9aaa5;
+}
+
+.decline-request-textarea:focus {
+  border-color: #dc3a3f;
+  box-shadow: 0 0 0 4px rgba(213, 27, 32, 0.09);
+}
+
+.decline-request-actions {
+  margin-top: 31px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 27px;
+}
+
+.decline-request-cancel,
+.decline-request-confirm {
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.decline-request-cancel {
+  padding: 11px 4px;
+
+  background: transparent;
+  color: #67554d;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.decline-request-confirm {
+  background: #ce171c;
+  color: #ffffff;
+
+  box-shadow: 0 10px 20px rgba(206, 23, 28, 0.2);
+}
+
+.decline-request-confirm:hover:not(:disabled) {
+  background: #b81217;
+}
+
+.decline-request-confirm:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.decline-request-close:focus-visible,
+.decline-request-cancel:focus-visible,
+.decline-request-confirm:focus-visible {
+  outline: 3px solid rgba(213, 27, 32, 0.2);
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .decline-request-modal {
+    padding: 38px 23px 24px;
+  }
+
+  .decline-request-heading h2 {
+    font-size: 20px;
+  }
+
+  .decline-request-description {
+    font-size: 14px;
+  }
+
+  .decline-request-actions {
+    gap: 15px;
+  }
+
+  .decline-request-confirm {
+    min-width: 145px;
   }
 }

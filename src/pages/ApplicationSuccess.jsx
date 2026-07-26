@@ -27,8 +27,9 @@ export default function ApplicationSuccess() {
           <h2>Email Verification</h2>
 
           <p>
-            Check your inbox for a confirmation link. We've sent a secure URL to
-            the administrative address you provided.
+            Please click the verification link sent to your work email to
+            continue your institution registration. If you can't find it, check
+            your Spam or Junk folder.
           </p>
         </article>
 
