@@ -4371,13 +4371,42 @@ th {
   height: 20px;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  background: #ffe329;
-  color: #716000;
+  border-radius: 20px;
   font-size: 14px;
   font-weight: bold;
-  padding: 0px 10px;
+  padding: 13px 10px;
   text-transform: uppercase;
+}
+
+/* Pending */
+.institution-admin-status.pending {
+  background: #ffe329;
+  color: #716000;
+}
+
+/* Approved */
+.institution-admin-status.approved {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* declined */
+.institution-admin-status.declined {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.institution-review-decline-button-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+}
+
+.institution-review-decline-button-container button {
+  margin-top: 0;
 }
 
 .institution-admin-table-footer {
@@ -4561,8 +4590,8 @@ th {
   --review-app-yellow: #ffe42f;
   --review-app-approved-bg: #28b76d;
   --review-app-approved-text: white;
-  --review-app-rejected-bg: #fee2e2;
-  --review-app-rejected-text: #991b1b;
+  --review-app-declined-bg: #fee2e2;
+  --review-app-declined-text: #991b1b;
   --review-app-page-bg: #f6f8ff;
   --review-app-muted: #847a73;
   --review-app-border: #ebe8e4;
@@ -4611,9 +4640,9 @@ th {
   color: var(--review-app-approved-text);
 }
 
-.review-app-rejected-badge {
-  background: var(--review-app-rejected-bg);
-  color: var(--review-app-rejected-text);
+.review-app-declined-badge {
+  background: var(--review-app-declined-bg);
+  color: var(--review-app-declined-text);
 }
 
 .review-app-pending-badge > span {
@@ -4948,6 +4977,19 @@ th {
 
 .review-app-activity-dot-orange {
   background: #f47a11;
+}
+
+.review-app-activity-dot-green {
+  background: #28b76d;
+}
+
+.review-app-activity-dot-red {
+  background: #e5232a;
+}
+
+.review-app-activity-dot-yellow {
+  background: #ffe430;
+  color: #7c6900;
 }
 
 .review-app-activity-dot-blue {
@@ -5359,14 +5401,7 @@ th {
     0 26px 70px rgba(7, 20, 31, 0.28),
     0 3px 10px rgba(7, 20, 31, 0.08);
 
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
   color: #0b2940;
-}
-
-.decline-request-modal *,
-.decline-request-modal *::before,
-.decline-request-modal *::after {
-  box-sizing: border-box;
 }
 
 .decline-request-red-line {
@@ -5432,7 +5467,6 @@ th {
   color: #0b2940;
   font-size: 24px;
   line-height: 1.2;
-  font-weight: 750;
   letter-spacing: -0.4px;
 }
 
