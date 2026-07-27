@@ -3,10 +3,12 @@ import SidebarProfile from "../components/SidebarProfile";
 import axiosInstance from "../api/axiosInstance";
 import { FormatDate } from "../components/FormatDate";
 import { Helmet } from "react-helmet-async";
+import DeclineRequestModal from "../components/DeclineRequestModal";
 
 export default function InstitutionRequests() {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [isGettingRequests, setIsGettingRequests] = useState(false);
+  const [showDeclineModal, setShowDeclineModal] = useState(false);
   const [requests, setRequests] = useState([]);
 
   // Functions
@@ -266,7 +268,13 @@ export default function InstitutionRequests() {
                             <td>{FormatDate(request.submittedDate)}</td>
 
                             <td>
-                              <span className="institution-admin-status">
+                              <span
+                                className={`institution-admin-status ${request.status === "Pending" ? "pending" : request.status === "Approved" ? "approved" : "declined"}`}
+                              >
+                                <i
+                                  className={`fa-solid fa-${request.status === "Pending" ? "clock" : request.status === "Approved" ? "check" : "xmark"}`}
+                                  style={{ marginRight: "3px" }}
+                                ></i>{" "}
                                 {request.status}
                               </span>
                             </td>
@@ -305,10 +313,52 @@ export default function InstitutionRequests() {
                     </p>
 
                     <div className="institution-admin-detail-block">
-                      <span>Submission date</span>
-                      <strong>
-                        {FormatDate(selectedRequest.submittedDate)}
-                      </strong>
+                      <span>Work Email</span>
+                      <strong>{selectedRequest.workEmail}</strong>
+                    </div>
+
+                    <div className="institution-admin-detail-block">
+                      <span>Official Website</span>
+                      <a
+                        href={selectedRequest.institutionWebsite}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ textDecoration: "underline" }}
+                      >
+                        <strong>
+                          {selectedRequest.institutionWebsite || "Not provided"}
+                        </strong>
+                      </a>
+                    </div>
+
+                    <div className="institution-admin-detail-block">
+                      <span>Verification</span>
+
+                      <div className="verification-summary">
+                        <div
+                          style={{
+                            opacity: selectedRequest.isVerifiedEmail ? 1 : 0.5,
+                          }}
+                        >
+                          <i
+                            className={`fa-solid fa-${selectedRequest.isVerifiedEmail ? "check" : "clock"}`}
+                          ></i>{" "}
+                          Email Verified
+                        </div>
+
+                        <div
+                          style={{
+                            opacity: selectedRequest.isVerifiedWebsite
+                              ? 1
+                              : 0.5,
+                          }}
+                        >
+                          <i
+                            className={`fa-solid fa-${selectedRequest.isVerifiedWebsite ? "check" : "clock"}`}
+                          ></i>{" "}
+                          Website Verified
+                        </div>
+                      </div>
                     </div>
 
                     <div className="institution-admin-detail-block">
@@ -318,17 +368,48 @@ export default function InstitutionRequests() {
                           ? "Pending review"
                           : selectedRequest.status === "Approved"
                             ? "Approved"
-                            : "Rejected"}
+                            : "declined"}
                       </strong>
                     </div>
 
-                    <a
-                      href={`/dashboard/review-application/${selectedRequest.institutionRequestId}`}
-                      className="btn"
-                      style={{ width: "100%", marginTop: "8px" }}
-                    >
-                      Review application
-                    </a>
+                    <div className="institution-review-decline-button-container">
+                      <a
+                        href={`/dashboard/review-application/${selectedRequest.institutionRequestId}`}
+                        className="btn"
+                        aria-label="Review application link"
+                        style={{ width: "100%", marginTop: "8px" }}
+                      >
+                        {selectedRequest.status === "Pending" ? (
+                          <>
+                            <i className="fa-solid fa-clipboard-check"></i>{" "}
+                            Review application
+                          </>
+                        ) : (
+                          <>
+                            <i className="fa-solid fa-eye"></i> View application
+                          </>
+                        )}
+                      </a>
+                      {selectedRequest.status === "Pending" && (
+                        <button
+                          className="btn-with-border"
+                          aria-label="Decline Institution button"
+                          onClick={() => {
+                            // handleDeclineInstitution();
+                            setShowDeclineModal(true);
+                          }}
+                        >
+                          <i className="fa-solid fa-circle-xmark"></i> Decline
+                        </button>
+                      )}
+
+                      {/* Popup Modal Decline */}
+                      {showDeclineModal && (
+                        <DeclineRequestModal
+                          onClose={() => setShowDeclineModal(false)}
+                        />
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <div className="institution-admin-empty-details">

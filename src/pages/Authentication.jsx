@@ -1198,7 +1198,6 @@ export default function Authentication() {
                           id="campus-name"
                           placeholder="Ex: Georgia State"
                           className="form-control-input"
-                          autoFocus
                           value={institutionName}
                           required
                           onChange={(e) => {

@@ -1,17 +1,91 @@
 import { useState } from "react";
+import axiosInstance from "../api/axiosInstance";
 
-export default function DeclineRequestModal({ onClose }) {
+export default function DeclineRequestModal({ id, onClose }) {
   const [rejectionReason, setRejectionReason] = useState("");
+  const [isDeclining, setIsDeclining] = useState(false);
 
-  const handleConfirmDecline = () => {
+  // Handle Decline Institution
+  const handleDeclineInstitution = async () => {
     if (!rejectionReason.trim()) return;
 
-    console.log(rejectionReason);
+    setIsDeclining(true);
 
-    // Gọi API
+    try {
+      const response = await axiosInstance.post(
+        `/InstitutionRequest/decline/${id}`,
+        null,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // withCredentials: true,
+          validateStatus: (status) =>
+            status === 200 ||
+            status === 401 ||
+            status === 404 ||
+            status === 403,
+        },
+      );
 
-    onClose();
+      if (response.status === 200) {
+        setInstitution((prev) => ({
+          ...prev,
+          status: "Approved",
+        }));
+      }
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data?.message || "Server error";
+
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: message,
+              status: "error",
+            },
+          }),
+        );
+      } else if (error.request) {
+        // If offline
+        if (!navigator.onLine) {
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message: "Network error. Please check your internet connection",
+                status: "error",
+              },
+            }),
+          );
+        } else {
+          // Server offline
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message:
+                  "Server is currently unavailable. Please try again later.",
+                status: "error",
+              },
+            }),
+          );
+        }
+      } else {
+        // Other errors
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "Something went wrong. Please try again",
+              status: "error",
+            },
+          }),
+        );
+      }
+    } finally {
+      onClose();
+      setIsDeclining(false);
+    }
   };
+
   return (
     <div className="decline-request-overlay" onMouseDown={onClose}>
       <section
@@ -70,7 +144,7 @@ export default function DeclineRequestModal({ onClose }) {
             type="button"
             className="btn decline-request-confirm"
             disabled={!rejectionReason.trim()}
-            onClick={handleConfirmDecline}
+            onClick={handleDeclineInstitution}
           >
             Confirm Decline
           </button>

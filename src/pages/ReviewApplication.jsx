@@ -14,7 +14,8 @@ export default function ReviewApplication() {
   const [institution, setInstitution] = useState("");
   const [isGettingInstitution, setIsGettingInstitution] = useState(false);
   const [showDeclineModal, setShowDeclineModal] = useState(false);
-  const [isAuthorizedInstitution, setIsAuthorizedInstitution] = useState(false);
+  const [isVerifyingWebsite, setIsVerifyingWebsite] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
   const [mapUrl, setMapUrl] = useState(false);
   const { id } = useParams();
   const populationLabels = {
@@ -93,6 +94,169 @@ export default function ReviewApplication() {
     }
   };
 
+  // Handle Verify Website
+  const handleVerifyWebsite = async () => {
+    setIsVerifyingWebsite(true);
+
+    try {
+      const response = await axiosInstance.get(
+        `/InstitutionRequest/verify-website/${id}`,
+        {
+          // withCredentials: true,
+          validateStatus: (status) =>
+            status === 200 ||
+            status === 401 ||
+            status === 404 ||
+            status === 403,
+        },
+      );
+
+      if (response.status === 200) {
+        setInstitution((prev) => ({
+          ...prev,
+          isVerifiedWebsite: true,
+          websiteVerifiedAt: new Date().toLocaleString(),
+        }));
+      }
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data?.message || "Server error";
+
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: message,
+              status: "error",
+            },
+          }),
+        );
+      } else if (error.request) {
+        // If offline
+        if (!navigator.onLine) {
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message: "Network error. Please check your internet connection",
+                status: "error",
+              },
+            }),
+          );
+        } else {
+          // Server offline
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message:
+                  "Server is currently unavailable. Please try again later.",
+                status: "error",
+              },
+            }),
+          );
+        }
+      } else {
+        // Other errors
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "Something went wrong. Please try again",
+              status: "error",
+            },
+          }),
+        );
+      }
+    } finally {
+      setIsVerifyingWebsite(false);
+    }
+  };
+
+  // Handle Approve Institution
+  const handleApproveInstitution = async () => {
+    setIsApproving(true);
+
+    try {
+      const response = await axiosInstance.post(
+        `/InstitutionRequest/approve/${id}`,
+        null,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // withCredentials: true,
+          validateStatus: (status) =>
+            status === 200 ||
+            status === 401 ||
+            status === 404 ||
+            status === 403,
+        },
+      );
+
+      if (response.status === 200) {
+        setInstitution((prev) => ({
+          ...prev,
+          status: "Approved",
+          updatedDate: new Date().toLocaleString(),
+        }));
+
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: response.data.message,
+              status: "success",
+            },
+          }),
+        );
+      }
+    } catch (error) {
+      if (error.response) {
+        const message = error.response.data?.message || "Server error";
+
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: message,
+              status: "error",
+            },
+          }),
+        );
+      } else if (error.request) {
+        // If offline
+        if (!navigator.onLine) {
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message: "Network error. Please check your internet connection",
+                status: "error",
+              },
+            }),
+          );
+        } else {
+          // Server offline
+          window.dispatchEvent(
+            new CustomEvent("app-error", {
+              detail: {
+                message:
+                  "Server is currently unavailable. Please try again later.",
+                status: "error",
+              },
+            }),
+          );
+        }
+      } else {
+        // Other errors
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "Something went wrong. Please try again",
+              status: "error",
+            },
+          }),
+        );
+      }
+    } finally {
+      setIsApproving(false);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       await getInstitution();
@@ -162,7 +326,6 @@ export default function ReviewApplication() {
             </div>
           ) : (
             <>
-              {" "}
               <header className="review-app-header">
                 <div className="review-app-title-area">
                   <h1>Review Application: {institution.institutionName}</h1>
@@ -174,7 +337,7 @@ export default function ReviewApplication() {
                           ? "review-app-pending-badge"
                           : institution.status === "Approved"
                             ? "review-app-approved-badge"
-                            : "review-app-rejected-badge"
+                            : "review-app-declined-badge"
                       }`}
                     >
                       <span />
@@ -182,43 +345,71 @@ export default function ReviewApplication() {
                         ? "Pending Review"
                         : institution.status === "Approved"
                           ? "Approved"
-                          : "Rejected"}
+                          : "Declined"}
                     </span>
 
                     <span className="review-app-submitted">
-                      <i className="fa-solid fa-clock" />
-                      Submitted {FormatDate(institution.submittedDate)}
+                      {institution.status === "Pending" ? (
+                        <>
+                          <i className="fa-solid fa-clock" />
+                          Submitted {FormatDate(institution.submittedDate)}
+                        </>
+                      ) : institution.status === "Approved" ? (
+                        <>
+                          <i className="fa-solid fa-clock" />
+                          Approved on {FormatDate(institution.updatedDate)}
+                        </>
+                      ) : (
+                        <>
+                          <i className="fa-solid fa-clock" />
+                          Declined on {FormatDate(institution.submittedDate)}
+                        </>
+                      )}
                     </span>
                   </div>
                 </div>
 
-                <div className="review-app-header-actions">
-                  <button
-                    className="btn-with-border"
-                    aria-label="Decline Institution button"
-                    onClick={() => {
-                      // handleDeclineInstitution();
-                      setShowDeclineModal(true);
-                    }}
-                  >
-                    <i className="fa-solid fa-circle-xmark"></i> Decline
-                  </button>
+                {institution.status === "Pending" && (
+                  <div className="review-app-header-actions">
+                    <button
+                      className="btn-with-border"
+                      aria-label="Decline Institution button"
+                      onClick={() => {
+                        setShowDeclineModal(true);
+                      }}
+                      disabled={isApproving}
+                    >
+                      <i className="fa-solid fa-circle-xmark"></i> Decline
+                    </button>
 
-                  <button
-                    className={`${isAuthorizedInstitution && "review-app-approve-button"} btn`}
-                    onClick={() => {
-                      handleApproveInstitution();
-                    }}
-                    aria-label="Approve Institution button"
-                    disabled={!isAuthorizedInstitution}
-                  >
-                    <i className="fa-solid fa-circle-check"></i> Approve
-                  </button>
-                </div>
+                    <button
+                      className={`${institution.isVerifiedEmail && institution.isVerifiedWebsite && "review-app-approve-button"} btn`}
+                      onClick={() => {
+                        handleApproveInstitution();
+                      }}
+                      aria-label="Approve Institution button"
+                      disabled={
+                        !(
+                          institution.isVerifiedEmail &&
+                          institution.isVerifiedWebsite
+                        ) || isApproving
+                      }
+                    >
+                      {isApproving ? (
+                        <i className="fas fa-spinner fa-spin"></i>
+                      ) : (
+                        <>
+                          <i className="fa-solid fa-circle-check"></i> Approve
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
 
                 {/* Popup Modal Decline */}
                 {showDeclineModal && (
                   <DeclineRequestModal
+                    id={id}
                     onClose={() => setShowDeclineModal(false)}
                   />
                 )}
@@ -358,12 +549,27 @@ export default function ReviewApplication() {
 
                     <label
                       className={`review-app-check-item ${institution.isVerifiedWebsite ? "review-app-check-item-complete" : "review-app-check-item-pending"}`}
+                      style={{
+                        cursor:
+                          institution.isVerifiedWebsite || isVerifyingWebsite
+                            ? "not-allowed"
+                            : "",
+                      }}
                     >
-                      <input
-                        type="checkbox"
-                        className="review-app-real-checkbox"
-                        aria-label="Website authenticated"
-                      />
+                      {isVerifyingWebsite ? (
+                        <i className="fas fa-spinner fa-spin review-app-real-checkbox"></i>
+                      ) : (
+                        !institution.isVerifiedWebsite && (
+                          <input
+                            type="checkbox"
+                            className="review-app-real-checkbox"
+                            aria-label="Website authenticated"
+                            onChange={() => {
+                              handleVerifyWebsite();
+                            }}
+                          />
+                        )
+                      )}
 
                       <div className="review-app-check-copy">
                         <strong>Website Authenticated</strong>
@@ -446,7 +652,7 @@ export default function ReviewApplication() {
                         </div>
                       )}
 
-                      <div className="review-app-activity-row review-app-activity-row-last">
+                      <div className="review-app-activity-row">
                         <div className="review-app-activity-line">
                           <span className="review-app-activity-dot review-app-activity-dot-muted">
                             <i className="fa-solid fa-calendar" />
@@ -455,9 +661,68 @@ export default function ReviewApplication() {
 
                         <div className="review-app-activity-content">
                           <strong>Review Started</strong>
-                          <span>Awaiting action...</span>
+                          <p>
+                            An administrator began reviewing the application.
+                          </p>
                         </div>
                       </div>
+
+                      {institution.isVerifiedWebsite && (
+                        <div className="review-app-activity-row">
+                          <div className="review-app-activity-line">
+                            <span className="review-app-activity-dot review-app-activity-dot-yellow">
+                              <i className="fa-solid fa-globe"></i>
+                            </span>
+                          </div>
+
+                          <div className="review-app-activity-content">
+                            <strong>Website Verified</strong>
+                            <span>
+                              {FormatDateTime(institution.websiteVerifiedAt)}
+                            </span>
+
+                            <div className="review-app-activity-note">
+                              The institution's official website was reviewed
+                              and verified.
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {institution.isVerifiedEmail &&
+                        institution.isVerifiedWebsite && (
+                          <div className="review-app-activity-row review-app-activity-row-last">
+                            <div className="review-app-activity-line">
+                              <span
+                                className={`review-app-activity-dot review-app-activity-dot-${institution.status === "Pending" ? "muted" : institution.status === "Approved" ? "green" : "red"}`}
+                              >
+                                <i
+                                  className={`fa-solid fa-${institution.status === "Pending" ? "clock" : institution.status === "Approved" ? "check" : "xmark"}`}
+                                />
+                              </span>
+                            </div>
+
+                            <div className="review-app-activity-content">
+                              <strong>
+                                {institution.status === "Pending"
+                                  ? "Awaiting Decision"
+                                  : institution.status === "Approved"
+                                    ? "Institution Approved"
+                                    : "Institution Declined"}
+                              </strong>
+                              <span>
+                                {FormatDateTime(institution.updatedDate)}
+                              </span>
+                              <div className="review-app-activity-note">
+                                {institution.status === "Pending"
+                                  ? "Waiting for approval or rejection."
+                                  : institution.status === "Approved"
+                                    ? "The institution registration has been approved."
+                                    : "The institution registration has been declined."}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                     </div>
                   </article>
 
