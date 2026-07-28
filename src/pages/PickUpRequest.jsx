@@ -518,7 +518,7 @@ export default function PickUpRequest() {
                           ></ReactMarkdown>
                         </td>
                         <td>{dayjs(item.pickUpDate).format("h:mm:ss A")}</td>
-                        <td>{dayjs(item.createdDate).format("MM/DD/YYYY")}</td>
+                        <td>{dayjs(item.createdAt).format("MM/DD/YYYY")}</td>
                         <td>
                           <span
                             className={`status ${

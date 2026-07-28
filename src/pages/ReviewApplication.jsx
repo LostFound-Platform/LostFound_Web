@@ -43,6 +43,17 @@ export default function ReviewApplication() {
           `https://www.google.com/maps?q=${encodeURIComponent(`${response.data.institutionAddress} ${response.data.institutionName}`)}&output=embed`,
         );
       }
+
+      if (response.status === 401) {
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "You don't have permission to perform this action",
+              status: "error",
+            },
+          }),
+        );
+      }
     } catch (error) {
       if (error.response) {
         const message = error.response.data?.message || "Server error";
@@ -99,9 +110,13 @@ export default function ReviewApplication() {
     setIsVerifyingWebsite(true);
 
     try {
-      const response = await axiosInstance.get(
+      const response = await axiosInstance.put(
         `/InstitutionRequest/verify-website/${id}`,
+        null,
         {
+          headers: {
+            "Content-Type": "application/json",
+          },
           // withCredentials: true,
           validateStatus: (status) =>
             status === 200 ||
@@ -117,6 +132,17 @@ export default function ReviewApplication() {
           isVerifiedWebsite: true,
           websiteVerifiedAt: new Date().toLocaleString(),
         }));
+      }
+
+      if (response.status === 401) {
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "You don't have permission to perform this action",
+              status: "error",
+            },
+          }),
+        );
       }
     } catch (error) {
       if (error.response) {
@@ -174,7 +200,7 @@ export default function ReviewApplication() {
     setIsApproving(true);
 
     try {
-      const response = await axiosInstance.post(
+      const response = await axiosInstance.put(
         `/InstitutionRequest/approve/${id}`,
         null,
         {
@@ -194,7 +220,7 @@ export default function ReviewApplication() {
         setInstitution((prev) => ({
           ...prev,
           status: "Approved",
-          updatedDate: new Date().toLocaleString(),
+          updatedAt: new Date().toLocaleString(),
         }));
 
         window.dispatchEvent(
@@ -202,6 +228,17 @@ export default function ReviewApplication() {
             detail: {
               message: response.data.message,
               status: "success",
+            },
+          }),
+        );
+      }
+
+      if (response.status === 401) {
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "You don't have permission to perform this action",
+              status: "error",
             },
           }),
         );
@@ -352,17 +389,17 @@ export default function ReviewApplication() {
                       {institution.status === "Pending" ? (
                         <>
                           <i className="fa-solid fa-clock" />
-                          Submitted {FormatDate(institution.submittedDate)}
+                          Submitted {FormatDate(institution.submittedAt)}
                         </>
                       ) : institution.status === "Approved" ? (
                         <>
                           <i className="fa-solid fa-clock" />
-                          Approved on {FormatDate(institution.updatedDate)}
+                          Approved on {FormatDate(institution.updatedAt)}
                         </>
                       ) : (
                         <>
                           <i className="fa-solid fa-clock" />
-                          Declined on {FormatDate(institution.submittedDate)}
+                          Declined on {FormatDate(institution.submittedAt)}
                         </>
                       )}
                     </span>
@@ -414,6 +451,7 @@ export default function ReviewApplication() {
                   />
                 )}
               </header>
+
               <section className="review-app-layout">
                 <div className="review-app-main-column">
                   <article className="review-app-card">
