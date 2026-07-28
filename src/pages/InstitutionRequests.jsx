@@ -41,6 +41,17 @@ export default function InstitutionRequests() {
 
         setRequests(updatedData);
       }
+
+      if (response.status === 401) {
+        window.dispatchEvent(
+          new CustomEvent("app-error", {
+            detail: {
+              message: "You don't have permission to perform this action",
+              status: "error",
+            },
+          }),
+        );
+      }
     } catch (error) {
       if (error.response) {
         const message = error.response.data?.message || "Server error";
@@ -217,11 +228,7 @@ export default function InstitutionRequests() {
                       <tr>
                         <th>Institution Name</th>
                         <th>Applicant</th>
-                        <th>
-                          Date
-                          <br />
-                          Submitted
-                        </th>
+                        <th>Date Submitted</th>
                         <th>Status</th>
                         <th aria-label="Open request" />
                       </tr>
@@ -265,7 +272,7 @@ export default function InstitutionRequests() {
 
                             <td>{request.applicantName}</td>
 
-                            <td>{FormatDate(request.submittedDate)}</td>
+                            <td>{FormatDate(request.submittedAt)}</td>
 
                             <td>
                               <span

@@ -26,6 +26,7 @@ import AuthenticationInstitution from "../pages/AuthenticationInstitution";
 import Partnership from "../pages/Partnership";
 import InstitutionRequests from "../pages/InstitutionRequests";
 import ReviewApplication from "../pages/ReviewApplication";
+import SetAdministratorPassword from "../pages/SetAdministratorPassword";
 
 export default function Router() {
   return (
@@ -61,6 +62,10 @@ export default function Router() {
               element={<AuthenticationInstitution />}
             />
             <Route path="/lost-and-found" element={<LostAndFound />} />
+            <Route
+              path="/institution/set-password"
+              element={<SetAdministratorPassword />}
+            />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/my-posts" element={<MyPost />} />
             <Route path="/verification-codes" element={<VerificationCodes />} />

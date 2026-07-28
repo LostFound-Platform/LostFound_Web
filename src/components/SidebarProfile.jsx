@@ -116,8 +116,14 @@ export default function SidebarProfile() {
             {user.role ? (
               user.student?.studentId ? (
                 `ID: ${user.student.studentId}`
+              ) : user.role === "SystemAdmin" ? (
+                "System Admin"
+              ) : user.role === "InstitutionAdmin" ? (
+                "Institution Admin"
+              ) : user.role === "Staff" ? (
+                "Staff"
               ) : (
-                user.role
+                "Student"
               )
             ) : (
               <Skeleton height={20} width={92} style={{ marginTop: "5px" }} />
